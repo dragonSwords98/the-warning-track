@@ -5,6 +5,8 @@ import Promise from 'bluebird'
 import routes from '../routes'
 
 import Page from '@track/components/Page'
+import AppMenu from '@track/components/AppMenu'
+import Footer from '@track/components/Footer'
 
 class TrackApp extends Component {
   componentWillMount () {
@@ -17,8 +19,8 @@ class TrackApp extends Component {
     return (
       <Page
         className="track"
-        menu={<div>this will be a menu</div>}
-        footerContent={<div>this will be a footer</div>}>
+        menu={ <AppMenu /> }
+        footerContent={ <Footer /> }>
         { routes }
       </Page>
     )

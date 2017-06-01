@@ -5,6 +5,7 @@ const portfinder = require('portfinder')
 const path = require('path')
 const serveStatic = require('serve-static')
 let app = express()
+
 let addresses = getIPAddresses()
 app.use(require('morgan')('dev'))
 app.use(require('./webpack'))

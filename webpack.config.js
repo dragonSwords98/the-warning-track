@@ -65,7 +65,7 @@ module.exports = {
          ],
          use: 'babel-loader'
       }, {
-        test: /\.(woff2?|png|jpg|gif)$/,
+        test: /\.(woff2?|png|jpg|gif|ico)$/,
         loader: 'url-loader?limit=10000'
       }, {
         test: /\.(ttf|eot)$/,
@@ -75,10 +75,6 @@ module.exports = {
         loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
       }
    ]
- },
- devServer: {
-  inline: true,
-  port: 8008
  },
  plugins: [
     new webpack.ProvidePlugin({

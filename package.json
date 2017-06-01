@@ -4,7 +4,7 @@
   "description": "Looney Tunes Team Hub",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server",
+    "start": "node ./server/server",
     "watch": "webpack --watch --colors",
     "build": "cross-env NODE_ENV=production ./node_modules/.bin/webpack -p --colors",
     "clean": "rm -r dist/*",
@@ -20,11 +20,15 @@
   "license": "MIT",
   "repository": "https://gitlab.com/dragonSwords98/the-warning-track",
   "dependencies": {
+    "axios": "^0.16.1",
+    "body-parser": "^1.17.2",
     "case-sensitive-paths-webpack-plugin": "^2.0.0",
     "d3": "^4.9.1",
+    "express": "^4.15.3",
     "font-awesome": "^4.7.0",
     "history": "^4.6.1",
     "moment": "^2.18.1",
+    "mongodb": "^2.2.27",
     "numeral": "^2.0.6",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
@@ -35,9 +39,13 @@
     "redux": "^3.6.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "semantic-ui-css": "^2.2.10",
+    "semantic-ui-react": "^0.68.3",
+    "sortablejs": "^1.5.1",
     "webpack-dev-server": "^2.4.5"
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.8.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
