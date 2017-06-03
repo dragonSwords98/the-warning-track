@@ -5,80 +5,56 @@ import { Icon, Label, Menu, Table, Header } from 'semantic-ui-react'
 
 import BattersBox from '@track/components/Game/BattersBox'
 
-function OffenseTable ({ innings, roster }) {
-
-  const STATUSES = [
-    {
-      name: 'IN_THE_HOLE',
-      label: 'Hole',
-      color: 'yellow',
-    },
-    {
-      name: 'ON_DECK',
-      label: 'Deck',
-      color: 'orange',
-    },
-    {
-      name: 'FIRST',
-      label: '1st',
-      color: 'red',
-    }
-    // 'SECOND',
-    // 'THIRD',
-    // 'HOME',
-    // 'OUT'
-  ]
-
-  const DISABLED = 'disabled'
-  const OUT_STATUS = {
-    name: 'OUT',
-    label: 'Out',
-    color: 'black'
-  }
-
-  const handleEvent = function () {
-    console.log('an event!')
-  }
-
-  // table size should be columns (innings.length + 1) x rows (roster + 1 w/ 4 end rows)
+function OffenseTable ({ innings, roster, statusGrid, advanceBatter, cumulativeRuns, cumulativeOuts }) {
 
   var headerCells = [<Table.HeaderCell key='inning-header-cell'>Roster</Table.HeaderCell>]
   for (let i = 1; i <= innings; i++) {
     headerCells.push(<Table.HeaderCell key={'inning-header-cell-' + i}>{i}</Table.HeaderCell>)
   }
 
-  var batterCells = []
-  for (let i = 1; i <= innings; i++) {
-    batterCells.push(
-      <Table.Cell key={'inning-cell-' + i} className='batter-cell'>
-        <BattersBox key={'inning-bat-box-' + i} status={STATUSES[0]} handleEvent={handleEvent}/>
-      </Table.Cell>
-    )
+  const generateBatterCells = function (r, statusGrid) {
+    let batterCells = []
+    for (let i = 1; i <= innings; i++) {
+      batterCells.push(
+        <Table.Cell key={'inning-cell-' + r + '-' + i} className='batter-cell'>
+          <BattersBox key={'inning-bat-box-' + r + '-' + i} status={statusGrid[r][i-1]} advanceBatter={advanceBatter}/>
+        </Table.Cell>
+      )
+    }
+    return batterCells
   }
 
   var batterRows = []
   for (let r = 0; r < roster.length; r++) {
+
     batterRows.push(
       <Table.Row key={'batter-row-' + r}>
         <Table.Cell><Header as='h4'>{ roster[r].name }</Header></Table.Cell>
-        {batterCells}
+        {
+          generateBatterCells(r, statusGrid)
+        }
       </Table.Row>
     )
   }
 
-  var footerCells = []
+  var theirfooterOuts = [<Table.Cell key='footer-their-outs-0'><Header as='h4'>THEIR OUTS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    footerCells.push(<Table.Cell key={'footer-cell-' + i}>{i}</Table.Cell>)
+    theirfooterOuts.push(<Table.Cell key={'footer-their-outs-' + i}>{cumulativeOuts[i-1].theirs}</Table.Cell>)
   }
 
-  var ourFooterHeaders = [<Table.HeaderCell key='footer-our-0'><Header as='h4'>OUR RUNS</Header></Table.HeaderCell>]
+  var ourfooterOuts = [<Table.Cell key='footer-our-outs-0'><Header as='h4'>OUR OUTS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    ourFooterHeaders.push(<Table.HeaderCell key={'footer-our-' + i}>{i}</Table.HeaderCell>)
+    ourfooterOuts.push(<Table.Cell key={'footer-our-outs-' + i}>{cumulativeOuts[i-1].ours}</Table.Cell>)
   }
 
-  var theirFooterHeaders = [<Table.HeaderCell key='footer-their-0'><Header as='h4'>THEIR RUNS</Header></Table.HeaderCell>]
+  var theirFooterRuns = [<Table.HeaderCell key='footer-their-runs-0'><Header as='h4'>THEIR RUNS</Header></Table.HeaderCell>]
   for (let i = 1; i <= innings; i++) {
-    theirFooterHeaders.push(<Table.HeaderCell key={'footer-their-' + i}>{i}</Table.HeaderCell>)
+    theirFooterRuns.push(<Table.HeaderCell key={'footer-their-runs-' + i}>{cumulativeRuns[i-1].theirs}</Table.HeaderCell>)
+  }
+
+  var ourFooterRuns = [<Table.HeaderCell key='footer-our-runs-0'><Header as='h4'>OUR RUNS</Header></Table.HeaderCell>]
+  for (let i = 1; i <= innings; i++) {
+    ourFooterRuns.push(<Table.HeaderCell key={'footer-our-runs-' + i}>{cumulativeRuns[i-1].ours}</Table.HeaderCell>)
   }
 
   return (
@@ -95,18 +71,16 @@ function OffenseTable ({ innings, roster }) {
 
       <Table.Footer>
         <Table.Row>
-          { theirFooterHeaders }
+          { theirFooterRuns }
         </Table.Row>
         <Table.Row>
-          <Table.Cell><Header as='h4'>THEIR OUTS</Header></Table.Cell>
-          { footerCells }
+          { theirfooterOuts }
         </Table.Row>
         <Table.Row>
-          { ourFooterHeaders }
+          { ourFooterRuns }
         </Table.Row>
         <Table.Row>
-          <Table.Cell><Header as='h4'>OUR OUTS</Header></Table.Cell>
-          { footerCells }
+          { ourfooterOuts }
         </Table.Row>
       </Table.Footer>
     </Table>
@@ -114,6 +88,10 @@ function OffenseTable ({ innings, roster }) {
 }
 OffenseTable.propTypes = {
   innings: PropTypes.number.isRequired,
-  roster: PropTypes.array.isRequired
+  roster: PropTypes.array.isRequired,
+  statusGrid: PropTypes.array.isRequired,
+  advanceBatter: PropTypes.func.isRequired,
+  cumulativeRuns: PropTypes.array.isRequired,
+  cumulativeOuts: PropTypes.array.isRequired
 }
 export default OffenseTable

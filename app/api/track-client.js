@@ -25,7 +25,6 @@ import { wrapApiQuery } from './utils'
  */
 class TrackClient {
   constructor (options) {
-    console.log(options)
     this.$http = options.http
     this.CancelToken = options.CancelToken
   }

@@ -12,14 +12,14 @@ const CreateGameForm = ({ submitCreateGameForm, leagueOptions, handleSelectLeagu
     <Form.Field>
       <label>Team</label>
       <Select placeholder='Select Your Team' options={teamsOptions} />
+      <label>{labelHomeOrAway}</label>
+      <Checkbox fitted toggle onChange={setHomeOrAway}/>
     </Form.Field>
     <Form.Field>
       <label>Opposing Team</label>
       <Input placeholder='Opposing Team' />
     </Form.Field>
     <Form.Field>
-      <label>{labelHomeOrAway}</label>
-      <Checkbox fitted toggle onChange={setHomeOrAway}/>
     </Form.Field>
     <Form.Field>
       <label>Location</label>

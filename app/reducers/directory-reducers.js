@@ -19,13 +19,13 @@ export default function directoryReducers(state = INITIAL_STATE, action) {
 
   if (action.type === 'fetch-directory.teams/received') {
     state = Object.assign({}, state)
-    state.teams = action.payload.directory
+    state.teams = action.payload.teams
     return state
   }
 
   if (action.type === 'fetch-directory.players/received') {
     state = Object.assign({}, state)
-    state.players = action.payload.directory
+    state.players = action.payload.players
     return state
   }
   return state

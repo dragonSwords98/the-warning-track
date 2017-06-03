@@ -10,6 +10,7 @@ import SortableUnorderedList from '@track/components/SortableUnorderedList'
 import CreateGameForm from '@track/components/CreateGameForm'
 
 import { setLeague } from '@track/actions/game-actions'
+import { fetchDirectory } from '@track/actions/directory-actions' // CR: looks like it don't belong as a 'directory' state
 
 class CreateGameContainer extends Component {
   componentWillMount () {
@@ -21,19 +22,33 @@ class CreateGameContainer extends Component {
   }
 
   render () {
-    const { game, team } = this.props
+    const { game, team, directory } = this.props
+
+    let rosterOptions = [], teamOptions = []
+    if (directory.players) {
+      rosterOptions = directory.players.map((player) => {
+        return {
+          key: player._id,
+          value: player._id,
+          text: player.name
+        }
+      })
+    }
+    if (directory.teams) {
+      teamOptions = directory.teams.map((team) => {
+        return {
+          key: team._id,
+          value: team._id,
+          text: team.name
+        }
+      })
+    }
 
     let leagueOptions = [
-      { key: 'ccsa', value: 'ccsa', flag: 'ca', text: 'CCSA' },
-      { key: 'sssl', value: 'sssl', flag: 'ca', text: 'SSSL' },
-      { key: 'snsp', value: 'snsp', flag: 'ca', text: 'SNSP' },
-      { key: 'nl', value: 'nl', flag: 'ca', text: 'Nations League' }
-    ]
-
-    let teamsOptions = [
-      { key: 'lt', value: 'lt', flag: 'ca', text: 'Looney Tunes' },
-      { key: 'bd', value: 'bd', flag: 'ca', text: 'Bolders' },
-      { key: 'kt', value: 'kt', flag: 'ca', text: 'Kattalage' }
+      { key: 'ccsa', value: 'ccsa', text: 'CCSA' },
+      { key: 'sssl', value: 'sssl', text: 'SSSL' },
+      { key: 'snsp', value: 'snsp', text: 'SNSP' },
+      { key: 'nl', value: 'nl', text: 'Nations League' }
     ]
 
     let diamondOptions = [
@@ -51,12 +66,6 @@ class CreateGameContainer extends Component {
     let handleRosterOptions = function() {
       // TODO: Select should remove options as they are chosen in an inning
     }
-    let rosterOptions = [
-      { key: 'bl98', value: 'bl98', text: 'Bryan Ling' },
-      { key: 'sl52', value: 'sl52', text: 'Sinto Ling' },
-      { key: 'cl6', value: 'cl6', text: 'Chris Lo' },
-      { key: 'sk5', value: 'sk5', text: 'Sam Kwok' }
-    ]
 
     let fielderCells = []
     for (let i = 1; i <= game.innings; i++) {
@@ -96,8 +105,8 @@ class CreateGameContainer extends Component {
       )
     }
 
-
-    let rosterList = rosterOptions.map(function(r) {
+    let rosterList = []
+    rosterList = rosterOptions.map(function(r) {
         return r.text
     })
 
@@ -116,7 +125,7 @@ class CreateGameContainer extends Component {
                 submitCreateGameForm={submitCreateGame}
                 leagueOptions={leagueOptions}
                 handleSelectLeague={this.props.setLeague}
-                teamsOptions={teamsOptions}
+                teamsOptions={teamOptions}
                 labelHomeOrAway={game.homeOrAway}
                 setHomeOrAway={this.props.setHomeOrAway}
                 diamondOptions={diamondOptions}
@@ -140,6 +149,7 @@ class CreateGameContainer extends Component {
 export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
+      directory: state.directory,
       game: state.game,
       team: state.team
     }
@@ -148,6 +158,9 @@ export default withRouter(connect(
     return {
       init () {
         dispatch({ type: 'route.create-game-container/init' })
+        dispatch({ type: 'route.directory-list/fetch' })
+        dispatch(fetchDirectory('teams'))
+        dispatch(fetchDirectory('players'))
         // CR: Clear out old game first?
         // dispatch(init())
 
