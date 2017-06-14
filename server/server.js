@@ -1,5 +1,6 @@
 const os = require('os')
 const express = require('express')
+const bodyParser = require('body-parser')
 const portfinder = require('portfinder')
 const path = require('path')
 const serveStatic = require('serve-static')
@@ -12,6 +13,12 @@ const players = require('./api/players'),
 
 
 let app = express();
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 app.get('/players', players.findAll);
 app.get('/players/:id', players.findById);

@@ -1,4 +1,5 @@
 'use strict'
+import { fetchDirectory } from '@track/actions/directory-actions' // CR: looks like it don't belong as a 'directory' state
 
 export function loadGame () {
   return function (dispatch, getState) {
@@ -12,6 +13,37 @@ export function loadGame () {
       gameId: gameId++,
       homeId: homeId
     }})
+
+  }
+}
+
+export function startGame () {
+  return function (dispatch, getState) {
+
+    // TODO: prompt api for game id
+    let gameId = 0
+    let homeId = 0
+
+    let promise = dispatch(fetchDirectory('players'))
+
+    promise.then(() => {
+      const state = getState()
+      dispatch({
+        type: 'route.game-container/start-game',
+        payload: {
+          gameId: gameId++,
+          homeId: homeId,
+          battingOrder: state.directory.players
+        }
+      })
+    }).catch((error) => {
+      dispatch({
+        type: 'route.game-container/start-game.error',
+        payload: {
+          error
+        }
+      })
+    })
 
   }
 }

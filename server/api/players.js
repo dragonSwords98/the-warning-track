@@ -95,6 +95,7 @@ populatePlayersCollection = function () {
         jersey: 98,
         throws: 'Left',
         hits: 'Right',
+        positions: ['LF', 'CF', 'RF'],
         teams: [mongo.ObjectId("7fdcc1ea928be969807aa7b0"), mongo.ObjectId("4fe3f3865fa394d05880247c")]
     },
     {
@@ -105,6 +106,7 @@ populatePlayersCollection = function () {
         jersey: 52,
         throws: 'Right',
         hits: 'Switch',
+        positions: ['LF', 'CF', 'RF'],
         teams: [mongo.ObjectId("7fdcc1ea928be969807aa7b0"), mongo.ObjectId("4fe3f3865fa394d05880247c")]
     },
     {
@@ -115,7 +117,41 @@ populatePlayersCollection = function () {
         jersey: 6,
         throws: 'Right',
         hits: 'Right',
-        teams: [mongo.ObjectId("4fe3f3865fa394d05880247c")]
+        positions: ['3B', 'SS', 'LF', 'CF', 'RF'],
+        teams: [mongo.ObjectId("4fe3f3865fa394d05880247c"), mongo.ObjectId("7fdcc1ea928be969807aa7b0")]
+    },
+    {
+        _id: mongo.ObjectId("a94e163a510aabbcf2106592"),
+        name: 'Thomas Lo',
+        gender: 0,
+        birthyear: 1987,
+        jersey: 0,
+        throws: 'Right',
+        hits: 'Right',
+        positions: ['3B', 'SS'],
+        teams: [mongo.ObjectId("7fdcc1ea928be969807aa7b0"), mongo.ObjectId("4fe3f3865fa394d05880247c")]
+    },
+    {
+        _id: mongo.ObjectId("b44dc63a510519a3f2a06592"),
+        name: 'Elena Yang',
+        gender: 1,
+        birthyear: 1998,
+        jersey: 12,
+        throws: 'Right',
+        hits: 'Right',
+        positions: ['1B', '2B'],
+        teams: [mongo.ObjectId("7fdcc1ea928be969807aa7b0")]
+    },
+    {
+        _id: mongo.ObjectId("b8b17eabe9e3fa1d4e198813"),
+        name: 'Herbert To',
+        gender: 0,
+        birthyear: 1986,
+        jersey: 42,
+        throws: 'Right',
+        hits: 'Right',
+        positions: ['LF', 'CF', 'RF'],
+        teams: [mongo.ObjectId("4fe3f3465fb394d05a81117c"), mongo.ObjectId("7fdcc1ea928be969807aa7b0")]
     }];
 
     db.collection('players', function(err, collection) {

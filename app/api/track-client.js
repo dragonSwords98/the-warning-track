@@ -140,6 +140,7 @@ class TrackClient {
     })
   }
 
+  /** Players **/
 
   getAllPlayers () {
     return this.get('/players').then((data) => {
@@ -159,7 +160,7 @@ class TrackClient {
 
   addPlayer (query) {
     return this.post('/players', query).then((data) => {
-      Promise.resolve(data)
+      return Promise.resolve(data)
     }).catch((error) => {
       return Promise.reject(error)
     })
@@ -167,7 +168,7 @@ class TrackClient {
 
   updatePlayerById (playerId, body) {
     return this.put('/players/' + playerId, body).then((data) => {
-      Promise.resolve(data)
+      return Promise.resolve(data)
     }).catch((error) => {
       return Promise.reject(error)
     })
@@ -175,11 +176,13 @@ class TrackClient {
 
   deletePlayerById (playerId) {
     return this.delete('/players/' + playerId, body).then((data) => {
-      Promise.resolve(data)
+      return Promise.resolve(data)
     }).catch((error) => {
       return Promise.reject(error)
     })
   }
+
+  /** Teams **/
 
   getAllTeams () {
     return this.get('/teams').then((data) => {
@@ -199,7 +202,7 @@ class TrackClient {
 
   addTeam (query) {
     return this.post('/teams', query).then((data) => {
-      Promise.resolve(data)
+      return Promise.resolve(data)
     }).catch((error) => {
       return Promise.reject(error)
     })
@@ -207,7 +210,7 @@ class TrackClient {
 
   updateTeamById (teamId, body) {
     return this.put('/teams/' + teamId, body).then((data) => {
-      Promise.resolve(data)
+      return Promise.resolve(data)
     }).catch((error) => {
       return Promise.reject(error)
     })
@@ -215,7 +218,49 @@ class TrackClient {
 
   deleteTeamById (teamId) {
     return this.delete('/teams/' + teamId, body).then((data) => {
-      Promise.resolve(data)
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  /** Games **/
+
+  getAllGames () {
+    return this.get('/games').then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  getGameById (gameId) {
+    return this.get('/games/' + gameId).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  addGame (query) {
+    return this.post('/games', query).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  updateGameById (gameId, body) {
+    return this.put('/games/' + gameId, body).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  deleteGameById (gameId) {
+    return this.delete('/games/' + gameId, body).then((data) => {
+      return Promise.resolve(data)
     }).catch((error) => {
       return Promise.reject(error)
     })

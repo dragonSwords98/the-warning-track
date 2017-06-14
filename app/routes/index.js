@@ -16,6 +16,9 @@ export default (
     <Route exact path="/players">
       <Directory type="players" />
     </Route>
+    <Route exact path="/games">
+      <Directory type="games" />
+    </Route>
 
     { teamRoutes }
     { playerRoutes }

@@ -11,8 +11,13 @@ class SortableUnorderedList extends Component {
     componentDidMount () {
         let $this = $(ReactDOM.findDOMNode(this));
         let el = document.getElementById(this.props.id);
-
-        let sortable = Sortable.create(el);
+        let sortable = Sortable.create(el, {
+            onUpdate: function (evt) {
+                console.log(evt.target, evt.item)
+                order = this.toArray()
+                console.log('order', order)
+            }
+        });
     }
 
     render () {

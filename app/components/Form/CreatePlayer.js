@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 
 import Tooltip from 'rc-tooltip';
 import Slider from 'rc-slider';
@@ -13,51 +12,46 @@ import 'rc-tooltip/assets/bootstrap.css';
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const SliderTooltip = createSliderWithTooltip(Slider);
-import { Button, Checkbox, Form, Dropdown } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Input, Dropdown } from 'semantic-ui-react'
 
 class CreatePlayer extends Component {
-  //
-  // handleBirthyearChange (e) {
-  //   console.log(e)
-  //   this.setState({
-  //     activeBirthyearIndex: Number(e.target.value)
-  //   })
+  // constructor(props) {
+  //   super(props)
+  //   this.state = {throwLabel: 'Left'}
+  //   this.toggleThrowLabel = this.toggleThrowLabel.bind(this)
   // }
 
+  //https://stackoverflow.com/questions/44062024/submit-form-using-button-in-parent-component-in-react
 
-  render() {
-    const { activeBirthyearIndex, thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions } = this.props
-    console.log(this.props)
+  render () {
+    const { thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions, hitsArray, createPlayerToggleableLabels, formChangeHandler, formSubmissionHandler } = this.props
     return (
-      <Form>
+      <Form id='createPlayerForm' onSubmit={formSubmissionHandler}>
         <Form.Field>
           <label>Full Name</label>
-          <input placeholder='Full Name' />
+          <Input placeholder='Full Name' data-create-id='name' onChange={formChangeHandler} />
         </Form.Field>
         <Form.Field>
           <label>Gender</label>
-          <Checkbox toggle label='Male'/>
+          <Checkbox toggle data-create-id='gender' label={createPlayerToggleableLabels.gender} onChange={formChangeHandler} />
         </Form.Field>
         <Form.Field>
           <label>Birthyear</label>
-          <SliderTooltip min={oneHundredYearsAgo} max={thisYear} defaultValue={twentyYearsAgo} tipFormatter={value => `${value}`} />
+          <Input type='number' data-create-id='birthyear' min={oneHundredYearsAgo} max={thisYear} defaultValue={twentyYearsAgo} onChange={formChangeHandler} />
         </Form.Field>
         <Form.Field>
           <label>Jersey</label>
-          <SliderTooltip min={0} max={99} defaultValue={50} tipFormatter={value => `${value}`} />
+          <SliderTooltip data-create-id='jersey' min={0} max={99} defaultValue={50} tipFormatter={value => `${value}`} onChange={formChangeHandler} />
         </Form.Field>
         <Form.Field>
           <label>Hits</label>
-          <SliderTooltip min={0} max={2} defaultValue={0} tipFormatter={value => value} />
+          <Dropdown placeholder='hits' data-create-id='hits' fluid selection options={hitsArray} onChange={formChangeHandler} />
           <label>Throws</label>
-          <Checkbox toggle label='Right'/>
+          <Checkbox toggle data-create-id='throws' label={createPlayerToggleableLabels.throw} onChange={formChangeHandler} />
         </Form.Field>
         <Form.Field>
           <label>Teams</label>
-          <Dropdown placeholder='Select Teams' fluid multiple search selection options={teamOptions} />
-        </Form.Field>
-        <Form.Field>
-          <Checkbox label='I agree to check this checkbox and sign my life away to the cause... :)' />
+          <Dropdown data-create-id='teams' placeholder='Select Teams' fluid multiple search selection options={teamOptions} onChange={formChangeHandler} />
         </Form.Field>
         <Button type='submit'>Submit</Button>
       </Form>
@@ -65,13 +59,17 @@ class CreatePlayer extends Component {
   }
 }
 CreatePlayer.propTypes = {
-  teamOptions:  PropTypes.array.isRequired
-}
-
-CreatePlayer.defaultProps = {
-  thisYear: moment().year(),
-  twentyYearsAgo: moment().subtract(20, 'year').year(),
-  oneHundredYearsAgo: moment().subtract(100, 'year').year(),
-  hitsArray: [ 'right', 'left', 'switch' ]
+  teamOptions:  PropTypes.array.isRequired,
+  createPlayerToggleableLabels: PropTypes.object.isRequired,
+  formChangeHandler: PropTypes.func.isRequired,
+  formSubmissionHandler: PropTypes.func.isRequired
+        // thisYear={thisYear}
+        // twentyYearsAgo={twentyYearsAgo}
+        // oneHundredYearsAgo={oneHundredYearsAgo}
+        // teamOptions={teamOptions}
+        // hitsArray={hitsArray}
+        // throwLabel={throwLabel}
+        // formChangeHandler={formChangeHandler} 
+        // formSubmissionHandler={formSubmissionHandler}
 }
 export default CreatePlayer
