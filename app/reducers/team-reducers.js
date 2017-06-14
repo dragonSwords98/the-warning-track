@@ -2,7 +2,15 @@
 
 const INITIAL_STATE = {
   // team: null,
-  team: null
+  team: null,
+  name: '',
+  captain: [],
+  leagues: [],
+  roster: []
+  // roster: [],
+  // color: null,
+  // schedule: {},
+  // standings: {}
   // rosterOptions: [
   //   { key: 'bl98', value: 'bl98', text: 'Bryan Ling' },
   //   { key: 'sl52', value: 'sl52', text: 'Sinto Ling' },

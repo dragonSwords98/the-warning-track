@@ -21,7 +21,6 @@ class AppMenu extends Component {
        <Menu.Item>
         <Header as='h1'>TRACK</Header>
        </Menu.Item>
-       <Menu.Item name='home' active={activeItem === 'home'} onClick={this.props.handleMenuItem} />
        <Menu.Item name='teams' active={activeItem === 'teams'} onClick={this.props.handleMenuItem} />
        <Menu.Item name='players' active={activeItem === 'players'} onClick={this.props.handleMenuItem} />
        <Menu.Item name='games' active={activeItem === 'games'} onClick={this.props.handleMenuItem} />

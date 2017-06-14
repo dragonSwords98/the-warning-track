@@ -8,6 +8,7 @@ import teamReducers from './reducers/team-reducers'
 import directoryReducers from './reducers/directory-reducers'
 import navigationReducers from './reducers/navigation-reducers'
 import gameReducers from './reducers/game-reducers'
+import playerReducers from './reducers/player-reducers'
 
 let enhancedCompose
 if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
@@ -32,6 +33,7 @@ let rootReducer = combineReducers({
   router: routerReducer,
   navigation: navigationReducers,
   team: teamReducers,
+  player: playerReducers,
   directory: directoryReducers,
   game: gameReducers
 })

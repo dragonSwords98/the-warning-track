@@ -1,18 +1,23 @@
 import React from 'react'
 import { Button, Icon, Modal } from 'semantic-ui-react'
-import CreateTeam from '@track/components/Form/CreateTeam'
-import CreatePlayer from '@track/components/Form/CreatePlayer'
+import CreateTeamContainer from '@track/containers/Create/CreateTeamContainer'
+import CreatePlayerContainer from '@track/containers/Create/CreatePlayerContainer'
 
-function CreationModalForm ({ type, teamOptions, playerOptions, leagueOptions }) {
+function CreationModalForm ({ type, teamOptions, playerOptions, leagueOptions, createPlayerToggleableLabels, formChangeHandler, formSubmissionHandler }) {
+
+  // const formSubmissionHandler = (formId) => {
+  //   this.refs.createForm.getWrappedInstance().submit()
+  // }
+
   let title = 'Create a '
   let form
   if (type === 'teams') {
     title += 'Team'
-    form = <CreateTeam playerOptions={playerOptions} leagueOptions={leagueOptions} />
+    form = <CreateTeamContainer playerOptions={playerOptions} leagueOptions={leagueOptions} formChangeHandler={formChangeHandler} formSubmissionHandler={formSubmissionHandler} />
   }
   if (type === 'players') {
     title += 'Player'
-    form = <CreatePlayer teamOptions={teamOptions} />
+    form = <CreatePlayerContainer teamOptions={teamOptions} createPlayerToggleableLabels={createPlayerToggleableLabels} formChangeHandler={formChangeHandler} formSubmissionHandler={formSubmissionHandler} />
   }
   return (
     <Modal trigger={<Button>{title}</Button>} size='fullscreen'>
