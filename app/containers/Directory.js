@@ -11,6 +11,7 @@ import CreatePlayerContainer from '@track/containers/Create/CreatePlayerContaine
 import CardGrid from '@track/components/CardGrid'
 import Segue from '@track/components/Segue'
 import { fetchDirectory, submitCreateForm } from '@track/actions/directory-actions'
+import { populateOptions } from '@track/utils'
 
 class Directory extends Component {
   componentWillReceiveProps (nextProps) {
@@ -28,43 +29,22 @@ class Directory extends Component {
   render () {
     const { type, directory, goToCreateGame, goToGame, toggleCreateForm, updateCreateFormQuery, submitCreateFormQuery } = this.props
     // if (!directory[type]) {
-    if (!directory || !directory.players || !directory.teams || !directory.games) {
+    if (!directory || !directory.players || !directory.teams || !directory.games || !directory.leagues) {
       return (<LoadingOverlay />)
     }
 
-    let leagueOptions = [
-      { key: 'ccsa', value: 'ccsa', text: 'CCSA' },
-      { key: 'sssl', value: 'sssl', text: 'SSSL' },
-      { key: 'snsp', value: 'snsp', text: 'SNSP' },
-      { key: 'nl', value: 'nl', text: 'Nations League' }
-    ]
-    let playerOptions = [], teamOptions = [], gameOptions = []
+    let playerOptions = [], teamOptions = [], gameOptions = [], leagueOptions = []
     if (directory.players) {
-      playerOptions = directory.players.map((player) => {
-        return {
-          key: player._id,
-          value: player._id,
-          text: player.name
-        }
-      })
+      playerOptions = populateOptions(directory.players)
     }
     if (directory.teams) {
-      teamOptions = directory.teams.map((team) => {
-        return {
-          key: team._id,
-          value: team._id,
-          text: team.name
-        }
-      })
+      teamOptions = populateOptions(directory.teams)
     }
     if (directory.games) {
-      gameOptions = directory.games.map((game) => {
-        return {
-          key: game._id,
-          value: game._id,
-          text: game.name
-        }
-      })
+      gameOptions = populateOptions(directory.games)
+    }
+    if (directory.leagues) {
+      leagueOptions = populateOptions(directory.leagues)
     }
 
     let creation = (<div><Button primary onClick={goToCreateGame}>Create Game</Button></div>)
@@ -132,7 +112,6 @@ export default withRouter(connect(
         dispatch({ type: 'route.directory-list/toggle-create-form' })
       },
       updateCreateFormQuery (event, data) {
-        console.log('updateCreateFormQuery', event.target, data)
         dispatch({ type: 'route.directory-list/update-form-query', payload: { type: ownProps.type, field: data['data-create-id'], value: data.value } })
       },
       submitCreateFormQuery (event, data) {
