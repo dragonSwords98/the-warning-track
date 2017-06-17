@@ -12,15 +12,7 @@ import CreateGameForm from '@track/components/CreateGameForm'
 import { setLeague } from '@track/actions/game-actions'
 import { fetchDirectory } from '@track/actions/directory-actions' // CR: looks like it don't belong as a 'directory' state
 
-const populateOptions = function(data) {
-  return data.map((d => {
-    return {
-      key: d._id,
-      value: d._id,
-      text: d.name
-    }
-  }))
-}
+import { populateOptions } from '@track/utils'
 
 class CreateGameContainer extends Component {
   componentWillMount () {

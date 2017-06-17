@@ -14,9 +14,12 @@ function Segue ({ children, teams, goToGame }) {
     }
     let frameIndicator = child.currentFrame ? (<Icon name='chevron up' size='mini'/>) : (<Icon name='chevron down' size='mini'/>)
 
+    const GAME_STATUS_COLOR_INDICATOR = ['green', 'red', 'grey']
+    let colorLabel = GAME_STATUS_COLOR_INDICATOR[child.gameStatus]
+
     return (
       <Button circular key={'game-' + child._id} data-game-id={child._id} onClick={goToGame}>
-        <Segment circular color='blue' style={square}>
+        <Segment circular color={colorLabel} style={square}>
           <Header as="h2">
             {homeTeamRuns} : {awayTeamRuns}
             <Header.Subheader>
