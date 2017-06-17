@@ -19,7 +19,7 @@ const INITIAL_STATE = {
   // ]
 }
 
-export default function teamReducers(state = INITIAL_STATE, action) {
+export default function teamReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.team-container/init') {
     state = Object.assign({}, state, INITIAL_STATE)
     return state

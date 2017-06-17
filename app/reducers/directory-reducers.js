@@ -4,22 +4,24 @@ const INITIAL_STATE = {
   teams: null,
   players: null,
   games: null,
+  leagues: null,
+  diamonds: null,
   showCreateForm: false,
   createPlayer: {},
   createTeam: {},
   createGame: {}
 }
 
-export default function directoryReducers(state = INITIAL_STATE, action) {
-  if (action.type === 'route.directory-list/init') {
+export default function directoryReducers (state = INITIAL_STATE, action) {
+  if (action.type === 'directory-list/init') {
     state = Object.assign({}, state, INITIAL_STATE)
     return state
   }
-  if (action.type === 'route.directory-list/destroy') {
+  if (action.type === 'directory.create-form/destroy') {
     state = Object.assign({}, state)
-    state.teams = null
-    state.players = null
-    state.games = null
+    state.createPlayer = {}
+    state.createTeam = {}
+    state.createGame = {}
     return state
   }
 
@@ -38,6 +40,18 @@ export default function directoryReducers(state = INITIAL_STATE, action) {
   if (action.type === 'fetch-directory.games/received') {
     state = Object.assign({}, state)
     state.games = action.payload.games
+    return state
+  }
+
+  if (action.type === 'fetch-directory.leagues/received') {
+    state = Object.assign({}, state)
+    state.leagues = action.payload.leagues
+    return state
+  }
+
+  if (action.type === 'fetch-directory.diamonds/received') {
+    state = Object.assign({}, state)
+    state.diamonds = action.payload.diamonds
     return state
   }
 
@@ -63,16 +77,19 @@ export default function directoryReducers(state = INITIAL_STATE, action) {
 
   if (action.type === 'directory.team/new-team-success') {
     state = Object.assign({}, state)
+    let newTeam = Object.assign(action.payload.newTeam, action.payload._id)
     state.createTeam = {}
+    state.teams.push(newTeam)
     return state
   }
 
   if (action.type === 'directory.player/new-player-success') {
     state = Object.assign({}, state)
+    let newPlayer = Object.assign(action.payload.newPlayer, action.payload._id)
     state.createPlayer = {}
+    state.players.push(newPlayer)
     return state
   }
 
-  
   return state
 }

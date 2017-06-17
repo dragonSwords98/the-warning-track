@@ -28,10 +28,10 @@ exports.findAll = function(req, res) {
 };
 
 exports.findById = function(req, res) {
-  var id = req.params.id;
+  var id = mongo.ObjectID(req.params.id);
   console.log('Retrieving team: ' + id);
   db.collection('teams', function(err, collection) {
-      collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
+      collection.findOne({'_id':id}, function(err, item) {
           res.send(item);
       });
   });
@@ -42,14 +42,14 @@ exports.addTeam = function(req, res) {
   var team = req.body;
   console.log('Adding team: ' + JSON.stringify(team));
   db.collection('teams', function(err, collection) {
-      collection.insert(team, {safe:true}, function(err, result) {
-          if (err) {
-              res.send({'error':'An error has occurred'});
-          } else {
-              console.log('Success: ' + JSON.stringify(result[0]));
-              res.send(result[0]);
-          }
-      });
+    collection.insert(team, {safe:true}, function(err, result) {
+      if (err) {
+        res.send({'error':'An error has occurred'});
+      } else {
+        console.log('Success: ' + JSON.stringify(result));
+        res.send({ _id: result.insertedIds[0]});
+      }
+    });
   });
 };
 
@@ -87,34 +87,29 @@ exports.deleteTeam = function(req, res) {
 };
 
 populateTeamsCollection = function () {
+  const ObjectId = mongo.ObjectId
   const teams = [
     {
-      _id : mongo.ObjectId("7fdcc1ea928be969807aa7b0"),
+      _id : ObjectId("7fdcc1ea928be969807aa7b0"),
       name: 'Looney Tunes',
-      leadership: [mongo.ObjectId("58b17d15e9e4fb1c4d034e1e")],
-      roster: [mongo.ObjectId("21c92149873ad56fe00935df"), mongo.ObjectId("58b17d15e9e4fb1c4d034e1e")],
       image: 'looney-tunes.jpg',
-      leagues: [],
+      leagues: [ObjectId("31c92149873ad56fe0093592")],
       description: 'We play on Wednesdays and Thursdays (6:30, 8, 9:30 PM time slots)',
       size: 30 // should just use roster.length
     },
     {
-      _id : mongo.ObjectId("4fe3f3865fa394d05880247c"),
+      _id : ObjectId("4fe3f3865fa394d05880247c"),
       name: 'CCCF Bolders',
-      leadership: [mongo.ObjectId("d94d563a510cdedef2a06592")],
-      roster: [mongo.ObjectId("21c92149873ad56fe00935df"), mongo.ObjectId("58b17d15e9e4fb1c4d034e1e"), mongo.ObjectId("d94d563a510cdedef2a06592")],
       image: 'bolders.jpg',
-      leagues: [],
+      leagues: [ObjectId("22c92149873ad56fe00935df")],
       description: 'We play on Saturdays and Sundays (2, 4, 6 PM time slots)',
       size: 25
     },
     {
-      _id : mongo.ObjectId("4fe3f3465fb394d05a81117c"),
+      _id : ObjectId("4fe3f3465fb394d05a81117c"),
       name: 'Katallage',
-      leadership: [mongo.ObjectId("b8b17eabe9e3fa1d4e198813")],
-      roster: [],
       image: 'katallage.jpg',
-      leagues: [],
+      leagues: [ObjectId("24c92149873ad56fe0093e1e")],
       description: 'We play on Saturdays and Sundays (2, 4, 6 PM time slots)',
       size: 25
     }];

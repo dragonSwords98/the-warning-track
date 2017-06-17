@@ -2,18 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
+import { fetchPlayer } from '@track/actions/player-actions'
+
 class PlayerContainer extends Component {
   componentWillMount () {
-    const { init } = this.props
-    init(playerId)
-  }
-  componentWillReceiveProps (nextProps) {
-    const thisId = this.props.playerId
-    const nextId = nextProps.playerId
-    if (thisId !== nextId) {
-      this.props.destroy()
-      this.props.init(nextId)
-    }
+    this.props.init(this.props.player.id)
   }
   componentWillUnmount () {
     this.props.destroy()

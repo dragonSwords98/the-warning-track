@@ -13,8 +13,7 @@ const INITIAL_STATE = {
   activeOptions: teamOptions
 }
 
-
-export default function navigationReducers(state = INITIAL_STATE, action) {
+export default function navigationReducers (state = INITIAL_STATE, action) {
   if (action.type === 'app-menu/init') {
     state = Object.assign({}, state, INITIAL_STATE)
     state.activeItem = action.payload.path.replace('/', '')

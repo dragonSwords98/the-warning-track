@@ -2,11 +2,10 @@
 
 const INITIAL_STATE = {
   name: '',
-  
-  teams: [],
+  teams: []
 }
 
-export default function playerReducers(state = INITIAL_STATE, action) {
+export default function playerReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.player-container/init') {
     state = Object.assign({}, state, INITIAL_STATE)
     return state

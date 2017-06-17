@@ -4,14 +4,12 @@ import { push as pushLocation } from 'react-router-redux'
 
 export function initMenu (locationPath) {
   return function (dispatch, getState) {
-    const state = getState()
-    dispatch({ type: 'app-menu/init', payload: { path: locationPath} })
+    dispatch({ type: 'app-menu/init', payload: { path: locationPath } })
   }
 }
 
 export function handleMenuItemAction (name) {
   return function (dispatch, getState) {
-    const state = getState()
     dispatch({
       type: 'app-menu/item-action',
       payload: { name }
@@ -36,7 +34,6 @@ export function handleMenuItemAction (name) {
 
 export function handleMenuSelectAction (selection) {
   return function (dispatch, getState) {
-    const state = getState()
     dispatch({
       type: 'app-menu/select-action',
       payload: { selection }
