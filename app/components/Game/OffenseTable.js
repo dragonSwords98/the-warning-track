@@ -1,14 +1,13 @@
 'use strict'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, Input, Segment, Checkbox, Icon, Label, Menu, Table, Header } from 'semantic-ui-react'
+import { Button, Input, Checkbox, Table, Header } from 'semantic-ui-react'
 
 import BattersBox from '@track/components/Game/BattersBox'
 
-function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, roster, lockedInnings, statusGrid, advanceRunner, toggleInningLock }) {
-
+function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, lockedInnings, statusGrid, advanceRunner, toggleInningLock }) {
   // Header Cells
-  let headerCells = [<Table.HeaderCell key='inning-header-cell'>Roster</Table.HeaderCell>]
+  let headerCells = [<Table.HeaderCell key={'inning-header-cell'}>Batting</Table.HeaderCell>]
   for (let i = 1; i <= innings; i++) {
     headerCells.push(<Table.HeaderCell key={'inning-header-cell-' + i}>{i}</Table.HeaderCell>)
   }
@@ -30,11 +29,11 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, roster, lockedI
   }
 
   let batterRows = []
-  for (let r = 0; r < roster.length; r++) {
+  for (let r = 0; r < battingOrder.length; r++) {
 
     batterRows.push(
       <Table.Row key={'batter-row-' + r}>
-        <Table.Cell><Header as='h4'>{ roster[r].name }</Header></Table.Cell>
+        <Table.Cell><Header as="h4">{ battingOrder[r].name }</Header></Table.Cell>
         {
           generateBatterCells(r, statusGrid)
         }
@@ -44,9 +43,9 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, roster, lockedI
 
   // Our Runs and Our Outs Cells, along with mercies and max outs
   const THREEOUTS = 3
-  const mercyRunInput = (disabled) => (<Input type='number' min='0' max={mercyRuns} fluid disabled={disabled} />)
-  const noMercyRunInput = (disabled) => (<Input type='number' min='0' fluid disabled={disabled} />)
-  const outsInput =  (disabled) => (<Checkbox toggle disabled={disabled} />)
+  const mercyRunInput = (disabled) => (<Input type="number" min="0" max={mercyRuns} fluid disabled={disabled} />)
+  const noMercyRunInput = (disabled) => (<Input type="number" min="0" fluid disabled={disabled} />)
+  const outsInput = (disabled) => (<Checkbox toggle disabled={disabled} />)
 
   let scoresheet = statusGrid.map((s, i) => {
     return s.reduce((acc, value) => {
@@ -61,17 +60,17 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, roster, lockedI
   })
 
   // Creating Footer Cells
-  let theirfooterOuts = [<Table.Cell key='footer-their-outs-0'><Header as='h4'>THEIR OUTS</Header></Table.Cell>]
+  let theirfooterOuts = [<Table.Cell key={'footer-their-outs-0'}><Header as="h4">THEIR OUTS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
     theirfooterOuts.push(<Table.Cell key={'footer-their-outs-' + i}>{outsInput(lockedInnings.indexOf(i) > -1)}{outsInput(lockedInnings.indexOf(i) > -1)}{outsInput(lockedInnings.indexOf(i) > -1)}</Table.Cell>)
   }
 
-  let ourfooterOuts = [<Table.Cell key='footer-our-outs-0'><Header as='h4'>OUR OUTS</Header></Table.Cell>]
+  let ourfooterOuts = [<Table.Cell key={'footer-our-outs-0'}><Header as="h4">OUR OUTS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    ourfooterOuts.push(<Table.Cell key={'footer-our-outs-' + i}>{scoresheet[i-1][0]}</Table.Cell>)
+    ourfooterOuts.push(<Table.Cell key={'footer-our-outs-' + i}>{scoresheet[i - 1][0]}</Table.Cell>)
   }
 
-  let theirFooterRuns = [<Table.Cell key='footer-their-runs-0'><Header as='h4'>THEIR RUNS</Header></Table.Cell>]
+  let theirFooterRuns = [<Table.Cell key={'footer-their-runs-0'}><Header as="h4">THEIR RUNS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
     if (i < noMercyInningBegin) {
       theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{mercyRunInput(lockedInnings.indexOf(i) > -1)}</Table.Cell>)
@@ -80,12 +79,12 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, roster, lockedI
     }
   }
 
-  let ourFooterRuns = [<Table.Cell key='footer-our-runs-0'><Header as='h4'>OUR RUNS</Header></Table.Cell>]
+  let ourFooterRuns = [<Table.Cell key={'footer-our-runs-0'}><Header as="h4">OUR RUNS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    ourFooterRuns.push(<Table.Cell key={'footer-our-runs-' + i}>{scoresheet[i-1][1]}</Table.Cell>)
+    ourFooterRuns.push(<Table.Cell key={'footer-our-runs-' + i}>{scoresheet[i - 1][1]}</Table.Cell>)
   }
 
-  let lockInnings = [<Table.Cell key='footer-lock-0'><Header as='h4'>Lock</Header></Table.Cell>]
+  let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Lock</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
     let icon = lockedInnings.indexOf(i) > -1 ? 'lock' : 'unlock'
     lockInnings.push(<Table.Cell key={'footer-lock-' + i}><Button data={i} circular icon={icon} onClick={toggleInningLock} /></Table.Cell>)
@@ -127,7 +126,7 @@ OffenseTable.propTypes = {
   innings: PropTypes.number.isRequired,
   mercyRuns: PropTypes.number.isRequired,
   noMercyInningBegin: PropTypes.number.isRequired,
-  roster: PropTypes.array.isRequired,
+  battingOrder: PropTypes.array.isRequired,
   statusGrid: PropTypes.array.isRequired,
   advanceRunner: PropTypes.func.isRequired,
   toggleInningLock: PropTypes.func.isRequired

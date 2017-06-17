@@ -9,6 +9,7 @@ import LoadingOverlay from '@track/components/LoadingOverlay'
 import CreateTeamContainer from '@track/containers/Create/CreateTeamContainer'
 import CreatePlayerContainer from '@track/containers/Create/CreatePlayerContainer'
 import CardGrid from '@track/components/CardGrid'
+import Segue from '@track/components/Segue'
 import { fetchDirectory, submitCreateForm } from '@track/actions/directory-actions'
 
 class Directory extends Component {
@@ -19,13 +20,13 @@ class Directory extends Component {
   }
   componentWillMount () {
     // const { init, type } = this.props
-    this.props.fetch()
+    // this.props.fetch()
   }
   componentWillUnmount () {
     this.props.destroy()
   }
   render () {
-    const { type, directory, goToCreateGame, toggleCreateForm, updateCreateFormQuery, submitCreateFormQuery } = this.props
+    const { type, directory, goToCreateGame, goToGame, toggleCreateForm, updateCreateFormQuery, submitCreateFormQuery } = this.props
     // if (!directory[type]) {
     if (!directory || !directory.players || !directory.teams || !directory.games) {
       return (<LoadingOverlay />)
@@ -67,42 +68,43 @@ class Directory extends Component {
     }
 
     let creation = (<div><Button primary onClick={goToCreateGame}>Create Game</Button></div>)
-    let form
+    let form, exhibit = <div></div>
     if (type === 'teams') {
       creation = (<div><Button secondary onClick={toggleCreateForm}>Create Team</Button></div>)
       if (directory.showCreateForm) {
-        form = (<CreateTeamContainer
-                  playerOptions={playerOptions}
-                  leagueOptions={leagueOptions}
-                  formChangeHandler={updateCreateFormQuery}
-                  formSubmissionHandler={submitCreateFormQuery}
-                  />)
+        form = (
+          <CreateTeamContainer
+            playerOptions={playerOptions}
+            leagueOptions={leagueOptions}
+            formChangeHandler={updateCreateFormQuery}
+            formSubmissionHandler={submitCreateFormQuery} />
+        )
       }
+      exhibit = <CardGrid collection={directory[type]} type={type} />
     }
     if (type === 'players') {
       creation = (<div><Button onClick={toggleCreateForm}>Create Player</Button></div>)
       if (directory.showCreateForm) {
-        form = (<CreatePlayerContainer
-                  teamOptions={teamOptions}
-                  formChangeHandler={updateCreateFormQuery}
-                  formSubmissionHandler={submitCreateFormQuery}
-                  />)
+        form = (
+          <CreatePlayerContainer
+            teamOptions={teamOptions}
+            formChangeHandler={updateCreateFormQuery}
+            formSubmissionHandler={submitCreateFormQuery} />
+        )
       }
+      exhibit = <CardGrid collection={directory[type]} type={type} />
     }
 
-      // creation = <CreationModalForm type={type}
-      //             teamOptions={teamOptions}
-      //             playerOptions={playerOptions}
-      //             leagueOptions={leagueOptions}
-      //             formChangeHandler={this.props.updateCreateFormQuery}
-      //             formSubmissionHandler={this.props.submitCreateFormQuery}
-      //             />
+    if (type === 'games') {
+      exhibit = <Segue children={directory[type]} teams={directory.teams} goToGame={goToGame} />
+    }
+
     return (
       <div>
-        <Header as='h3'>{type.toUpperCase()}</Header>
+        <Header as="h3">{type.toUpperCase()}</Header>
         { creation }
         { form }
-        <CardGrid collection={directory[type]} type={type} />
+        { exhibit }
       </div>
     )
   }
@@ -119,15 +121,18 @@ export default withRouter(connect(
       //   dispatch({ type: 'route.directory-list/init' })
       // },
       fetch (type) {
-        dispatch({ type: 'route.directory-list/fetch' })
-        dispatch(fetchDirectory('players'))
-        dispatch(fetchDirectory('teams'))
-        dispatch(fetchDirectory('games'))
+        // dispatch({ type: 'route.directory-list/fetch' })
+        // dispatch(fetchDirectory('players'))
+        // dispatch(fetchDirectory('teams'))
+        // dispatch(fetchDirectory('games'))
+        // dispatch(fetchDirectory('leagues'))
+        // dispatch(fetchDirectory('diamonds'))
       },
-      toggleCreateForm() {
+      toggleCreateForm () {
         dispatch({ type: 'route.directory-list/toggle-create-form' })
       },
-      updateCreateFormQuery(event, data) {
+      updateCreateFormQuery (event, data) {
+        console.log('updateCreateFormQuery', event.target, data)
         dispatch({ type: 'route.directory-list/update-form-query', payload: { type: ownProps.type, field: data['data-create-id'], value: data.value } })
       },
       submitCreateFormQuery (event, data) {
@@ -139,8 +144,11 @@ export default withRouter(connect(
       goToCreateGame () {
         dispatch(pushLocation('/games/create'))
       },
+      goToGame (event, data) {
+        dispatch(pushLocation('/games/' + data['data-game-id']))
+      },
       destroy () {
-        dispatch({ type: 'route.directory-list/destroy' })
+        dispatch({ type: 'directory.create-form/destroy' })
       }
     }
   }

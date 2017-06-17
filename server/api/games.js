@@ -87,88 +87,61 @@ exports.deleteGame = function(req, res) {
 };
 
 populateGamesCollection = function () {
+  const ObjectId = mongo.ObjectId
   const games = [
     {
-        _id: mongo.ObjectId("3ab356a4defa1245327bbcdf"),
-        leagueId: 'NL',
-        teamId: mongo.ObjectId("7fdcc1ea928be969807aa7b0"),
-        opposingTeam: 'Sons of Pitches',
-        location: 'Muirhead',
-        datetime: moment(),
-        homeOrAway: 'Home',
-        complete: true,
-        currentInning: 7,
-        lockedInnings: [],
-        currentFrame: 1,
-        homeBattingOrder: [
-          mongo.ObjectId("d94d563a510cdedef2a06592"),
-          mongo.ObjectId("58b17d15e9e4fb1c4d034e1e"),
-          mongo.ObjectId("21c92149873ad56fe00935df")
-        ],
-        homeFieldingLineup: {
-          'CF': mongo.ObjectId("58b17d15e9e4fb1c4d034e1e"),
-          'LF': mongo.ObjectId("d94d563a510cdedef2a06592"),
-          'RF': mongo.ObjectId("21c92149873ad56fe00935df")
-        },
-        homeEarnedRuns: 6,
-        awayFieldingLineup: {},
-        awayEarnedRuns: 5,
-        awayBattingOrder: [],
+      _id: ObjectId("3ab356a4defa124532712345"),
+      league: ObjectId("31c92149873ad56fe0093592"),
+      ourTeam: ObjectId("7fdcc1ea928be969807aa7b0"),
+      opposingTeam: 'Big Bunt Theory',
+      diamond: ObjectId("11c92149873ad56fe00935df"),
+      datetime: moment().format('LLLL'),
+      homeOrAway: 1,
+      innings: 7, // or 8
+      currentInning: 1,
+      lockedInnings: [],
+      currentFrame: 0,
+      ourBattingOrder: [
+        ObjectId("d94d563a510cdedef2a06592"),
+        ObjectId("58b17d15e9e4fb1c4d034e1e"),
+        ObjectId("21c92149873ad56fe00935df")
+      ],
+      ourFieldingLineup: [
+        ObjectId("58b17d15e9e4fb1c4d034e1e"),
+        ObjectId("d94d563a510cdedef2a06592"),
+        ObjectId("21c92149873ad56fe00935df")
+      ],
+      statusGrid: [], // ours batting order
+      scoresheet: [], // ours vs theirs
+      gameStatus: 0
     },
     {
-        _id: mongo.ObjectId("3ab356a4defa1245327bbcaa"),
-        leagueId: 'CCSA',
-        teamId: mongo.ObjectId("7fdcc1ea928be969807aa7b0"),
-        opposingTeam: 'Kattalage',
-        location: 'Goldhawk',
-        datetime: moment(),
-        homeOrAway: 'Home',
-        complete: true,
-        currentInning: 8,
-        lockedInnings: [],
-        currentFrame: 1,
-        homeBattingOrder: [
-          mongo.ObjectId("d94d563a510cdedef2a06592"),
-          mongo.ObjectId("58b17d15e9e4fb1c4d034e1e"),
-          mongo.ObjectId("21c92149873ad56fe00935df")
-        ],
-        homeFieldingLineup: {
-          'CF': mongo.ObjectId("58b17d15e9e4fb1c4d034e1e"),
-          'LF': mongo.ObjectId("d94d563a510cdedef2a06592"),
-          'RF': mongo.ObjectId("21c92149873ad56fe00935df")
-        },
-        homeEarnedRuns: 16,
-        awayFieldingLineup: {},
-        awayEarnedRuns: 12,
-        awayBattingOrder: [],
-    },
-    {
-        _id: mongo.ObjectId("3ab356a4defa1245327bbcbb"),
-        leagueId: 'SSSL',
-        teamId: mongo.ObjectId("7fdcc1ea928be969807aa7b0"),
-        opposingTeam: 'Brew Jays',
-        location: 'Glamorgan',
-        datetime: moment(),
-        homeOrAway: 'Away',
-        complete: true,
-        currentInning: 7,
-        lockedInnings: [],
-        currentFrame: 0,
-        homeBattingOrder: [
-          mongo.ObjectId("d94d563a510cdedef2a06592"),
-          mongo.ObjectId("58b17d15e9e4fb1c4d034e1e"),
-          mongo.ObjectId("21c92149873ad56fe00935df")
-        ],
-        homeFieldingLineup: {
-          'CF': mongo.ObjectId("58b17d15e9e4fb1c4d034e1e"),
-          'LF': mongo.ObjectId("d94d563a510cdedef2a06592"),
-          'RF': mongo.ObjectId("21c92149873ad56fe00935df")
-        },
-        homeEarnedRuns: 6,
-        awayFieldingLineup: {},
-        awayEarnedRuns: 15,
-        awayBattingOrder: [],
-    }];
+      _id: ObjectId("3ab356a4defa12453275432a"),
+      league: ObjectId("22c92149873ad56fe00935df"),
+      ourTeam: ObjectId("4fe3f3865fa394d05880247c"),
+      opposingTeam: 'Messengers',
+      diamond: ObjectId("11c92149873ad56fe00ababa"),
+      datetime: moment().format('LLLL'),
+      homeOrAway: 0,
+      innings: 7, // or 8
+      currentInning: 1,
+      lockedInnings: [],
+      currentFrame: 0,
+      ourBattingOrder: [
+        ObjectId("21c92149873ad56fe00935df"),
+        ObjectId("58b17d15e9e4fb1c4d034e1e"),
+        ObjectId("d94d563a510cdedef2a06592")
+      ],
+      ourFieldingLineup: [
+        ObjectId("d94d563a510cdedef2a06592"),
+        ObjectId("58b17d15e9e4fb1c4d034e1e"),
+        ObjectId("21c92149873ad56fe00935df")
+      ],
+      statusGrid: [], // ours batting order
+      scoresheet: [], // ours vs theirs
+      gameStatus: 0
+    }
+  ]
 
   db.collection('games', function(err, collection) {
       collection.insert(games, {safe:true}, function(err, result) {});

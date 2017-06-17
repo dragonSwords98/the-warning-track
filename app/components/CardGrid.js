@@ -6,24 +6,23 @@ import { Card, List, Icon } from 'semantic-ui-react'
 function CardGrid ({ collection, type }) {
   const publicImageDir = '../images/'
   let grid = ''
-  const extra = function(detail) {
-    let iconName
+  const extra = function (detail) {
     if (type === 'teams') {
       return (
         <List horizontal>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name='users' /> Roster ({detail})</a>
+              <a href="#"><Icon name="users" /> Roster ({detail})</a>
             </List.Content>
           </List.Item>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name='bar chart'/> Stats</a>
+              <a href="#"><Icon name="bar chart" /> Stats</a>
             </List.Content>
           </List.Item>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name='calendar' /> Schedule</a>
+              <a href="#"><Icon name="calendar" /> Schedule</a>
             </List.Content>
           </List.Item>
         </List>
@@ -34,22 +33,22 @@ function CardGrid ({ collection, type }) {
         <List horizontal>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name='hand lizard' /> Throws: {detail[0]}</a>
+              <a href="#"><Icon name="hand lizard" /> Throws: {detail[0]}</a>
             </List.Content>
           </List.Item>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name='legal' /> Hits: {detail[1]}</a>
+              <a href="#"><Icon name="legal" /> Hits: {detail[1]}</a>
             </List.Content>
           </List.Item>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name='bar chart'/> Stats</a>
+              <a href="#"><Icon name="bar chart" /> Stats</a>
             </List.Content>
           </List.Item>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name='calendar' /> Schedule</a>
+              <a href="#"><Icon name="calendar" /> Schedule</a>
             </List.Content>
           </List.Item>
         </List>

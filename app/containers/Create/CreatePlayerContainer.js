@@ -4,7 +4,6 @@ import moment from 'moment'
 import CreatePlayer from '@track/components/Form/CreatePlayer'
 
 class CreatePlayerContainer extends Component {
-
   render () {
     const { thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions, hitsArray, createPlayerToggleableLabels, formChangeHandler, formSubmissionHandler } = this.props
     return (
@@ -15,7 +14,7 @@ class CreatePlayerContainer extends Component {
         teamOptions={teamOptions}
         hitsArray={hitsArray}
         createPlayerToggleableLabels={createPlayerToggleableLabels}
-        formChangeHandler={formChangeHandler} 
+        formChangeHandler={formChangeHandler}
         formSubmissionHandler={formSubmissionHandler}
       />
     )
@@ -38,6 +37,7 @@ CreatePlayerContainer.defaultProps = {
   createPlayerToggleableLabels: {
     throws: 'Right',
     gender: 'Male'
-  }
+  },
+  positionsArray: [] //TODO: 
 }
 export default CreatePlayerContainer

@@ -86,9 +86,10 @@ exports.deleteLeague = function(req, res) {
 };
 
 populateLeaguesCollection = function () {
+  const ObjectId = mongo.ObjectId
   const leagues = [
     {
-        _id: mongo.ObjectId("22c92149873ad56fe00935df"),
+        _id: ObjectId("22c92149873ad56fe00935df"),
         name: 'CCSA',
         innings: 7,
         positions: ['C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RR', 'RF'],
@@ -99,7 +100,7 @@ populateLeaguesCollection = function () {
         coedRule: 'MMMF'
     },
     {
-        _id: mongo.ObjectId("31c92149873ad56fe0093592"),
+        _id: ObjectId("31c92149873ad56fe0093592"),
         name: 'Nations League',
         innings: 7,
         positions: ['C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RF'],
@@ -111,7 +112,7 @@ populateLeaguesCollection = function () {
 
     },
     {
-        _id: mongo.ObjectId("24c92149873ad56fe0093e1e"),
+        _id: ObjectId("24c92149873ad56fe0093e1e"),
         name: 'SSSL',
         innings: 7,
         positions: ['C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RF'],

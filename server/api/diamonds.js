@@ -28,7 +28,7 @@ exports.findAll = function(req, res) {
 };
 
 exports.findById = function(req, res) {
-  var id = mongo.ObjectID(req.params.id);
+  var id = mongo.ObjectId(req.params.id);
   console.log('Retrieving diamond: ' + id);
   db.collection('diamonds', function(err, collection) {
       collection.findOne({'_id':id}, function(err, item) {
@@ -86,30 +86,43 @@ exports.deleteDiamond = function(req, res) {
 };
 
 populateDiamondsCollection = function () {
+  const ObjectId = mongo.ObjectId
   const diamonds = [
     {
-        _id: mongo.ObjectId("11c92149873ad56fe00935df"),
+        _id: ObjectId("11c92149873ad56fe00935df"),
         name: 'Glamorgan',
         address: 'Kennedy & 401',
         size: 'L',
         infield: 'dirt',
+        lit: true,
         outfieldFence: false
     },
     {
-        _id: mongo.ObjectId("11c92149873ad56fe0093e1e"),
+        _id: ObjectId("11c92149873ad56fe0093e1e"),
         name: 'Goldhawk East',
         address: 'McCowan & Steeles',
         size: 'M',
         infield: 'dirt',
+        lit: false,
         outfieldFence: false
     },
     {
-        _id: mongo.ObjectId("11c92149873ad56fe0093592"),
+        _id: ObjectId("11c92149873ad56fe0093592"),
         name: 'L\'Amoreaux North',
         address: 'Kennedy & Finch',
         size: 'L',
         infield: 'dirt',
+        lit: true,
         outfieldFence: true
+    },
+    {
+        _id: ObjectId("11c92149873ad56fe00ababa"),
+        name: 'Wigmore Park',
+        address: 'Victoria Park & Lawrence',
+        size: 'L',
+        infield: 'dirt',
+        lit: true,
+        outfieldFence: false
     }];
 
     db.collection('diamonds', function(err, collection) {

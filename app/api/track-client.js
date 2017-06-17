@@ -175,7 +175,7 @@ class TrackClient {
   }
 
   deletePlayerById (playerId) {
-    return this.delete('/players/' + playerId, body).then((data) => {
+    return this.delete('/players/' + playerId).then((data) => {
       return Promise.resolve(data)
     }).catch((error) => {
       return Promise.reject(error)
@@ -217,7 +217,7 @@ class TrackClient {
   }
 
   deleteTeamById (teamId) {
-    return this.delete('/teams/' + teamId, body).then((data) => {
+    return this.delete('/teams/' + teamId).then((data) => {
       return Promise.resolve(data)
     }).catch((error) => {
       return Promise.reject(error)
@@ -259,11 +259,96 @@ class TrackClient {
   }
 
   deleteGameById (gameId) {
-    return this.delete('/games/' + gameId, body).then((data) => {
+    return this.delete('/games/' + gameId).then((data) => {
       return Promise.resolve(data)
     }).catch((error) => {
       return Promise.reject(error)
     })
   }
+
+  /** Leagues **/
+
+  getAllLeagues () {
+    return this.get('/leagues').then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  getLeagueById (leagueId) {
+    return this.get('/leagues/' + leagueId).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  addLeague (query) {
+    return this.post('/leagues', query).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  updateLeagueById (leagueId, body) {
+    return this.put('/leagues/' + leagueId, body).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  deleteLeagueById (leagueId) {
+    return this.delete('/leagues/' + leagueId).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  /** Diamonds **/
+
+  getAllDiamonds () {
+    return this.get('/diamonds').then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  getDiamondById (diamondId) {
+    return this.get('/diamonds/' + diamondId).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  addDiamond (query) {
+    return this.post('/diamonds', query).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  updateDiamondById (diamondId, body) {
+    return this.put('/diamonds/' + diamondId, body).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  deleteDiamondById (diamondId) {
+    return this.delete('/diamonds/' + diamondId).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
 }
 export default TrackClient

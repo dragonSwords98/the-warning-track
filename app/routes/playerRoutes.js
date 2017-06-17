@@ -22,5 +22,5 @@ export default (
         <Route render={() => <Redirect to="/" />} />
       </Switch>
     )
-    }} />
+  }} />
 )

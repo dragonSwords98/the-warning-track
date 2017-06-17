@@ -2,19 +2,19 @@
 import moment from 'moment'
 
 const INITIAL_STATE = {
-  leagueId: 'NL',
-  gameId: null,
-  teamId: 0,
+  league: null,
+  _id: null,
+  ourTeam: 0,
   opposingTeam: '',
-  location: '',
+  diamond: '',
   datetime: moment(),
   homeOrAway: 'Away', // or 'Home'
-  innings: 7, // or 8
-  positions: ['C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RF'],
-  homeRunRule: true,
-  mercyRuns: 7, // or 8 or 5
-  noMercyInningBegin: 5, // or 6 or 7
-  coedRule: 'MMF', // or 'MMMF'
+  // innings: 7, // or 8
+  // positions: ['C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RF'],
+  // homeRunRule: true,
+  // mercyRuns: 7, // or 8 or 5
+  // noMercyInningBegin: 5, // or 6 or 7
+  // coedRule: 'MMF', // or 'MMMF'
   currentInning: 1, // to emphasis specific off/def lineups
   lockedInnings: [],
   currentFrame: 0, // 0 for top, 1 for bottom
@@ -26,7 +26,7 @@ const INITIAL_STATE = {
   // awayFieldingLineup: [],
   statusGrid: [], // ours batting order
   scoresheet: [], // ours vs theirs
-  nextHitterPoint: 0, // only ours
+  // nextHitterPoint: 0, // only ours
   gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
 }
 
@@ -89,143 +89,100 @@ const STATUS_ORDERING = [
 ]
 
 const populateStatusGrid = function (activeRosterLength, innings) {
-  var array = [], row = new Array(innings);
+  let array = [], row = new Array(innings)
   row.fill(BENCH_STATUS)
-  while (activeRosterLength--) array.push(row.slice());
-  return array;
+  while (activeRosterLength--) array.push(row.slice())
+  return array
+}
+
+const populateScoresheet = function (innings) {
+  let array = new Array(innings)
+  array.fill([0, 0])
+  return array
 }
 
 // Future features: Pinch runner, designated pinch runner, scouting reports on hits
 // Rotating co-ed roles
 
-export default function gameReducers(state = INITIAL_STATE, action) {
-
-  if (action.type === 'route.game-container/start-game') {
-    state = Object.assign({}, state, INITIAL_STATE)
-    state.gameId = action.payload.gameId
-    state.teamId = action.payload.teamId
-    state.battingOrder = action.payload.battingOrder
-    // state.statusGrid = populateStatusGrid(state.innings, state.ourBattingOrder.length)
-    state.statusGrid = populateStatusGrid(state.innings, action.payload.battingOrder.length)
+export default function gameReducers (state = INITIAL_STATE, action) {
+  if (action.type === 'route.game-container/start-game.initialize') {
+    let { game } = action.payload
+    state = Object.assign({}, INITIAL_STATE, state, game)
+    state.statusGrid = populateStatusGrid(state.innings, game.ourBattingOrder.length)
+    state.scoresheet = populateScoresheet(state.innings)
     state.gameStatus = 1
-    return state
-
   }
-  // if (action.type === 'route.game-container/load-game') {
-  //   state = Object.assign({}, state, INITIAL_STATE)
-  //   state.gameId = action.payload.gameId
-  //   state.teamId = action.payload.teamId
-  //   return state
-  // }
+  if (action.type === 'route.game-container/load-game.success') {
+    console.log('Not Yet Implemented', action.payload.game)
+    // state = action.payload.game
+  }
+  if (action.type === 'route.game-container/load-game.rejected') {
+    console.log('Not Yet Implemented', action.payload.error)
+    // state = action.payload.game
+  }
   if (action.type === 'route.game-container/destroy') {
     state = Object.assign({}, state)
     state = null
-    return state
   }
 
   if (action.type === 'game.advance-runner/advance') {
     state = Object.assign({}, state)
     const { row, inning } = action.payload.target.dataset
-    let statusIndex = STATUS_ORDERING.indexOf(state.statusGrid[inning-1][row]) + 1
+    let statusIndex = STATUS_ORDERING.indexOf(state.statusGrid[inning - 1][row]) + 1
     if (statusIndex > STATUS_ORDERING.length - 1) {
       statusIndex = 0
     }
-    state.statusGrid[inning-1][row] = STATUS_ORDERING[statusIndex]
-    return state
+    state.statusGrid[inning - 1][row] = STATUS_ORDERING[statusIndex]
   }
 
-  // if (action.type ==='game.advance-batter-runner/advance') {
-  //   // the batter/runner is immediately out (from a different touch event), this will shift
-  //   // batters and runners accordingly, may end the inning
-
-  //   state = Object.assign({}, state)
-  //   const { row, inning } = action.payload
-  //   // action.payload.row action.payload.inning
-
-  //   state.statusGrid[row][inning] = FIRST_STATUS // action.payload.base will determine where the batter went
-
-  //   if (++state.scoresheet[inning].outs > 2) {
-  //     // inning is OVER
-  //   } else {
-  //     // advance the order
-  //     let onDeckIndex = nextHitterPoint + 1,
-  //         inHoleIndex = nextHitterPoint + 2
-  //     if (nextHitterPoint + 1 > ourBattingOrder.length) {
-  //       onDeckIndex = 0
-  //       inHoleIndex = 1
-  //     } else if (nextHitterPoint + 2 > ourBattingOrder.length) {
-  //       onDeckIndex = nextHitterPoint + 1
-  //       inHoleIndex = 0
-  //     }
-  //     state.statusGrid[nextHitterPoint][inning] = AT_BAT_STATUS
-  //     state.statusGrid[onDeckIndex][inning] = ON_DECK_STATUS
-  //     state.statusGrid[inHoleIndex][inning] = IN_THE_HOLE_STATUS
-  //     nextHitterPoint++
-  //   }
-  // }
-
-  // if (action.type ==='game.advance-runner/advance') {
-
-  //   // dispatch({ type: 'route.game-container/advanceBatterRunner', payload: { event: event, data: data }})
-
-
-  //   // by advancing a batter, the next at the plate may be affected
-  //   // by advancing a batter to 'out' status, this may end the inning automatically,
-  //   // or simply advance next batter to the plate
-
-  //   state = Object.assign({}, state)
-  //   const { row, inning } = action.payload
-  //   // action.payload.row action.payload.inning
-
-  //   state.statusGrid[row][inning] = HOME_STATUS // action.payload.base will determine where the batter went
-  // }
-
-  if (action.type ==='game.advance-batter-runner/inning-over') {
+  if (action.type === 'game.advance-batter-runner/inning-over') {
     state = Object.assign({}, state)
     // freeze this inning, unfreeze the next inning, set the next batter as at-bat
   }
 
-  if (action.type ==='game.opponent-action/run') {
+  if (action.type === 'game.opponent-action/run') {
     state = Object.assign({}, state)
     if (action.payload.whose === 'theirs') {
-      state.scoresheet[currentInning].theirs++
+      state.scoresheet[state.currentInning].theirs++
     }
     if (action.payload.whose === 'ours') {
-      state.scoresheet[currentInning].ours++
+      state.scoresheet[state.currentInning].ours++
     }
   }
 
-  if (action.type ==='game.opponent-action/out') {
+  if (action.type === 'game.opponent-action/out') {
     state = Object.assign({}, state)
     if (action.payload.whose === 'theirs') {
-      state.scoresheet[currentInning].theirOuts++
+      state.scoresheet[state.currentInning].theirOuts++
     }
     if (action.payload.whose === 'ours') {
-      state.scoresheet[currentInning].ourOuts++
+      state.scoresheet[state.currentInning].ourOuts++
     }
   }
 
-  if (action.type ==='game.inning/start') {
+  if (action.type === 'game.inning/start') {
     state = Object.assign({}, state)
     // this action will enbolden important values like lineup for this inning, whose up to bat, which inning is it
     // advance tally scores
   }
 
-  if (action.type === 'create-game.get-league-rules/received') {
+  if (action.type === 'create-game.select-league/set') {
     state = Object.assign({}, state)
-    state.innings = action.payload.innings
-    state.positions = action.payload.positions
-    state.homeRunRule = action.payload.homeRunRule
-    state.mercyRuns = action.payload.mercyRuns
-    state.noMercyInningBegin = action.payload.noMercyInningBegin
-    state.coedRule = action.payload.coedRule
-    return state
+    state.league = action.payload.league
+    console.log(state.league)
+    // state.innings = action.payload.innings
+    // state.positions = action.payload.positions
+    // state.homeRunRule = action.payload.homeRunRule
+    // state.mercyRuns = action.payload.mercyRuns
+    // state.noMercyInningBegin = action.payload.noMercyInningBegin
+    // state.coedRule = action.payload.coedRule
   }
+
   if (action.type === 'create-game.home-or-away/set') {
     state = Object.assign({}, state)
     state.homeOrAway = action.payload.isHome ? 'Home' : 'Away'
-    return state
   }
+
   if (action.type === 'create-game.lock-inning/toggle' || action.type === 'game.lock-inning/toggle') {
     state = Object.assign({}, state)
     let index = state.lockedInnings.indexOf(action.payload.inning)
@@ -234,17 +191,6 @@ export default function gameReducers(state = INITIAL_STATE, action) {
     } else {
       state.lockedInnings.push(action.payload.inning)
     }
-    return state
   }
   return state
-}
-
-
-const OFFENSE_STATE = {
-  battingOrder: [] // array in order from first batter to last batter without regard to inning, the current inning before disabling will indicate which inning they fall under
-  // e.g. [ HOME, HOME, OUT, THIRD, SECOND, ATBAT, DECK, HOLE, HOLE ...  ], this will populate with each new inning
-}
-
-const DEFENSE_STATE = {
-  lineup: null // structure should be array of object => e.g. [ ['bl98', 'sl52', 'cl6', ...], [...], ...], strict order ( CR, 1B, 2B, SS, 3B, LF, CF, RF, LR, RR )
 }

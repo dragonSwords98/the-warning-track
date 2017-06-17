@@ -3,12 +3,14 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button } from 'semantic-ui-react'
 
+import LoadingOverlay from '@track/components/LoadingOverlay'
+
 class BattersBox extends Component {
-  render() {
+  render () {
     let { status, advanceRunner, row, inning, disabled } = this.props
 
     if (!status) {
-      return <div></div>
+      return <LoadingOverlay />
     }
 
     if (!advanceRunner || disabled) {
