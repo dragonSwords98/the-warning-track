@@ -2,40 +2,39 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Header, Select, Button, Input, Checkbox, Form } from 'semantic-ui-react'
 
-const CreateGameForm = ({ submitCreateGameForm, leagueOptions, handleSelectLeague, teamsOptions, labelHomeOrAway, setHomeOrAway, diamondOptions, dateRange }) => (
+const CreateGameForm = ({ submitCreateGameForm, leagueOptions, teamsOptions, labelHomeOrAway, diamondOptions, dateRange, handleFormChange }) => (
   <Form id="createGameForm" onSubmit={submitCreateGameForm}>
     <Header as="h2">Create a Ball Game</Header>
     <Form.Field>
       <label>League</label>
-      <Select placeholder="Select League" options={leagueOptions} onChange={handleSelectLeague} />
+      <Select placeholder="Select League" data-create-id="league" options={leagueOptions} onChange={handleFormChange} />
     </Form.Field>
     <Form.Field>
       <label>Team</label>
-      <Select placeholder="Select Your Team" options={teamsOptions} />
+      <Select placeholder="Select Your Team"  data-create-id="team" options={teamsOptions} onChange={handleFormChange} />
       <label>{labelHomeOrAway}</label>
-      <Checkbox fitted toggle onChange={setHomeOrAway} />
+      <Checkbox fitted toggle data-create-id="homeOrAway" onChange={handleFormChange} />
     </Form.Field>
     <Form.Field>
       <label>Opposing Team</label>
-      <Input placeholder="Opposing Team" />
+      <Input placeholder="Opposing Team" data-create-id="opposingTeam" onChange={handleFormChange} />
     </Form.Field>
     <Form.Field>
       <label>Location</label>
-      <Select placeholder="Select Diamond" options={diamondOptions} />
+      <Select placeholder="Select Diamond" data-create-id="diamond" options={diamondOptions} onChange={handleFormChange} />
     </Form.Field>
     <Form.Field>
-      <Input placeholder="Set Start Time" type="date" min={dateRange.min} max={dateRange.max} />
+      <Input placeholder="Set Start Time" data-create-id="startTime" type="date" min={dateRange.min} max={dateRange.max}  onChange={handleFormChange} />
     </Form.Field>
   </Form>
 )
 CreateGameForm.propTypes = {
   submitCreateGameForm: PropTypes.func.isRequired,
   leagueOptions: PropTypes.array.isRequired,
-  handleSelectLeague: PropTypes.func.isRequired,
   teamsOptions: PropTypes.array.isRequired,
   labelHomeOrAway: PropTypes.string.isRequired,
-  setHomeOrAway: PropTypes.func.isRequired,
   diamondOptions: PropTypes.array.isRequired,
-  dateRange: PropTypes.object.isRequired
+  dateRange: PropTypes.object.isRequired,
+  handleFormChange: PropTypes.func.isRequired
 }
 export default CreateGameForm

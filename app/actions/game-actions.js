@@ -4,18 +4,18 @@ import { fetchDirectory } from '@track/actions/directory-actions' // CR: looks l
 
 const populateGameDetails = function (game, state) {
   const { teams, players, games, leagues, diamonds } = state.directory
-  game.league = leagues.find(l => l._id === game.league) // TODO: rules now sit in league
-  game.diamond = diamonds.find(d => d._id === game.diamond)
-  game.ourTeam = teams.find(t => t._id === game.ourTeam)
-  game.ourBattingOrder = game.ourBattingOrder.map(batter => {
-    return players.find(p => p._id === batter)
-  })
+  // game.league = leagues.find(l => l._id === game.league) // TODO: rules now sit in league
+  // game.diamond = diamonds.find(d => d._id === game.diamond)
+  // game.ourTeam = teams.find(t => t._id === game.ourTeam)
+  // game.ourBattingOrder = game.ourBattingOrder.map(batter => {
+  //   return players.find(p => p._id === batter)
+  // })
 
   // TODO: handle fielding lineups that differ per inning
-  game.ourFieldingLineup = game.ourFieldingLineup.map(fielder => {
-    console.log('ourFieldingLineup', fielder)
-    return players.find(p => p._id === fielder)
-  })
+  // game.ourFieldingLineup = game.ourFieldingLineup.map(fielder => {
+  //   console.log('ourFieldingLineup', fielder)
+  //   return players.find(p => p._id === fielder)
+  // })
   return game
 }
 
@@ -28,7 +28,8 @@ export function loadGame () {
       dispatch({
         type: 'route.game-container/load-game.success',
         payload: {
-          game: populateGameDetails(game, state)
+          // game: populateGameDetails(game, state)
+          game
         }
       })
     }).catch((error) => {
@@ -47,47 +48,41 @@ export function startGame (gameId) {
     const state = getState()
     if (state.directory.games) {
       let game = Object.assign({}, state.directory.games.find(g => g._id === gameId))
-
       //TODO: change both directory and game instance
       dispatch({
         type: 'route.game-container/start-game.initialize',
         payload: {
-          game: populateGameDetails(game, state)
+          // game: populateGameDetails(game, state)
+          game
         }
       })
     }
   }
 }
 
-export function setLeague (leagueId) {
+export function updateLineups (event, data) {
   return function (dispatch, getState) {
     const state = getState()
+    console.log('updateLineups', event, data)
+  }
+}
 
-    // const ONE_ROVER_POSITIONS = [ 'C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RF' ] // NATIONSLEAGUE
-    // const ONE_ROVER_PITCHER_POSITIONS = [ 'P', 'C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RF' ] // SSSL
-    // const TWO_ROVER_POSITIONS = [ 'C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RR', 'RF' ] // FORMOSAN, CCSA
-    // const TWO_ROVER_PITCHER_POSITIONS = [ 'P', 'C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RR', 'RF' ] // SNSB
-
-    // let SIX_INNINGS = 6
-    // let SEVEN_INNINGS = 7
-    // let EIGHT_INNINGS = 8
-    // let NINE_INNINGS = 9
-    dispatch({ type: 'create-game.select-league/set', payload: { league: state.directory.leagues.find(l => l._id === leagueId)} })
-    // this should set the rules and modify columns and rows
-
-    // TODO: prompt api for league rules
-    // let rules = {
-    //   leagueId: 'CCSA',
-    //   innings: 8,
-    //   positions: [
-    //     'C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RR', 'RF'
-    //   ],
-    //   homeRunRule: false,
-    //   mercyRuns: 5,
-    //   noMercyInningBegin: 7,
-    //   coedRule: 'MMMF'
-    // }
-
-    // dispatch({ type: 'create-game.get-league-rules/received', payload: rules })
+export function updateGameForm (event, data) {
+  return function (dispatch, getState) {
+    const state = getState()
+    if (data['data-create-id'] === 'league') {
+      let currentLeague = state.directory.leagues.find(l => l._id === data.value)
+      let isOurTeamInThisLeague = state.directory.teams.filter(t => t.leagues.includes(currentLeague)).includes(state.game.ourTeam)
+      dispatch({ type: 'create-game.select-league/set', payload: { league: currentLeague, isOurTeamInThisLeague: isOurTeamInThisLeague } })
+    } else if (data['data-create-id'] === 'team') {
+      // dispatch({ type: 'create-game.select-team/set', payload: { team: data.value, roster: state.directory.players.filter(p => p.teams.contains(data.value)) } })
+      dispatch({ type: 'create-game.form/update', payload: { type: 'games', field: 'ourTeam', value: data.value } })
+    } else if (data['data-create-id'] === 'diamond') {
+      dispatch({ type: 'create-game.select-diamond/set', payload: { league: state.directory.diamonds.find(d => d._id === data.value)} })
+    } else if (data['data-create-id'] === 'homeOrAway') {
+      dispatch({ type: 'create-game.home-or-away/set', payload: { isHome: data.checked } })
+    } else  {
+      dispatch({ type: 'create-game.form/update', payload: { type: 'games', field: data['data-create-id'], value: data.value } })
+    }
   }
 }

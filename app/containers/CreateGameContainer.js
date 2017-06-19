@@ -9,7 +9,7 @@ import GenericCelledTable from '@track/components/GenericCelledTable'
 import SortableUnorderedList from '@track/components/SortableUnorderedList'
 import CreateGameForm from '@track/components/CreateGameForm'
 
-import { setLeague } from '@track/actions/game-actions'
+import { updateLineups, updateGameForm } from '@track/actions/game-actions'
 import { fetchDirectory } from '@track/actions/directory-actions' // CR: looks like it don't belong as a 'directory' state
 
 import { populateOptions } from '@track/utils'
@@ -24,15 +24,17 @@ class CreateGameContainer extends Component {
   }
 
   render () {
-    const { game, directory, createGameSubmitForm } = this.props
+    const {
+      game,
+      directory,
+      toggleInningLock,
+      submitCreateFormQuery,
+      updateCreateFormQuery,
+      handleRosterOptions,
+      handleBattingOrder
+    } = this.props
 
-    let rosterOptions = [], teamOptions = [], leagueOptions = [], diamondOptions = []
-    if (directory.players) {
-      rosterOptions = populateOptions(directory.players)
-    }
-    if (directory.teams) {
-      teamOptions = populateOptions(directory.teams)
-    }
+    let leagueOptions = [], diamondOptions = []
     if (directory.leagues) {
       leagueOptions = populateOptions(directory.leagues)
     }
@@ -40,9 +42,21 @@ class CreateGameContainer extends Component {
       diamondOptions = populateOptions(directory.diamonds)
     }
 
-    let handleRosterOptions = function() {
-      // TODO: Select should remove options as they are chosen in an inning
-      console.log('NYI: handleRosterOptions!')
+    // TODO: Should be in redux...
+    let teamOptions = [], rosterOptions = []
+    if (directory.teams) {
+      let availableTeams = Object.assign([], directory.teams)
+      if (game.league) {
+        availableTeams = availableTeams.filter(t => t.leagues.includes(game.league._id))
+      }
+      teamOptions = populateOptions(availableTeams)
+    }
+    if (directory.players) {
+      let availablePlayers = Object.assign([], directory.players)
+      if (game.ourTeam) {
+        availablePlayers = availablePlayers.filter(p => p.teams.includes(game.ourTeam))
+      }
+      rosterOptions = populateOptions(availablePlayers)
     }
 
     let fielderCells = [],
@@ -50,7 +64,6 @@ class CreateGameContainer extends Component {
         body = [],
         footer = [<Table.HeaderCell key='footer-cell-0'>Lock</Table.HeaderCell>]
 
-    console.log('render', game.league)
     if (game.league) {
       for (let i = 1; i <= game.league.innings; i++) {
         let select = <Select compact placeholder="Player" options={rosterOptions} onChange={handleRosterOptions} />
@@ -81,7 +94,7 @@ class CreateGameContainer extends Component {
         let icon = game.lockedInnings.indexOf(i) > -1 ? 'lock' : 'unlock'
         footer.push(
           <Table.HeaderCell key={'footer-cell-' + i}>
-            <Button data={i} circular icon={icon} onClick={this.props.toggleInningLock} />
+            <Button data={i} circular icon={icon} onClick={toggleInningLock} />
           </Table.HeaderCell>
         )
       }
@@ -93,8 +106,8 @@ class CreateGameContainer extends Component {
     })
 
     let dateRange = {
-      min: moment(),
-      max: moment() // set to one year in advance?
+      min: moment().format('YYYY-MM-DD'),
+      max: moment().add(1, 'years').format('YYYY-MM-DD')
     }
     // TODO: Add a tally table
     // TODO: find a way to extract the final order of the roster batting lineup
@@ -104,20 +117,19 @@ class CreateGameContainer extends Component {
       <div className='create-game-container'>
         <Segment>
           <CreateGameForm
-            submitCreateGameForm={createGameSubmitForm}
+            submitCreateGameForm={submitCreateFormQuery}
             leagueOptions={leagueOptions}
-            handleSelectLeague={this.props.setLeague}
             teamsOptions={teamOptions}
             labelHomeOrAway={game.homeOrAway}
-            setHomeOrAway={this.props.setHomeOrAway}
             diamondOptions={diamondOptions}
-            dateRange={dateRange} />
+            dateRange={dateRange}
+            handleFormChange={updateCreateFormQuery} />
         </Segment>
         <Segment>
           <GenericCelledTable header={header} body={body} footer={footer} />
         </Segment>
         <Segment>
-          <SortableUnorderedList id='roster-sortable-list-create-game' items={rosterList}/>
+          <SortableUnorderedList id='roster-sortable-list-create-game' items={rosterList} onChange={handleBattingOrder} />
         </Segment>
         <Segment>
           <Button type="submit" form="createGameForm">Submit</Button>
@@ -130,6 +142,7 @@ export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
       directory: state.directory,
+      // createGame: state.createGame,
       game: state.game
     }
   },
@@ -146,13 +159,17 @@ export default withRouter(connect(
       toggleInningLock (event, data) {
         dispatch({ type: 'create-game.lock-inning/toggle', payload: { inning: data.data } })
       },
-      setLeague (event, data) {
-        dispatch(setLeague(data.value))
+      handleRosterOptions (event, data) {
+        dispatch(updateLineups(event, data))
       },
-      setHomeOrAway (event, data) {
-        dispatch({ type: 'create-game.home-or-away/set', payload: { isHome: data.checked } })
+      handleBattingOrder (event, data) {
+        dispatch({ type: 'create-game.batting-order/change', payload: { event: event, data: data }})
       },
-      createGameSubmitForm (event, data) {
+      updateCreateFormQuery (event, data) {
+        dispatch(updateGameForm(event, data))
+        // dispatch({ type: 'create-game.form/update', payload: { type: "games", field: data['data-create-id'], value: data.value } })
+      },
+      submitCreateFormQuery (event, data) {
         event.preventDefault()
         console.log(event, data)
         dispatch({ type: 'create-game.form/submit', payload: { event: event, data: data } })

@@ -4,7 +4,7 @@ import moment from 'moment'
 const INITIAL_STATE = {
   league: null,
   _id: null,
-  ourTeam: 0,
+  ourTeam: null,
   opposingTeam: '',
   diamond: '',
   datetime: moment(),
@@ -26,6 +26,7 @@ const INITIAL_STATE = {
   // awayFieldingLineup: [],
   statusGrid: [], // ours batting order
   scoresheet: [], // ours vs theirs
+  sortable: null,
   // nextHitterPoint: 0, // only ours
   gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
 }
@@ -166,21 +167,39 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     // advance tally scores
   }
 
+  if (action.type === 'create-game/init') {
+    state = Object.assign({}, state)
+    state.league = action.payload.league
+  }
+
   if (action.type === 'create-game.select-league/set') {
     state = Object.assign({}, state)
     state.league = action.payload.league
-    console.log(state.league)
-    // state.innings = action.payload.innings
-    // state.positions = action.payload.positions
-    // state.homeRunRule = action.payload.homeRunRule
-    // state.mercyRuns = action.payload.mercyRuns
-    // state.noMercyInningBegin = action.payload.noMercyInningBegin
-    // state.coedRule = action.payload.coedRule
+    if (!action.payload.isOurTeamInThisLeague) {
+      state.ourTeam = null
+    }
+  }
+
+  // if (action.type === 'create-game.select-team/set') {
+  //   state = Object.assign({}, state)
+  //   state.ourTeam = action.payload.team
+  //   state.ourBattingOrder = Object.assign({}, action.payload.roster)
+  //   state.ourFieldingLineup = Object.assign({}, action.payload.roster) //TODO: should be by inning
+  // }
+
+  if (action.type === 'create-game.select-diamond/set') {
+    state = Object.assign({}, state)
+    state.diamond = action.payload.diamond
   }
 
   if (action.type === 'create-game.home-or-away/set') {
     state = Object.assign({}, state)
     state.homeOrAway = action.payload.isHome ? 'Home' : 'Away'
+  }
+
+  if (action.type === 'create-game.form/update') {
+    state = Object.assign({}, state)
+    state[action.payload.field] = action.payload.value
   }
 
   if (action.type === 'create-game.lock-inning/toggle' || action.type === 'game.lock-inning/toggle') {

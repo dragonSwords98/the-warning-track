@@ -7,9 +7,8 @@ const INITIAL_STATE = {
   leagues: null,
   diamonds: null,
   showCreateForm: false,
-  createPlayer: {},
-  createTeam: {},
-  createGame: {}
+  createPlayer: { deprecated: true },
+  createTeam: { deprecated: true }
 }
 
 export default function directoryReducers (state = INITIAL_STATE, action) {
@@ -62,15 +61,12 @@ export default function directoryReducers (state = INITIAL_STATE, action) {
   }
 
   if (action.type === 'route.directory-list/update-form-query') {
-    state = Object.assign({}, state)
+    state = Object.assign({}, state) // TODO: should update the player or team state instead
     if (action.payload.type === 'players') {
       state.createPlayer[action.payload.field] = action.payload.value
     }
     if (action.payload.type === 'teams') {
       state.createTeam[action.payload.field] = action.payload.value
-    }
-    if (action.payload.type === 'games') {
-      state.createGame[action.payload.field] = action.payload.value
     }
     return state
   }
