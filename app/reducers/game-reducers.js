@@ -107,20 +107,24 @@ const populateScoresheet = function (innings) {
 // Rotating co-ed roles
 
 export default function gameReducers (state = INITIAL_STATE, action) {
-  if (action.type === 'route.game-container/start-game.initialize') {
-    let { game } = action.payload
-    state = Object.assign({}, INITIAL_STATE, state, game)
-    state.statusGrid = populateStatusGrid(state.innings, game.ourBattingOrder.length)
-    state.scoresheet = populateScoresheet(state.innings)
-    state.gameStatus = 1
-  }
+  // if (action.type === 'route.game-container/start-game.initialize') {
+  //   let { game } = action.payload
+  //   state = Object.assign({}, INITIAL_STATE, state, game)
+  //   state.statusGrid = populateStatusGrid(state.league.innings, game.ourBattingOrder.length)
+  //   state.scoresheet = populateScoresheet(state.league.innings)
+  //   state.gameStatus = 1
+  // }
   if (action.type === 'route.game-container/load-game.success') {
-    console.log('Not Yet Implemented', action.payload.game)
-    // state = action.payload.game
+    state = Object.assign({}, INITIAL_STATE, state, action.payload.game)
+  }
+  if (action.type === 'route.game-container/load-league.success') {
+    state = Object.assign({}, state)
+    state.league = action.payload.league
+    state.statusGrid = populateStatusGrid(state.league.innings, state.ourBattingOrder.length)
+    state.scoresheet = populateScoresheet(state.league.innings)
   }
   if (action.type === 'route.game-container/load-game.rejected') {
-    console.log('Not Yet Implemented', action.payload.error)
-    // state = action.payload.game
+    state = Object.assign({}, state, INITIAL_STATE)
   }
   if (action.type === 'route.game-container/destroy') {
     state = Object.assign({}, state)

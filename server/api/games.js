@@ -97,7 +97,6 @@ populateGamesCollection = function () {
       diamond: ObjectId("11c92149873ad56fe00935df"),
       datetime: moment().format('LLLL'),
       homeOrAway: 1,
-      innings: 7, // or 8
       currentInning: 1,
       lockedInnings: [],
       currentFrame: 0,
@@ -123,7 +122,6 @@ populateGamesCollection = function () {
       diamond: ObjectId("11c92149873ad56fe00ababa"),
       datetime: moment().format('LLLL'),
       homeOrAway: 0,
-      innings: 7, // or 8
       currentInning: 1,
       lockedInnings: [],
       currentFrame: 0,
