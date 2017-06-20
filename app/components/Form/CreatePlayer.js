@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
 import { Button, Checkbox, Form, Input, Dropdown } from 'semantic-ui-react'
-import Tooltip from 'rc-tooltip'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import 'rc-tooltip/assets/bootstrap.css'
@@ -13,12 +12,12 @@ const SliderTooltip = createSliderWithTooltip(Slider)
 class CreatePlayer extends Component {
   // https://stackoverflow.com/questions/44062024/submit-form-using-button-in-parent-component-in-react
   render () {
-    const { thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions, hitsArray, createPlayerToggleableLabels, formChangeHandler, formSubmissionHandler } = this.props
+    const { thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions, handsArray, positionsArray, createPlayerToggleableLabels, formChangeHandler, formSubmissionHandler } = this.props
     return (
       <Form id="createPlayerForm" onSubmit={formSubmissionHandler}>
         <Form.Field>
           <label>Full Name</label>
-          <Input placeholder="Full Name" data-create-id="name" onChange={formChangeHandler} />
+          <Input placeholder="First and Last Names ONLY (e.g. Anoymous Chan, Stranger Lee)" data-create-id="name" onChange={formChangeHandler} />
         </Form.Field>
         <Form.Field>
           <label>Gender</label>
@@ -33,16 +32,24 @@ class CreatePlayer extends Component {
           <SliderTooltip data-create-id="jersey" min={0} max={99} defaultValue={50} tipFormatter={value => `${value}`} onChange={formChangeHandler} />
         </Form.Field>
         <Form.Field>
-          <label>Hits</label>
-          <Dropdown placeholder="hits" data-create-id="hits" fluid selection options={hitsArray} onChange={formChangeHandler} />
+          <label>Bats</label>
+          <Dropdown placeholder="Hits" data-create-id="hits" fluid selection options={handsArray} onChange={formChangeHandler} />
+        </Form.Field>
+        <Form.Field>
           <label>Throws</label>
-          <Checkbox toggle data-create-id="throws" label={createPlayerToggleableLabels.throw} onChange={formChangeHandler} />
+          <Dropdown placeholder="Throwing Hand" data-create-id="throws" fluid selection options={handsArray} onChange={formChangeHandler} />
+        </Form.Field>
+        <Form.Field>
+          <label>Positions</label>
+          <Dropdown data-create-id="positions" placeholder="Select Positions" fluid multiple search selection options={positionsArray} onChange={formChangeHandler} />
         </Form.Field>
         <Form.Field>
           <label>Teams</label>
           <Dropdown data-create-id="teams" placeholder="Select Teams" fluid multiple search selection options={teamOptions} onChange={formChangeHandler} />
         </Form.Field>
-        <Button type="submit">Submit</Button>
+        <Form.Field>
+          <Button type="submit">Submit</Button>
+        </Form.Field>
       </Form>
     )
   }

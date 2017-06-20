@@ -2,29 +2,25 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
-import { loadGame, startGame } from '@track/actions/game-actions'
-import { fetchDirectory } from '@track/actions/directory-actions' // CR: looks like it don't belong as a 'directory' state
+import { startGame } from '@track/actions/game-actions'
 import Game from '@track/components/Game'
 
 class GameContainer extends Component {
   componentWillMount () {
-    // const { game, gameId } = this.props
-    // if (!game._id || !gameId) {
-      this.props.loadGame(this.props.gameId)
-    // }
+    this.props.loadGame(this.props.gameId)
   }
   componentWillUnmount () {
     this.props.destroy()
   }
   render () {
-    const { game, directory } = this.props
+    const { game } = this.props
     console.log(this.props.gameId, game)
     if (!game || !game._id) {
       return <div>Loading Game...</div>
     }
 
     // strict order ( CR, 1B, 2B, SS, 3B, LF, CF, RF, LR, RR )
-    //TODO: game.ourFieldingLineup
+    // TODO: game.ourFieldingLineup for fills on specific innings, currently assumes fielding lineup never changes
     let inningFielding = game.ourFieldingLineup
     let gameFielding = new Array(game.league.innings).fill(inningFielding)
 
@@ -47,8 +43,7 @@ class GameContainer extends Component {
 export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
-      game: state.game,
-      directory: state.directory
+      game: state.game
     }
   },
   function mapDispatchToProps (dispatch, ownProps) {

@@ -136,12 +136,12 @@ let handleAPIError = (error) => handleError(error)
 export function wrapApiQuery (promise) {
   return Promise.resolve(promise).then(handleAPISuccess).catch(handleAPIError)
 }
-function uniq (acc, val, index, arr) {
-  if (!acc.includes(val)) {
-    acc.push(val)
-  }
-  return acc
-}
+// function uniq (acc, val, index, arr) {
+//   if (!acc.includes(val)) {
+//     acc.push(val)
+//   }
+//   return acc
+// }
 /**
  * prepares a query to be sent to the server.
  *

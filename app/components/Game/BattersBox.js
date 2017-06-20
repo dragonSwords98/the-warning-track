@@ -27,6 +27,6 @@ class BattersBox extends Component {
 BattersBox.propTypes = {
   status: PropTypes.object.isRequired,
   advanceRunner: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool
 }
 export default BattersBox

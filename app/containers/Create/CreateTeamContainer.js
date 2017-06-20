@@ -4,9 +4,10 @@ import CreateTeam from '@track/components/Form/CreateTeam'
 
 class CreateTeamContainer extends Component {
   render () {
-    const { playerOptions, leagueOptions, formChangeHandler, formSubmissionHandler } = this.props
+    const { captainOptions, playerOptions, leagueOptions, formChangeHandler, formSubmissionHandler } = this.props
     return (
       <CreateTeam
+        captainOptions={captainOptions}
         playerOptions={playerOptions}
         leagueOptions={leagueOptions}
         formChangeHandler={formChangeHandler}
@@ -16,6 +17,7 @@ class CreateTeamContainer extends Component {
   }
 }
 CreateTeamContainer.propTypes = {
+  captainOptions: PropTypes.array.isRequired,
   playerOptions: PropTypes.array.isRequired,
   leagueOptions: PropTypes.array.isRequired,
   formChangeHandler: PropTypes.func.isRequired,
