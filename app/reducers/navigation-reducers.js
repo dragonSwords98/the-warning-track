@@ -10,7 +10,8 @@ const playerOptions = [
 
 const INITIAL_STATE = {
   activeItem: 'teams',
-  activeOptions: teamOptions
+  activeOptions: teamOptions,
+  placeholder: 'Select Team'
 }
 
 export default function navigationReducers (state = INITIAL_STATE, action) {
@@ -28,6 +29,9 @@ export default function navigationReducers (state = INITIAL_STATE, action) {
     if (state.activeItem === 'players') {
       state.activeOptions = playerOptions
     }
+    // if (state.activeItem === 'games') {
+    //   state.activeOptions = gameOptions
+    // }
     return state
   }
   if (action.type === 'app-menu/select-action') {

@@ -5,7 +5,7 @@ import CreatePlayer from '@track/components/Form/CreatePlayer'
 
 class CreatePlayerContainer extends Component {
   render () {
-    const { thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions, handsArray, positionsArray, createPlayerToggleableLabels, formChangeHandler, formSubmissionHandler } = this.props
+    const { gender, thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions, handsArray, positionsArray, createPlayerToggleableLabels, formChangeHandler, formSubmissionHandler } = this.props
     return (
       <CreatePlayer
         thisYear={thisYear}
@@ -13,6 +13,7 @@ class CreatePlayerContainer extends Component {
         oneHundredYearsAgo={oneHundredYearsAgo}
         teamOptions={teamOptions}
         handsArray={handsArray}
+        gender={gender}
         positionsArray={positionsArray}
         createPlayerToggleableLabels={createPlayerToggleableLabels}
         formChangeHandler={formChangeHandler}
@@ -22,6 +23,7 @@ class CreatePlayerContainer extends Component {
   }
 }
 CreatePlayerContainer.propTypes = {
+  gender: PropTypes.number.isRequired,
   teamOptions: PropTypes.array.isRequired,
   formChangeHandler: PropTypes.func.isRequired,
   formSubmissionHandler: PropTypes.func.isRequired
@@ -37,7 +39,7 @@ CreatePlayerContainer.defaultProps = {
   ],
   createPlayerToggleableLabels: {
     throws: 'Right',
-    gender: 'Male'
+    gender: ['Male', 'Female']
   },
   positionsArray: [
     { key: 'P', value: 'P', text: 'P' },
