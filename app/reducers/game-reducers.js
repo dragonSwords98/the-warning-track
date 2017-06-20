@@ -90,7 +90,8 @@ const STATUS_ORDERING = [
 ]
 
 const populateStatusGrid = function (activeRosterLength, innings) {
-  let array = [], row = new Array(innings)
+  let array = []
+  let row = new Array(innings)
   row.fill(BENCH_STATUS)
   while (activeRosterLength--) array.push(row.slice())
   return array

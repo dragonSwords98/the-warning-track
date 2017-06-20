@@ -7,7 +7,7 @@ import { Segment, Table, Header, Select, Button } from 'semantic-ui-react'
 
 import GenericCelledTable from '@track/components/GenericCelledTable'
 import SortableUnorderedList from '@track/components/SortableUnorderedList'
-import CreateGameForm from '@track/components/CreateGameForm'
+import CreateGame from '@track/components/Form/CreateGame'
 
 import { updateLineups, updateGameForm } from '@track/actions/game-actions'
 import { fetchDirectory } from '@track/actions/directory-actions' // CR: looks like it don't belong as a 'directory' state
@@ -34,7 +34,8 @@ class CreateGameContainer extends Component {
       handleBattingOrder
     } = this.props
 
-    let leagueOptions = [], diamondOptions = []
+    let leagueOptions = []
+    let diamondOptions = []
     if (directory.leagues) {
       leagueOptions = populateOptions(directory.leagues)
     }
@@ -43,7 +44,8 @@ class CreateGameContainer extends Component {
     }
 
     // TODO: Should be in redux...
-    let teamOptions = [], rosterOptions = []
+    let teamOptions = []
+    let rosterOptions = []
     if (directory.teams) {
       let availableTeams = Object.assign([], directory.teams)
       if (game.league) {
@@ -59,11 +61,10 @@ class CreateGameContainer extends Component {
       rosterOptions = populateOptions(availablePlayers)
     }
 
-    let fielderCells = [],
-        header = [<Table.HeaderCell key={'header-innings-0'}></Table.HeaderCell>],
-        body = [],
-        footer = [<Table.HeaderCell key='footer-cell-0'>Lock</Table.HeaderCell>]
-
+    let fielderCells = []
+    let header = [<Table.HeaderCell key={'header-innings-0'} />]
+    let body = []
+    let footer = [<Table.HeaderCell key="footer-cell-0">Lock</Table.HeaderCell>]
     if (game.league) {
       for (let i = 1; i <= game.league.innings; i++) {
         let select = <Select compact placeholder="Player" options={rosterOptions} onChange={handleRosterOptions} />
@@ -84,7 +85,7 @@ class CreateGameContainer extends Component {
       for (let p = 0; p < game.league.positions.length; p++) {
         body.push(
           <Table.Row key={'fielder-row-' + p}>
-            <Table.Cell><Header as='h4'>{ game.league.positions[p] }</Header></Table.Cell>
+            <Table.Cell><Header as="h4">{ game.league.positions[p] }</Header></Table.Cell>
             {fielderCells}
           </Table.Row>
         )
@@ -101,7 +102,7 @@ class CreateGameContainer extends Component {
     }
 
     let rosterList = []
-    rosterList = rosterOptions.map(function(r) {
+    rosterList = rosterOptions.map(function (r) {
       return r.text
     })
 
@@ -114,9 +115,9 @@ class CreateGameContainer extends Component {
     //       and restrict the ordering to MMF or MMMF if optioned
     // TODO: fix submit button and its actions
     return (
-      <div className='create-game-container'>
+      <div className="create-game-container">
         <Segment>
-          <CreateGameForm
+          <CreateGame
             submitCreateGameForm={submitCreateFormQuery}
             leagueOptions={leagueOptions}
             teamsOptions={teamOptions}
@@ -129,7 +130,7 @@ class CreateGameContainer extends Component {
           <GenericCelledTable header={header} body={body} footer={footer} />
         </Segment>
         <Segment>
-          <SortableUnorderedList id='roster-sortable-list-create-game' items={rosterList} onChange={handleBattingOrder} />
+          <SortableUnorderedList id="roster-sortable-list-create-game" items={rosterList} onChange={handleBattingOrder} />
         </Segment>
         <Segment>
           <Button type="submit" form="createGameForm">Submit</Button>
@@ -163,15 +164,13 @@ export default withRouter(connect(
         dispatch(updateLineups(event, data))
       },
       handleBattingOrder (event, data) {
-        dispatch({ type: 'create-game.batting-order/change', payload: { event: event, data: data }})
+        dispatch({ type: 'create-game.batting-order/change', payload: { event: event, data: data } })
       },
       updateCreateFormQuery (event, data) {
         dispatch(updateGameForm(event, data))
-        // dispatch({ type: 'create-game.form/update', payload: { type: "games", field: data['data-create-id'], value: data.value } })
       },
       submitCreateFormQuery (event, data) {
         event.preventDefault()
-        console.log(event, data)
         dispatch({ type: 'create-game.form/submit', payload: { event: event, data: data } })
       },
       destroy () {

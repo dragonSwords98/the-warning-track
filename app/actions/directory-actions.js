@@ -52,41 +52,65 @@ export function fetchDirectory (type) {
   }
 }
 
+export function updateCreateForm (type, event, data) {
+  return function (dispatch, getState) {
+    let field, value
+    if (!data) {
+      value = event
+      field = 'jersey'
+    } else if (!data.value) {
+      // GENDER
+      value = data.checked ? 1 : 0
+      field = data['data-create-id']
+    } else {
+      value = data.value
+      field = data['data-create-id']
+    }
+
+    if (type === 'teams') {
+      dispatch({ type: 'directory.create-team/update', payload: { field: field, value: value } })
+    }
+    if (type === 'players') {
+      dispatch({ type: 'directory.create-player/update', payload: { field: field, value: value } })
+    }
+  }
+}
+
 export function submitCreateForm (id) {
   return function (dispatch, getState) {
     const state = getState()
     let promise
 
     if (id === 'createTeamForm') {
-      promise = client.addTeam(state.directory.createTeam)
+      promise = client.addTeam(state.team)
       promise.then((data) => {
         return dispatch({
-          type: 'directory.team/new-team-success',
+          type: 'directory.create-team/success',
           payload: {
             _id: data._id,
-            newTeam: state.directory.createTeam
+            newTeam: state.team
           }
         }) // move new team to team directory, clear the team form
       }).catch((error) => {
         return dispatch({
-          type: 'directory.team/new-team-rejected',
+          type: 'directory.create-team/rejected',
           payload: { error: error }
         })
       })
     }
     if (id === 'createPlayerForm') {
-      promise = client.addPlayer(state.directory.createPlayer)
+      promise = client.addPlayer(state.player)
       promise.then((data) => {
         return dispatch({
-          type: 'directory.player/new-player-success',
+          type: 'directory.create-player/success',
           payload: {
             _id: data._id,
-            newPlayer: state.directory.createPlayer
+            newPlayer: state.player
           }
         }) // move new player to player directory, clear the player form
       }).catch((error) => {
         return dispatch({
-          type: 'directory.player/new-player-rejected',
+          type: 'directory.create-player/rejected',
           payload: { error: error }
         })
       })

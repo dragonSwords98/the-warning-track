@@ -10,7 +10,7 @@ import CreateTeamContainer from '@track/containers/Create/CreateTeamContainer'
 import CreatePlayerContainer from '@track/containers/Create/CreatePlayerContainer'
 import CardGrid from '@track/components/CardGrid'
 import Segue from '@track/components/Segue'
-import { fetchDirectory, submitCreateForm } from '@track/actions/directory-actions'
+import { updateCreateForm, submitCreateForm } from '@track/actions/directory-actions'
 import { populateOptions } from '@track/utils'
 
 class Directory extends Component {
@@ -27,33 +27,40 @@ class Directory extends Component {
     this.props.destroy()
   }
   render () {
-    const { type, directory, goToCreateGame, goToGame, toggleCreateForm, updateCreateFormQuery, submitCreateFormQuery } = this.props
+    const { type, directory, team, goToCreateGame, goToGame, toggleCreateForm, updateCreateFormQuery, submitCreateFormQuery } = this.props
     // if (!directory[type]) {
     if (!directory || !directory.players || !directory.teams || !directory.games || !directory.leagues) {
       return (<LoadingOverlay />)
     }
 
-    let playerOptions = [], teamOptions = [], gameOptions = [], leagueOptions = []
+    let playerOptions = []
+    let teamOptions = []
+    let leagueOptions = []
+    let rosterOptions = []
+    let captainOptions = []
     if (directory.players) {
       playerOptions = populateOptions(directory.players)
     }
     if (directory.teams) {
       teamOptions = populateOptions(directory.teams)
     }
-    if (directory.games) {
-      gameOptions = populateOptions(directory.games)
-    }
     if (directory.leagues) {
       leagueOptions = populateOptions(directory.leagues)
     }
+    if (team.roster) {
+      rosterOptions = directory.players.filter(p => team.roster.includes(p._id))
+      captainOptions = populateOptions(rosterOptions)
+    }
 
     let creation = (<div><Button primary onClick={goToCreateGame}>Create Game</Button></div>)
-    let form, exhibit = <div></div>
+    let form
+    let exhibit = (<div />)
     if (type === 'teams') {
       creation = (<div><Button secondary onClick={toggleCreateForm}>Create Team</Button></div>)
       if (directory.showCreateForm) {
         form = (
           <CreateTeamContainer
+            captainOptions={captainOptions}
             playerOptions={playerOptions}
             leagueOptions={leagueOptions}
             formChangeHandler={updateCreateFormQuery}
@@ -92,7 +99,8 @@ class Directory extends Component {
 export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
-      directory: state.directory
+      directory: state.directory,
+      team: state.team
     }
   },
   function mapDispatchToProps (dispatch, ownProps) {
@@ -112,7 +120,8 @@ export default withRouter(connect(
         dispatch({ type: 'route.directory-list/toggle-create-form' })
       },
       updateCreateFormQuery (event, data) {
-        dispatch({ type: 'route.directory-list/update-form-query', payload: { type: ownProps.type, field: data['data-create-id'], value: data.value } })
+        dispatch(updateCreateForm(ownProps.type, event, data))
+        // dispatch({ type: 'route.directory-list/update-form-query', payload: { type: ownProps.type, field: data['data-create-id'], value: data.value } })
       },
       submitCreateFormQuery (event, data) {
         event.preventDefault()

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Button, Form, Dropdown, Input } from 'semantic-ui-react'
 
-function CreateTeam ({ playerOptions, leagueOptions, formChangeHandler, formSubmissionHandler }) {
+function CreateTeam ({ captainOptions, playerOptions, leagueOptions, formChangeHandler, formSubmissionHandler }) {
   return (
     <Form id="createTeamForm" onSubmit={formSubmissionHandler}>
       <Form.Field>
@@ -10,12 +10,12 @@ function CreateTeam ({ playerOptions, leagueOptions, formChangeHandler, formSubm
         <Input placeholder="Name" data-create-id="name" onChange={formChangeHandler} />
       </Form.Field>
       <Form.Field>
-        <label>Captain</label>
-        <Dropdown placeholder="Select Captain" data-create-id="captain" fluid search selection options={playerOptions} onChange={formChangeHandler} />
-      </Form.Field>
-      <Form.Field>
         <label>Roster</label>
         <Dropdown placeholder="Select Roster" data-create-id="roster" fluid multiple search selection options={playerOptions} onChange={formChangeHandler} />
+      </Form.Field>
+      <Form.Field>
+        <label>Captain</label>
+        <Dropdown placeholder="Select Captain" data-create-id="captain" fluid search selection options={captainOptions} onChange={formChangeHandler} />
       </Form.Field>
       <Form.Field>
         <label>Leagues</label>
@@ -31,6 +31,7 @@ function CreateTeam ({ playerOptions, leagueOptions, formChangeHandler, formSubm
 }
 
 CreateTeam.propTypes = {
+  captainOptions: PropTypes.array.isRequired,
   playerOptions: PropTypes.array.isRequired,
   leagueOptions: PropTypes.array.isRequired,
   formChangeHandler: PropTypes.func.isRequired,

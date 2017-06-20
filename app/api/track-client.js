@@ -349,6 +349,5 @@ class TrackClient {
       return Promise.reject(error)
     })
   }
-
 }
 export default TrackClient

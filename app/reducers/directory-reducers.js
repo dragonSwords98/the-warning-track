@@ -6,9 +6,7 @@ const INITIAL_STATE = {
   games: null,
   leagues: null,
   diamonds: null,
-  showCreateForm: false,
-  createPlayer: { deprecated: true },
-  createTeam: { deprecated: true }
+  showCreateForm: false
 }
 
 export default function directoryReducers (state = INITIAL_STATE, action) {
@@ -60,29 +58,27 @@ export default function directoryReducers (state = INITIAL_STATE, action) {
     return state
   }
 
-  if (action.type === 'route.directory-list/update-form-query') {
-    state = Object.assign({}, state) // TODO: should update the player or team state instead
-    if (action.payload.type === 'players') {
-      state.createPlayer[action.payload.field] = action.payload.value
-    }
-    if (action.payload.type === 'teams') {
-      state.createTeam[action.payload.field] = action.payload.value
-    }
-    return state
-  }
+  // if (action.type === 'route.directory-list/update-form-query') {
+  //   state = Object.assign({}, state) // TODO: should update the player or team state instead
+  //   if (action.payload.type === 'players') {
+  //     state.createPlayer[action.payload.field] = action.payload.value
+  //   }
+  //   if (action.payload.type === 'teams') {
+  //     state.createTeam[action.payload.field] = action.payload.value
+  //   }
+  //   return state
+  // }
 
-  if (action.type === 'directory.team/new-team-success') {
+  if (action.type === 'directory.create-team/success') {
     state = Object.assign({}, state)
     let newTeam = Object.assign(action.payload.newTeam, action.payload._id)
-    state.createTeam = {}
     state.teams.push(newTeam)
     return state
   }
 
-  if (action.type === 'directory.player/new-player-success') {
+  if (action.type === 'directory.create-player/success') {
     state = Object.assign({}, state)
     let newPlayer = Object.assign(action.payload.newPlayer, action.payload._id)
-    state.createPlayer = {}
     state.players.push(newPlayer)
     return state
   }

@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Header, Select, Button, Input, Checkbox, Form } from 'semantic-ui-react'
+import { Header, Select, Input, Checkbox, Form } from 'semantic-ui-react'
 
-const CreateGameForm = ({ submitCreateGameForm, leagueOptions, teamsOptions, labelHomeOrAway, diamondOptions, dateRange, handleFormChange }) => (
+const CreateGame = ({ submitCreateGameForm, leagueOptions, teamsOptions, labelHomeOrAway, diamondOptions, dateRange, handleFormChange }) => (
   <Form id="createGameForm" onSubmit={submitCreateGameForm}>
     <Header as="h2">Create a Ball Game</Header>
     <Form.Field>
@@ -11,7 +11,7 @@ const CreateGameForm = ({ submitCreateGameForm, leagueOptions, teamsOptions, lab
     </Form.Field>
     <Form.Field>
       <label>Team</label>
-      <Select placeholder="Select Your Team"  data-create-id="team" options={teamsOptions} onChange={handleFormChange} />
+      <Select placeholder="Select Your Team" data-create-id="team" options={teamsOptions} onChange={handleFormChange} />
       <label>{labelHomeOrAway}</label>
       <Checkbox fitted toggle data-create-id="homeOrAway" onChange={handleFormChange} />
     </Form.Field>
@@ -24,11 +24,11 @@ const CreateGameForm = ({ submitCreateGameForm, leagueOptions, teamsOptions, lab
       <Select placeholder="Select Diamond" data-create-id="diamond" options={diamondOptions} onChange={handleFormChange} />
     </Form.Field>
     <Form.Field>
-      <Input placeholder="Set Start Time" data-create-id="startTime" type="date" min={dateRange.min} max={dateRange.max}  onChange={handleFormChange} />
+      <Input placeholder="Set Start Time" data-create-id="startTime" type="date" min={dateRange.min} max={dateRange.max} onChange={handleFormChange} />
     </Form.Field>
   </Form>
 )
-CreateGameForm.propTypes = {
+CreateGame.propTypes = {
   submitCreateGameForm: PropTypes.func.isRequired,
   leagueOptions: PropTypes.array.isRequired,
   teamsOptions: PropTypes.array.isRequired,
@@ -37,4 +37,4 @@ CreateGameForm.propTypes = {
   dateRange: PropTypes.object.isRequired,
   handleFormChange: PropTypes.func.isRequired
 }
-export default CreateGameForm
+export default CreateGame

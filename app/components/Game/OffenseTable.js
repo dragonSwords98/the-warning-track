@@ -18,25 +18,21 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
     for (let i = 1; i <= innings; i++) {
       let box
       if (lockedInnings.indexOf(i) > -1) {
-        box = <BattersBox key={'inning-bat-box-' + r + '-' + i} row={r} inning={i} status={statusGrid[i-1][r]} advanceRunner={advanceRunner} disabled={true}/>
+        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} advanceRunner={advanceRunner} disabled />
+      } else {
+        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} advanceRunner={advanceRunner} />
       }
-      else {
-        box = <BattersBox key={'inning-bat-box-' + r + '-' + i} row={r} inning={i} status={statusGrid[i-1][r]} advanceRunner={advanceRunner} disabled={false}/>
-      }
-      batterCells.push(<Table.Cell key={'inning-cell-' + r + '-' + i} className='batter-cell'>{box}</Table.Cell>)
+      batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">{box}</Table.Cell>)
     }
     return batterCells
   }
 
   let batterRows = []
   for (let r = 0; r < battingOrder.length; r++) {
-
     batterRows.push(
       <Table.Row key={'batter-row-' + r}>
         <Table.Cell><Header as="h4">{ battingOrder[r].name }</Header></Table.Cell>
-        {
-          generateBatterCells(r, statusGrid)
-        }
+        { generateBatterCells(r, statusGrid) }
       </Table.Row>
     )
   }
@@ -49,10 +45,10 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
 
   let scoresheet = statusGrid.map((s, i) => {
     return s.reduce((acc, value) => {
-      if (value.name === "OUT" && acc[0] < THREEOUTS) {
+      if (value.name === 'OUT' && acc[0] < THREEOUTS) {
         acc[0]++
       }
-      if (value.name === "HOME" && i < noMercyInningBegin && acc[1] < mercyRuns) {
+      if (value.name === 'HOME' && i < noMercyInningBegin && acc[1] < mercyRuns) {
         acc[1]++
       }
       return acc

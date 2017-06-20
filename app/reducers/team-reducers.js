@@ -1,39 +1,35 @@
 'use strict'
 
 const INITIAL_STATE = {
-  // team: null,
-  team: null,
   name: '',
   captain: [],
   leagues: [],
-  roster: []
-  // roster: [],
+  roster: [], // TODO: this is not a field we store in MongoDB Team Collection, instead, the server side of API should pick up this roster and make appropriate updates to Players Collection
+  size: 0
   // color: null,
   // schedule: {},
   // standings: {}
-  // rosterOptions: [
-  //   { key: 'bl98', value: 'bl98', text: 'Bryan Ling' },
-  //   { key: 'sl52', value: 'sl52', text: 'Sinto Ling' },
-  //   { key: 'cl6', value: 'cl6', text: 'Chris Lo' },
-  //   { key: 'sk5', value: 'sk5', text: 'Sam Kwok' }
-  // ]
 }
 
 export default function teamReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.team-container/init') {
     state = Object.assign({}, state, INITIAL_STATE)
-    return state
-  }
-  if (action.type === 'route.team-container/destroy') {
-    state = Object.assign({}, state)
-    state.team = null
-    return state
   }
 
-  if (action.type === 'fetch-team/received') {
+  if (action.type === 'route.team-container/destroy') {
+    state = Object.assign({}, state, INITIAL_STATE)
+  }
+
+  if (action.type === 'directory.create-team/update') {
     state = Object.assign({}, state)
-    state.team = action.payload
-    return state
+    state[action.payload.field] = action.payload.value
+    if (action.payload.field === 'roster') {
+      state.size = state.roster.length
+    }
+  }
+
+  if (action.type === 'directory.create-team/success') {
+    state = Object.assign({}, state, INITIAL_STATE)
   }
   return state
 }
