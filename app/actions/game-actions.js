@@ -59,6 +59,13 @@ export function loadGame (gameId) {
 //   }
 // }
 
+export function updateLineups (event, data) {
+  return function (dispatch, getState) {
+    const state = getState()
+    console.log('updateLineups', event.target, data.value)    
+  }
+}
+
 export function updateGameForm (event, data) {
   return function (dispatch, getState) {
     const state = getState()

@@ -7,6 +7,7 @@ import { Segment, Table, Header, Select, Button } from 'semantic-ui-react'
 
 import GenericCelledTable from '@track/components/GenericCelledTable'
 import SortableUnorderedList from '@track/components/SortableUnorderedList'
+import Sortable from 'sortablejs'
 import CreateGame from '@track/components/Form/CreateGame'
 
 import { updateLineups, updateGameForm } from '@track/actions/game-actions'
@@ -21,6 +22,25 @@ class CreateGameContainer extends Component {
 
   componentWillUnmount () {
     this.props.destroy()
+  }
+
+  componentDidMount () {
+    let sortable
+    const el = document.getElementById("roster-sortable-list-create-game")
+    if (el) {
+      sortable = Sortable.create(el, {
+        // onUpdate: function (evt) {
+        //   console.log(this.toArray(), evt.target, evt.item, )
+        // },
+        onUpdate: evt => {
+          let newOrder = []
+          Array.prototype.forEach.call(evt.target.children, function(el, i){
+            newOrder.push(el.getAttribute('data-id'))
+          });
+          this.props.handleBattingOrder(newOrder)
+        }
+      })
+    }
   }
 
   render () {
@@ -46,6 +66,7 @@ class CreateGameContainer extends Component {
     // TODO: Should be in redux...
     let teamOptions = []
     let rosterOptions = []
+    let battingList = []
     if (directory.teams) {
       let availableTeams = Object.assign([], directory.teams)
       if (game.league) {
@@ -59,6 +80,10 @@ class CreateGameContainer extends Component {
         availablePlayers = availablePlayers.filter(p => p.teams.includes(game.ourTeam))
       }
       rosterOptions = populateOptions(availablePlayers)
+
+      battingList = availablePlayers.map(function(r) {
+        return [r.name, r.gender]
+      })
     }
 
     let fielderCells = []
@@ -67,9 +92,9 @@ class CreateGameContainer extends Component {
     let footer = [<Table.HeaderCell key="footer-cell-0">Lock</Table.HeaderCell>]
     if (game.league) {
       for (let i = 1; i <= game.league.innings; i++) {
-        let select = <Select compact placeholder="Player" options={rosterOptions} onChange={handleRosterOptions} />
+        let select = <Select fluid placeholder="Player" options={rosterOptions} onChange={handleRosterOptions} />
         if (game.lockedInnings.indexOf(i) > -1) {
-          select = <Select compact placeholder="Player" options={rosterOptions} onChange={handleRosterOptions} disabled />
+          select = <Select fluid placeholder="Player" options={rosterOptions} onChange={handleRosterOptions} disabled />
         }
         fielderCells.push(
           <Table.Cell key={'fielder-cell-' + i}>
@@ -101,10 +126,6 @@ class CreateGameContainer extends Component {
       }
     }
 
-    let rosterList = []
-    rosterList = rosterOptions.map(function (r) {
-      return r.text
-    })
 
     let dateRange = {
       min: moment().format('YYYY-MM-DD'),
@@ -130,7 +151,7 @@ class CreateGameContainer extends Component {
           <GenericCelledTable header={header} body={body} footer={footer} />
         </Segment>
         <Segment>
-          <SortableUnorderedList id="roster-sortable-list-create-game" items={rosterList} onChange={handleBattingOrder} />
+          <SortableUnorderedList id="roster-sortable-list-create-game" items={battingList} onChange={handleBattingOrder} />
         </Segment>
         <Segment>
           <Button type="submit" form="createGameForm">Submit</Button>
@@ -153,6 +174,7 @@ export default withRouter(connect(
         dispatch({ type: 'route.directory-list/fetch' })
         dispatch(fetchDirectory('teams'))
         dispatch(fetchDirectory('players'))
+        dispatch({ type: 'route.game-container/init' })
         // CR: Clear out old game first?
         // 1) populate list of available teams to pick
         // 2) show create game form
@@ -163,8 +185,8 @@ export default withRouter(connect(
       handleRosterOptions (event, data) {
         dispatch(updateLineups(event, data))
       },
-      handleBattingOrder (event, data) {
-        dispatch({ type: 'create-game.batting-order/change', payload: { event: event, data: data } })
+      handleBattingOrder (newOrder) {
+        dispatch({ type: 'create-game.batting-order/change', payload: { newOrder: newOrder } })
       },
       updateCreateFormQuery (event, data) {
         dispatch(updateGameForm(event, data))
@@ -174,7 +196,7 @@ export default withRouter(connect(
         dispatch({ type: 'create-game.form/submit', payload: { event: event, data: data } })
       },
       destroy () {
-        dispatch({ type: 'route.create-game-container/destroy' })
+        dispatch({ type: 'route.game-container/destroy' })
       }
     }
   }

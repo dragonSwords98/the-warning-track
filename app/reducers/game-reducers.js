@@ -107,6 +107,13 @@ const populateScoresheet = function (innings) {
 // Rotating co-ed roles
 
 export default function gameReducers (state = INITIAL_STATE, action) {
+  if (action.type === 'route.game-container/init') {
+    state = Object.assign({}, state, INITIAL_STATE)
+  }
+  if (action.type === 'route.game-container/destroy') {
+    state = Object.assign({}, state)
+    state = {}
+  }
   // if (action.type === 'route.game-container/start-game.initialize') {
   //   let { game } = action.payload
   //   state = Object.assign({}, INITIAL_STATE, state, game)
@@ -125,10 +132,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   }
   if (action.type === 'route.game-container/load-game.rejected') {
     state = Object.assign({}, state, INITIAL_STATE)
-  }
-  if (action.type === 'route.game-container/destroy') {
-    state = Object.assign({}, state)
-    state = null
   }
 
   if (action.type === 'game.advance-runner/advance') {
