@@ -62,7 +62,7 @@ export function loadGame (gameId) {
 export function updateLineups (event, data) {
   return function (dispatch, getState) {
     const state = getState()
-    console.log('updateLineups', event.target, data.value)    
+    dispatch({ type: 'create-game.fielding-lineup/change', payload: { cellId: data['data-id'], value: data.value }})
   }
 }
 
@@ -84,3 +84,28 @@ export function updateGameForm (event, data) {
     }
   }
 }
+
+export function submitGameForm (event, data) {
+  return function (dispatch, getState) {
+    const state = getState()
+    let promise = client.addGame(state.game)
+    return promise.then((data) => {
+      const state = getState() 
+      dispatch({
+        type: 'route.game-container/create-game.success',
+        payload: {
+          _id: data._id,
+          newGame: state.game
+        }
+      })
+    }).catch((error) => {
+      return dispatch({
+        type: 'route.game-container/create-game.rejected',
+        payload: {
+          error: error
+        }
+      })
+    })
+  }
+}
+

@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
+import { push as pushLocation } from 'react-router-redux'
 
 import moment from 'moment'
 import { Segment, Table, Header, Select, Button } from 'semantic-ui-react'
 
+import LoadingOverlay from '@track/components/LoadingOverlay'
 import GenericCelledTable from '@track/components/GenericCelledTable'
 import SortableUnorderedList from '@track/components/SortableUnorderedList'
 import Sortable from 'sortablejs'
@@ -14,6 +16,12 @@ import { updateLineups, updateGameForm } from '@track/actions/game-actions'
 import { fetchDirectory } from '@track/actions/directory-actions' // CR: looks like it don't belong as a 'directory' state
 
 import { populateOptions } from '@track/utils'
+
+const validateForm = function (game) {
+  return !(game.ourTeam && game.opposingTeam && game.diamond != '' && game.datetime && game.league)
+  // && game.ourBattingOrder.length > 0
+    //  && game.ourFieldingLineup.length > 0) //TODO: ourFieldingLineup will not be empty, its children could be empty
+}
 
 class CreateGameContainer extends Component {
   componentWillMount () {
@@ -54,6 +62,10 @@ class CreateGameContainer extends Component {
       handleBattingOrder
     } = this.props
 
+    if (!game || !directory || !directory.players || !directory.teams || !directory.games || !directory.leagues) {
+      return (<LoadingOverlay />)
+    }
+
     let leagueOptions = []
     let diamondOptions = []
     if (directory.leagues) {
@@ -87,14 +99,16 @@ class CreateGameContainer extends Component {
     }
 
     let fielderCells = []
-    let header = [<Table.HeaderCell key={'header-innings-0'} />]
+    let header = []
     let body = []
-    let footer = [<Table.HeaderCell key="footer-cell-0">Lock</Table.HeaderCell>]
+    let footer = []
     if (game.league) {
+      header = [<Table.HeaderCell key={'header-innings-0'} />]
+      footer = [<Table.HeaderCell key="footer-cell-0">Lock</Table.HeaderCell>]
       for (let i = 1; i <= game.league.innings; i++) {
-        let select = <Select fluid placeholder="Player" options={rosterOptions} onChange={handleRosterOptions} />
+        let select = <Select fluid placeholder="Player" data-id={i + ':TODO:POSITION'} options={rosterOptions} onChange={handleRosterOptions} />
         if (game.lockedInnings.indexOf(i) > -1) {
-          select = <Select fluid placeholder="Player" options={rosterOptions} onChange={handleRosterOptions} disabled />
+          select = <Select fluid placeholder="Player" data-id={i + ':TODO:POSITION'} options={rosterOptions} onChange={handleRosterOptions} disabled />
         }
         fielderCells.push(
           <Table.Cell key={'fielder-cell-' + i}>
@@ -128,9 +142,11 @@ class CreateGameContainer extends Component {
 
 
     let dateRange = {
-      min: moment().format('YYYY-MM-DD'),
-      max: moment().add(1, 'years').format('YYYY-MM-DD')
+      min: game.datetime,
+      max: moment(game.datetime).add(1, 'years').format('YYYY-MM-DD')
     }
+
+    let isFormIncomplete = validateForm(game)
     // TODO: Add a tally table
     // TODO: find a way to extract the final order of the roster batting lineup
     //       and restrict the ordering to MMF or MMMF if optioned
@@ -154,7 +170,7 @@ class CreateGameContainer extends Component {
           <SortableUnorderedList id="roster-sortable-list-create-game" items={battingList} onChange={handleBattingOrder} />
         </Segment>
         <Segment>
-          <Button type="submit" form="createGameForm">Submit</Button>
+          <Button type="submit" form="createGameForm" disabled={isFormIncomplete}>Submit</Button>
         </Segment>
       </div>
     )
@@ -193,7 +209,8 @@ export default withRouter(connect(
       },
       submitCreateFormQuery (event, data) {
         event.preventDefault()
-        dispatch({ type: 'create-game.form/submit', payload: { event: event, data: data } })
+        dispatch(submitGameForm(event, data))
+        dispatch(pushLocation('/games')) //TODO: might not go here
       },
       destroy () {
         dispatch({ type: 'route.game-container/destroy' })

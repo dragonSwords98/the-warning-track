@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   ourTeam: null,
   opposingTeam: '',
   diamond: '',
-  datetime: moment(),
+  datetime: moment().format('YYYY-MM-DD'),
   homeOrAway: 'Away', // or 'Home'
   // innings: 7, // or 8
   // positions: ['C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RF'],
@@ -28,7 +28,7 @@ const INITIAL_STATE = {
   scoresheet: [], // ours vs theirs
   sortable: null,
   // nextHitterPoint: 0, // only ours
-  gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
+  gameStatus: 0, // =pre-game, 1 = in-game, 2 = post-game
 }
 
 const OUT_STATUS = {
@@ -208,6 +208,25 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'create-game.form/update') {
     state = Object.assign({}, state)
     state[action.payload.field] = action.payload.value
+  }
+
+  if (action.type === 'create-game.batting-order/change') {
+    state = Object.assign({}, state)
+    state.ourBattingOrder = action.payload.newOrder
+  }
+
+  if (action.type === 'create-game.fielding-lineup/change') {
+    state = Object.assign({}, state)
+    // state.ourFieldingLineup = action.payload.ourFieldingLineup
+    console.log(action.type, action.payload.cellId, action.payload.value)
+  }
+
+  if (action.type === 'route.game-container/create-game.success') {
+    state = Object.assign({}, state, INITIAL_STATE)
+  }
+
+  if (action.type === 'route.game-container/create-game.rejected') {
+    console.log(action.payload)
   }
 
   if (action.type === 'create-game.lock-inning/toggle' || action.type === 'game.lock-inning/toggle') {
