@@ -14,15 +14,6 @@ import { updateCreateForm, submitCreateForm } from '@track/actions/directory-act
 import { populateOptions } from '@track/utils'
 
 class Directory extends Component {
-  componentWillReceiveProps (nextProps) {
-    // if (!this.props.directory[nextProps.type]) {
-    //   this.props.fetch(nextProps.type)
-    // }
-  }
-  componentWillMount () {
-    // const { init, type } = this.props
-    // this.props.fetch()
-  }
   componentWillUnmount () {
     this.props.destroy()
   }
@@ -107,17 +98,6 @@ export default withRouter(connect(
   },
   function mapDispatchToProps (dispatch, ownProps) {
     return {
-      // init() {
-      //   dispatch({ type: 'route.directory-list/init' })
-      // },
-      fetch (type) {
-        // dispatch({ type: 'route.directory-list/fetch' })
-        // dispatch(fetchDirectory('players'))
-        // dispatch(fetchDirectory('teams'))
-        // dispatch(fetchDirectory('games'))
-        // dispatch(fetchDirectory('leagues'))
-        // dispatch(fetchDirectory('diamonds'))
-      },
       toggleCreateForm () {
         dispatch({ type: 'route.directory-list/toggle-create-form' })
       },

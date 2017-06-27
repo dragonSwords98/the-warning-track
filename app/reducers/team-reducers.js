@@ -13,7 +13,7 @@ const INITIAL_STATE = {
 
 export default function teamReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.team-container/init') {
-    state = Object.assign({}, state, INITIAL_STATE)
+    state = Object.assign({}, state, INITIAL_STATE, action.payload.team)
   }
 
   if (action.type === 'route.team-container/destroy') {

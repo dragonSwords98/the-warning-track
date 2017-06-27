@@ -5,27 +5,9 @@ import PropTypes from 'prop-types'
 
 import { List, Label } from 'semantic-ui-react'
 import Sortable from 'sortablejs' // TODO: Deprecate
-
 // TODO: https://github.com/clauderic/react-sortable-hoc
 
 class SortableUnorderedList extends Component {
-  componentDidMount () {
-    // const $this = $(ReactDOM.findDOMNode(this))
-    // const el = document.getElementById(this.props.id)
-    // const sortable = Sortable.create(el, {
-    //   onUpdate: function (evt) {
-    //     console.log(this.toArray(), evt.target, evt.item)
-    //   }
-    // })
-  }
-
-  componentDidUpdate (prevProps, prevState) {
-    // console.warn('componentDidUpdate', prevProps, prevState)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // console.warn('componentWillReceiveProps', nextProps)
-  }
 
   render () {
     const { items, id } = this.props

@@ -5,13 +5,9 @@ import PlayerContainer from '@track/containers/PlayerContainer'
 export default (
 
   <Route path="/players/:playerId" render={function ({match}) {
-    const playerId = parseInt(match.params.playerId)
-    const playerName = parseInt(match.params.playerName)
+    const playerId = match.params.playerId
     return (
       <Switch>
-        <Route exact path="/players/:playerId">
-          <Redirect to={`/players/${playerId}/${playerName}`} />
-        </Route>
         <Route
           exact path="/players/:playerId/:playerName"
           render={
