@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   ourTeam: null,
   opposingTeam: '',
   diamond: '',
-  datetime: moment(),
+  datetime: moment().format('YYYY-MM-DD'),
   homeOrAway: 'Away', // or 'Home'
   // innings: 7, // or 8
   // positions: ['C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RF'],
@@ -28,7 +28,7 @@ const INITIAL_STATE = {
   scoresheet: [], // ours vs theirs
   sortable: null,
   // nextHitterPoint: 0, // only ours
-  gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
+  gameStatus: 0, // =pre-game, 1 = in-game, 2 = post-game
 }
 
 const OUT_STATUS = {
@@ -107,24 +107,31 @@ const populateScoresheet = function (innings) {
 // Rotating co-ed roles
 
 export default function gameReducers (state = INITIAL_STATE, action) {
-  if (action.type === 'route.game-container/start-game.initialize') {
-    let { game } = action.payload
-    state = Object.assign({}, INITIAL_STATE, state, game)
-    state.statusGrid = populateStatusGrid(state.innings, game.ourBattingOrder.length)
-    state.scoresheet = populateScoresheet(state.innings)
-    state.gameStatus = 1
-  }
-  if (action.type === 'route.game-container/load-game.success') {
-    console.log('Not Yet Implemented', action.payload.game)
-    // state = action.payload.game
-  }
-  if (action.type === 'route.game-container/load-game.rejected') {
-    console.log('Not Yet Implemented', action.payload.error)
-    // state = action.payload.game
+  if (action.type === 'route.game-container/init') {
+    state = Object.assign({}, state, INITIAL_STATE)
   }
   if (action.type === 'route.game-container/destroy') {
     state = Object.assign({}, state)
-    state = null
+    state = {}
+  }
+  // if (action.type === 'route.game-container/start-game.initialize') {
+  //   let { game } = action.payload
+  //   state = Object.assign({}, INITIAL_STATE, state, game)
+  //   state.statusGrid = populateStatusGrid(state.league.innings, game.ourBattingOrder.length)
+  //   state.scoresheet = populateScoresheet(state.league.innings)
+  //   state.gameStatus = 1
+  // }
+  if (action.type === 'route.game-container/load-game.success') {
+    state = Object.assign({}, INITIAL_STATE, state, action.payload.game)
+  }
+  if (action.type === 'route.game-container/load-league.success') {
+    state = Object.assign({}, state)
+    state.league = action.payload.league
+    state.statusGrid = populateStatusGrid(state.league.innings, state.ourBattingOrder.length)
+    state.scoresheet = populateScoresheet(state.league.innings)
+  }
+  if (action.type === 'route.game-container/load-game.rejected') {
+    state = Object.assign({}, state, INITIAL_STATE)
   }
 
   if (action.type === 'game.advance-runner/advance') {
@@ -201,6 +208,25 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'create-game.form/update') {
     state = Object.assign({}, state)
     state[action.payload.field] = action.payload.value
+  }
+
+  if (action.type === 'create-game.batting-order/change') {
+    state = Object.assign({}, state)
+    state.ourBattingOrder = action.payload.newOrder
+  }
+
+  if (action.type === 'create-game.fielding-lineup/change') {
+    state = Object.assign({}, state)
+    // state.ourFieldingLineup = action.payload.ourFieldingLineup
+    console.log(action.type, action.payload.cellId, action.payload.value)
+  }
+
+  if (action.type === 'route.game-container/create-game.success') {
+    state = Object.assign({}, state, INITIAL_STATE)
+  }
+
+  if (action.type === 'route.game-container/create-game.rejected') {
+    console.log(action.payload)
   }
 
   if (action.type === 'create-game.lock-inning/toggle' || action.type === 'game.lock-inning/toggle') {

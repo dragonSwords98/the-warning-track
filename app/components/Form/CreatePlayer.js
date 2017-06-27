@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
-import { Button, Checkbox, Form, Input, Dropdown } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Icon, Input, Dropdown } from 'semantic-ui-react'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import 'rc-tooltip/assets/bootstrap.css'
@@ -12,7 +12,7 @@ const SliderTooltip = createSliderWithTooltip(Slider)
 class CreatePlayer extends Component {
   // https://stackoverflow.com/questions/44062024/submit-form-using-button-in-parent-component-in-react
   render () {
-    const { thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions, handsArray, positionsArray, createPlayerToggleableLabels, formChangeHandler, formSubmissionHandler } = this.props
+    const { gender, thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions, handsArray, positionsArray, createPlayerToggleableLabels, formChangeHandler, formSubmissionHandler } = this.props
     return (
       <Form id="createPlayerForm" onSubmit={formSubmissionHandler}>
         <Form.Field>
@@ -20,8 +20,8 @@ class CreatePlayer extends Component {
           <Input placeholder="First and Last Names ONLY (e.g. Anoymous Chan, Stranger Lee)" data-create-id="name" onChange={formChangeHandler} />
         </Form.Field>
         <Form.Field>
-          <label>Gender</label>
-          <Checkbox toggle data-create-id="gender" label={createPlayerToggleableLabels.gender} onChange={formChangeHandler} />
+          <Checkbox toggle data-create-id="gender" onChange={formChangeHandler} />
+          <Icon name={gender ? 'venus' : 'mars'} />
         </Form.Field>
         <Form.Field>
           <label>Birthyear</label>
@@ -55,6 +55,7 @@ class CreatePlayer extends Component {
   }
 }
 CreatePlayer.propTypes = {
+  gender: PropTypes.number.isRequired,
   teamOptions: PropTypes.array.isRequired,
   createPlayerToggleableLabels: PropTypes.object.isRequired,
   formChangeHandler: PropTypes.func.isRequired,

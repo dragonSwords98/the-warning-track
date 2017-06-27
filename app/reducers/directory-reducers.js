@@ -12,50 +12,42 @@ const INITIAL_STATE = {
 export default function directoryReducers (state = INITIAL_STATE, action) {
   if (action.type === 'directory-list/init') {
     state = Object.assign({}, state, INITIAL_STATE)
-    return state
   }
   if (action.type === 'directory.create-form/destroy') {
     state = Object.assign({}, state)
     state.createPlayer = {}
     state.createTeam = {}
     state.createGame = {}
-    return state
   }
 
   if (action.type === 'fetch-directory.teams/received') {
     state = Object.assign({}, state)
     state.teams = action.payload.teams
-    return state
   }
 
   if (action.type === 'fetch-directory.players/received') {
     state = Object.assign({}, state)
     state.players = action.payload.players
-    return state
   }
 
   if (action.type === 'fetch-directory.games/received') {
     state = Object.assign({}, state)
     state.games = action.payload.games
-    return state
   }
 
   if (action.type === 'fetch-directory.leagues/received') {
     state = Object.assign({}, state)
     state.leagues = action.payload.leagues
-    return state
   }
 
   if (action.type === 'fetch-directory.diamonds/received') {
     state = Object.assign({}, state)
     state.diamonds = action.payload.diamonds
-    return state
   }
 
   if (action.type === 'route.directory-list/toggle-create-form') {
     state = Object.assign({}, state)
     state.showCreateForm = !state.showCreateForm
-    return state
   }
 
   // if (action.type === 'route.directory-list/update-form-query') {
@@ -73,14 +65,18 @@ export default function directoryReducers (state = INITIAL_STATE, action) {
     state = Object.assign({}, state)
     let newTeam = Object.assign(action.payload.newTeam, action.payload._id)
     state.teams.push(newTeam)
-    return state
   }
 
   if (action.type === 'directory.create-player/success') {
     state = Object.assign({}, state)
     let newPlayer = Object.assign(action.payload.newPlayer, action.payload._id)
     state.players.push(newPlayer)
-    return state
+  }
+
+  if (action.type === 'route.game-container/create-game.success') {
+    state = Object.assign({}, state)
+    let newGame = Object.assign(action.payload.newGame, action.payload._id)
+    state.games.push(newGame)
   }
 
   return state

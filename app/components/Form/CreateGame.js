@@ -24,7 +24,7 @@ const CreateGame = ({ submitCreateGameForm, leagueOptions, teamsOptions, labelHo
       <Select placeholder="Select Diamond" data-create-id="diamond" options={diamondOptions} onChange={handleFormChange} />
     </Form.Field>
     <Form.Field>
-      <Input placeholder="Set Start Time" data-create-id="startTime" type="date" min={dateRange.min} max={dateRange.max} onChange={handleFormChange} />
+      <Input placeholder="Set Start Time" data-create-id="startTime" type="date" value={dateRange.min} min={dateRange.min} max={dateRange.max} onChange={handleFormChange} />
     </Form.Field>
   </Form>
 )

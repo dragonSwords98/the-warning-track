@@ -13,7 +13,7 @@ class AppMenu extends Component {
   }
 
   render () {
-    let { activeItem, activeOptions } = this.props
+    let { placeholder, activeItem, activeOptions } = this.props
     return (
       <Menu>
         <Menu.Item>
@@ -23,7 +23,7 @@ class AppMenu extends Component {
         <Menu.Item name="players" active={activeItem === 'players'} onClick={this.props.handleMenuItem} />
         <Menu.Item name="games" active={activeItem === 'games'} onClick={this.props.handleMenuItem} />
         <Menu.Item position="right">
-          <Dropdown placeholder="Select Team" search selection className="icon" options={activeOptions} onChange={this.props.handleMenuSelect} />
+          <Dropdown placeholder={placeholder} search selection className="icon" options={activeOptions} onChange={this.props.handleMenuSelect} />
         </Menu.Item>
       </Menu>
     )
@@ -33,7 +33,8 @@ export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
       activeItem: state.navigation.activeItem,
-      activeOptions: state.navigation.activeOptions
+      activeOptions: state.navigation.activeOptions,
+      placeholder: state.navigation.placeholder
     }
   },
   function mapDispatchToProps (dispatch, ownProps) {

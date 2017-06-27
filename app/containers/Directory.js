@@ -27,7 +27,7 @@ class Directory extends Component {
     this.props.destroy()
   }
   render () {
-    const { type, directory, team, goToCreateGame, goToGame, toggleCreateForm, updateCreateFormQuery, submitCreateFormQuery } = this.props
+    const { type, directory, team, player, goToCreateGame, goToGame, toggleCreateForm, updateCreateFormQuery, submitCreateFormQuery } = this.props
     // if (!directory[type]) {
     if (!directory || !directory.players || !directory.teams || !directory.games || !directory.leagues) {
       return (<LoadingOverlay />)
@@ -75,6 +75,7 @@ class Directory extends Component {
         form = (
           <CreatePlayerContainer
             teamOptions={teamOptions}
+            gender={player.gender}
             formChangeHandler={updateCreateFormQuery}
             formSubmissionHandler={submitCreateFormQuery} />
         )
@@ -100,7 +101,8 @@ export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
       directory: state.directory,
-      team: state.team
+      team: state.team,
+      player: state.player
     }
   },
   function mapDispatchToProps (dispatch, ownProps) {

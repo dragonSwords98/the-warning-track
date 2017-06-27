@@ -10,25 +10,34 @@ import Sortable from 'sortablejs' // TODO: Deprecate
 
 class SortableUnorderedList extends Component {
   componentDidMount () {
-    const $this = $(ReactDOM.findDOMNode(this))
-    const el = document.getElementById(this.props.id)
-    const sortable = Sortable.create(el, {
-      onUpdate: function (evt) {
-        console.log(this.toArray(), evt.target, evt.item)
-      }
-    })
+    // const $this = $(ReactDOM.findDOMNode(this))
+    // const el = document.getElementById(this.props.id)
+    // const sortable = Sortable.create(el, {
+    //   onUpdate: function (evt) {
+    //     console.log(this.toArray(), evt.target, evt.item)
+    //   }
+    // })
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    // console.warn('componentDidUpdate', prevProps, prevState)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // console.warn('componentWillReceiveProps', nextProps)
   }
 
   render () {
     const { items, id } = this.props
+    // item -> [text, gender]
     return (
       <List id={id}>
         {
           items.map(function (i) {
             return (
-              <List.Item key={'list-item-' + i} data-id={i}>
+              <List.Item key={'list-item-' + i[0]} data-id={i[0]}>
                 <List.Content>
-                  <List.Header as="h4"><Label>{ i }</Label></List.Header>
+                  <List.Header as="h4"><Label color={i[1] ? 'pink' : 'blue' }>{ i[0] }</Label></List.Header>
                 </List.Content>
               </List.Item>
             )

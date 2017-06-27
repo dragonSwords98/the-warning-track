@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
-import { startGame } from '@track/actions/game-actions'
+import { loadGame } from '@track/actions/game-actions'
 import Game from '@track/components/Game'
 
 class GameContainer extends Component {
@@ -15,8 +15,16 @@ class GameContainer extends Component {
   render () {
     const { game } = this.props
     console.log(this.props.gameId, game)
-    if (!game || !game._id) {
+    if (!game) {
       return <div>Loading Game...</div>
+    }
+
+    if (!game._id || !game.league) {
+      return <div>Loading Game Details...</div>
+    }
+
+    if (!game.league.innings) {
+      return <div>Loading Game State...</div>
     }
 
     // strict order ( CR, 1B, 2B, SS, 3B, LF, CF, RF, LR, RR )
@@ -49,7 +57,7 @@ export default withRouter(connect(
   function mapDispatchToProps (dispatch, ownProps) {
     return {
       loadGame (gameId) {
-        dispatch(startGame(gameId))
+        dispatch(loadGame(gameId))
       },
       advanceBatterRunner (event, data) {
         dispatch({ type: 'game.advance-runner/advance', payload: { target: event.target, data: data } })

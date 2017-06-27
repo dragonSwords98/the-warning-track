@@ -39,8 +39,8 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
 
   // Our Runs and Our Outs Cells, along with mercies and max outs
   const THREEOUTS = 3
-  const mercyRunInput = (disabled) => (<Input type="number" min="0" max={mercyRuns} fluid disabled={disabled} />)
-  const noMercyRunInput = (disabled) => (<Input type="number" min="0" fluid disabled={disabled} />)
+  const mercyRunInput = (disabled) => (<Input type="number" min="0" max={mercyRuns} defaultValue="0" fluid disabled={disabled} />)
+  const noMercyRunInput = (disabled) => (<Input type="number" min="0" defaultValue="0" fluid disabled={disabled} />)
   const outsInput = (disabled) => (<Checkbox toggle disabled={disabled} />)
 
   let scoresheet = statusGrid.map((s, i) => {
