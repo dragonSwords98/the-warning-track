@@ -12,7 +12,7 @@ import SortableUnorderedList from '@track/components/SortableUnorderedList'
 import Sortable from 'sortablejs'
 import CreateGame from '@track/components/Form/CreateGame'
 
-import { updateLineups, updateGameForm } from '@track/actions/game-actions'
+import { updateLineups, updateGameForm, submitGameForm } from '@track/actions/game-actions'
 import { fetchDirectory } from '@track/actions/directory-actions' // CR: looks like it don't belong as a 'directory' state
 
 import { populateOptions } from '@track/utils'
