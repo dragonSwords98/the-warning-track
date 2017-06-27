@@ -6,49 +6,33 @@ import { fetchPlayer } from '@track/actions/player-actions'
 
 class PlayerContainer extends Component {
   componentWillMount () {
-    this.props.init(this.props.player.id)
+    const { init, playerId } = this.props
+    init(playerId)
   }
   componentWillUnmount () {
     this.props.destroy()
   }
   render () {
-    const { player } = this.props
-    if (!player || !player.id) {
-      return <div>No Player</div>
+    const { player, playerId, playerName } = this.props
+    if (!player || !playerId || !playerName) {
+      return <div>No Such Player</div>
     }
-    return (<div>This will be player {player.id} Component</div>)
+    return (<div><h1>{playerName}</h1></div>)
   }
 }
 export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
-      player: state.entities.players.current
+      player: state.player
     }
   },
   function mapDispatchToProps (dispatch, ownProps) {
     return {
       init (id) {
-        dispatch({
-          type: 'route.player-container/init',
-          payload: {}
-        })
-        dispatch(fetchPlayer(id)).catch(function (reason) {
-          dispatch({
-            type: 'route.player-container.fetchTeam/error',
-            payload: reason
-          })
-          // dispatch(pushLocation('/'))
-        })
+        dispatch(fetchPlayer(id))
       },
       destroy () {
-        dispatch({
-          type: 'route.player-container/destroy',
-          payload: {}
-        })
-        dispatch({
-          type: 'player/destroy',
-          payload: {}
-        })
+        dispatch({ type: 'route.player-container/destroy' })
       }
     }
   }

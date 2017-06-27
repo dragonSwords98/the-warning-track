@@ -7,20 +7,17 @@ import { fetchTeam } from '@track/actions/team-actions'
 class TeamContainer extends Component {
   componentWillMount () {
     const { init, teamId } = this.props
-    // trackType="team" trackId={teamId} teamName={match.params.teamName}
     init(teamId)
   }
   componentWillUnmount () {
     this.props.destroy()
   }
   render () {
-    const { teamId, teamName } = this.props
-    // if (!team || team.id !== teamId) {
-    return (
-      <div>This will be Team {teamId}: {teamName}</div>
-    )
-    // }
-    // return children
+    const { team, teamId, teamName } = this.props
+    if (!team || !teamId || !teamName) {
+      return <div>No Such Team</div>
+    }
+    return (<div><h1>{teamName}</h1></div>)
   }
 }
 export default withRouter(connect(
@@ -32,8 +29,7 @@ export default withRouter(connect(
   function mapDispatchToProps (dispatch, ownProps) {
     return {
       init (id) {
-        dispatch({ type: 'route.team-container/init', payload: { id: id } })
-        fetchTeam(id)
+        dispatch(fetchTeam(id))
       },
       destroy () {
         dispatch({ type: 'route.team-container/destroy' })

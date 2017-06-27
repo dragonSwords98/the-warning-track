@@ -6,23 +6,24 @@ import { Card, List, Icon } from 'semantic-ui-react'
 function CardGrid ({ collection, type }) {
   const publicImageDir = '../images/'
   let grid = ''
-  const extra = function (detail) {
+
+  const extra = function (detail, link) {
     if (type === 'teams') {
       return (
         <List horizontal>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name="users" /> Roster ({detail})</a>
+              <a href={'#' + link[0]}><Icon name="users" /> Roster ({detail})</a>
             </List.Content>
           </List.Item>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name="bar chart" /> Stats</a>
+              <a href={'#' + link[0]}><Icon name="bar chart" /> Stats</a>
             </List.Content>
           </List.Item>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name="calendar" /> Schedule</a>
+              <a href={'#' + link[0]}><Icon name="calendar" /> Schedule</a>
             </List.Content>
           </List.Item>
         </List>
@@ -33,22 +34,22 @@ function CardGrid ({ collection, type }) {
         <List horizontal>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name="hand lizard" /> Throws: {detail[0]}</a>
+              <a href={'#' + link[0]}><Icon name="hand lizard" /> Throws: {detail[0]}</a>
             </List.Content>
           </List.Item>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name="legal" /> Hits: {detail[1]}</a>
+              <a href={'#' + link[0]}><Icon name="legal" /> Hits: {detail[1]}</a>
             </List.Content>
           </List.Item>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name="bar chart" /> Stats</a>
+              <a href={'#' + link[0]}><Icon name="bar chart" /> Stats</a>
             </List.Content>
           </List.Item>
           <List.Item>
             <List.Content>
-              <a href="#"><Icon name="calendar" /> Schedule</a>
+              <a href={'#' + link[0]}><Icon name="calendar" /> Schedule</a>
             </List.Content>
           </List.Item>
         </List>
@@ -58,6 +59,7 @@ function CardGrid ({ collection, type }) {
 
   if (type === 'teams') {
     grid = collection.map(entry => {
+      let links = [`/${type}/${entry._id}/${entry.name}`]
       return (
         <Card
           key={'card' + entry._id}
@@ -65,13 +67,14 @@ function CardGrid ({ collection, type }) {
           header={entry.name}
           meta={entry.league}
           description={entry.description}
-          extra={extra(entry.size)}
+          extra={extra(entry.size, links)}
         />
       )
     })
   }
   if (type === 'players') {
     grid = collection.map(entry => {
+      let links = [`/${type}/${entry._id}/${entry.name}`]
       return (
         <Card
           key={'card' + entry._id}
@@ -79,7 +82,7 @@ function CardGrid ({ collection, type }) {
           header={entry.name}
           meta={entry.teams[0]}
           description={entry.description}
-          extra={extra([entry.throws, entry.hits])}
+          extra={extra([entry.throws, entry.hits], links)}
         />
       )
     })

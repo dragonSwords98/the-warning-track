@@ -14,21 +14,17 @@ const INITIAL_STATE = {
 
 export default function playerReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.player-container/init') {
-    state = Object.assign({}, state, INITIAL_STATE)
-    return state
+    state = Object.assign({}, state, INITIAL_STATE, action.payload.player)
   }
 
   if (action.type === 'route.player-container/destroy') {
-    state = Object.assign({}, state)
-    state = null
-    return state
+    state = Object.assign({}, state, INITIAL_STATE)
   }
 
   if (action.type === 'fetch-player/received') {
     state = Object.assign({}, state)
     state.name = action.payload.player.name
     state.jersey = action.payload.player.jersey
-    return state
   }
 
   if (action.type === 'directory.create-player/update') {
