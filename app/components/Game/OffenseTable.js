@@ -5,7 +5,7 @@ import { Button, Input, Checkbox, Table, Header } from 'semantic-ui-react'
 
 import BattersBox from '@track/components/Game/BattersBox'
 
-function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, lockedInnings, statusGrid, advanceRunner, toggleInningLock }) {
+function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, lockedInnings, statusGrid, advanceRunner, onScoresheetChange, toggleInningLock }) {
   // Header Cells
   let headerCells = [<Table.HeaderCell key={'inning-header-cell'}>Batting</Table.HeaderCell>]
   for (let i = 1; i <= innings; i++) {
@@ -39,9 +39,9 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
 
   // Our Runs and Our Outs Cells, along with mercies and max outs
   const THREEOUTS = 3
-  const mercyRunInput = (disabled) => (<Input type="number" min="0" max={mercyRuns} defaultValue="0" fluid disabled={disabled} />)
-  const noMercyRunInput = (disabled) => (<Input type="number" min="0" defaultValue="0" fluid disabled={disabled} />)
-  const outsInput = (disabled) => (<Checkbox toggle disabled={disabled} />)
+  const mercyRunInput = (disabled) => (<Input type="number" min="0" max={mercyRuns} defaultValue="0" fluid disabled={disabled} onChange={onScoresheetChange} />)
+  const noMercyRunInput = (disabled) => (<Input type="number" min="0" defaultValue="0" fluid disabled={disabled} onChange={onScoresheetChange} />)
+  const outsInput = (disabled) => (<Checkbox toggle disabled={disabled} onChange={onScoresheetChange} />)
 
   let scoresheet = statusGrid.map((s, i) => {
     return s.reduce((acc, value) => {
@@ -125,6 +125,7 @@ OffenseTable.propTypes = {
   battingOrder: PropTypes.array.isRequired,
   statusGrid: PropTypes.array.isRequired,
   advanceRunner: PropTypes.func.isRequired,
+  onScoresheetChange: PropTypes.func.isRequired,
   toggleInningLock: PropTypes.func.isRequired
 }
 export default OffenseTable

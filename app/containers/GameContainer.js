@@ -13,7 +13,7 @@ class GameContainer extends Component {
     this.props.destroy()
   }
   render () {
-    const { game } = this.props
+    const { game, advanceBatterRunner, onScoresheetChange, toggleInningLock } = this.props
     console.log(this.props.gameId, game)
     if (!game) {
       return <div>Loading Game...</div>
@@ -43,8 +43,9 @@ class GameContainer extends Component {
         battingOrder={game.ourBattingOrder}
         statusGrid={game.statusGrid}
         lockedInnings={game.lockedInnings}
-        advanceRunner={this.props.advanceBatterRunner}
-        toggleInningLock={this.props.toggleInningLock} />
+        advanceRunner={advanceBatterRunner}
+        onScoresheetChange={onScoresheetChange}
+        toggleInningLock={toggleInningLock} />
     )
   }
 }
@@ -62,8 +63,14 @@ export default withRouter(connect(
       advanceBatterRunner (event, data) {
         dispatch({ type: 'game.advance-runner/advance', payload: { target: event.target, data: data } })
       },
+      onScoresheetChange (event, data) {
+        dispatch({ type: 'game.scoresheet/update', payload: { target: event.target, data: data } })
+      },
       toggleInningLock (event, data) {
         dispatch({ type: 'game.lock-inning/toggle', payload: { inning: data.data } })
+      },
+      saveGame () {
+        dispatch({ type: 'game/save' })
       },
       destroy () {
         dispatch({ type: 'route.game-container/destroy' })

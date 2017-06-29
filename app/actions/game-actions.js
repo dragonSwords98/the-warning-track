@@ -43,21 +43,17 @@ export function loadGame (gameId) {
   }
 }
 
-// export function startGame (gameId) {
-//   return function (dispatch, getState) {
-//     const state = getState()
-//     if (state.directory.games) {
-//       let game = Object.assign({}, state.directory.games.find(g => g._id === gameId))
-//       // TODO: change both directory and game instance
-//       dispatch({
-//         type: 'route.game-container/start-game.initialize',
-//         payload: {
-//           game
-//         }
-//       })
-//     }
-//   }
-// }
+export function saveGame () {
+  return function (dispatch, getState) {
+    const state = getState()
+    let promise = client.updateGame(state.game)
+    return promise.then((data) => {
+      return dispatch({ type: 'game.save/success' })
+    }).catch((error) => {
+      return dispatch({ type: 'game.save/error', payload: error })
+    })
+  }
+}
 
 export function updateLineups (event, data) {
   return function (dispatch, getState) {

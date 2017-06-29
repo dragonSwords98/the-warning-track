@@ -144,35 +144,49 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state.statusGrid[inning - 1][row] = STATUS_ORDERING[statusIndex]
   }
 
+  if (action.type === 'game.scoresheet/update') {
+    state = Object.assign({}, state)
+    //  1) determine which input/checkbox was modified,
+    //  2) update the scoresheet respectively
+  }
+
   if (action.type === 'game.advance-batter-runner/inning-over') {
     state = Object.assign({}, state)
     // freeze this inning, unfreeze the next inning, set the next batter as at-bat
   }
 
-  if (action.type === 'game.opponent-action/run') {
-    state = Object.assign({}, state)
-    if (action.payload.whose === 'theirs') {
-      state.scoresheet[state.currentInning].theirs++
-    }
-    if (action.payload.whose === 'ours') {
-      state.scoresheet[state.currentInning].ours++
-    }
-  }
+  // if (action.type === 'game.opponent-action/run') {
+  //   state = Object.assign({}, state)
+  //   if (action.payload.whose === 'theirs') {
+  //     state.scoresheet[state.currentInning].theirs++
+  //   }
+  //   if (action.payload.whose === 'ours') {
+  //     state.scoresheet[state.currentInning].ours++
+  //   }
+  // }
 
-  if (action.type === 'game.opponent-action/out') {
-    state = Object.assign({}, state)
-    if (action.payload.whose === 'theirs') {
-      state.scoresheet[state.currentInning].theirOuts++
-    }
-    if (action.payload.whose === 'ours') {
-      state.scoresheet[state.currentInning].ourOuts++
-    }
-  }
+  // if (action.type === 'game.opponent-action/out') {
+  //   state = Object.assign({}, state)
+  //   if (action.payload.whose === 'theirs') {
+  //     state.scoresheet[state.currentInning].theirOuts++
+  //   }
+  //   if (action.payload.whose === 'ours') {
+  //     state.scoresheet[state.currentInning].ourOuts++
+  //   }
+  // }
 
   if (action.type === 'game.inning/start') {
     state = Object.assign({}, state)
     // this action will enbolden important values like lineup for this inning, whose up to bat, which inning is it
     // advance tally scores
+  }
+
+  if (action.type === 'game.save/success') {
+    state = Object.assign({}, state)
+  }
+
+  if (action.type === 'game.save/error') {
+    state = Object.assign({}, state)
   }
 
   if (action.type === 'create-game/init') {

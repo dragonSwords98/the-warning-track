@@ -5,7 +5,7 @@ import { Divider } from 'semantic-ui-react'
 import OffenseTable from '@track/components/Game/OffenseTable'
 import FieldingLineup from '@track/components/Game/FieldingLineup'
 
-function Game ({ id, innings, mercyRuns, noMercyInningBegin, positions, fielding, battingOrder, statusGrid, lockedInnings, advanceRunner, toggleInningLock }) {
+function Game ({ id, innings, mercyRuns, noMercyInningBegin, positions, fielding, battingOrder, statusGrid, lockedInnings, advanceRunner, onScoresheetChange, toggleInningLock }) {
   return (
     <div>
       <OffenseTable
@@ -16,6 +16,7 @@ function Game ({ id, innings, mercyRuns, noMercyInningBegin, positions, fielding
         lockedInnings={lockedInnings}
         statusGrid={statusGrid}
         advanceRunner={advanceRunner}
+        onScoresheetChange={onScoresheetChange}
         toggleInningLock={toggleInningLock} />
       <Divider horizontal />
       <FieldingLineup positions={positions} fielding={fielding} />
@@ -31,6 +32,7 @@ Game.propTypes = {
   fielding: PropTypes.array.isRequired,
   battingOrder: PropTypes.array.isRequired,
   statusGrid: PropTypes.array.isRequired,
+  onScoresheetChange: PropTypes.func.isRequired,
   advanceRunner: PropTypes.func.isRequired
 }
 export default Game
