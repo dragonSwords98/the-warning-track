@@ -56,6 +56,7 @@ class CreateGameContainer extends Component {
       game,
       directory,
       toggleInningLock,
+      applyPlayerToPosition,
       submitCreateFormQuery,
       updateCreateFormQuery,
       handleRosterOptions,
@@ -124,7 +125,10 @@ class CreateGameContainer extends Component {
       for (let p = 0; p < game.league.positions.length; p++) {
         body.push(
           <Table.Row key={'fielder-row-' + p}>
-            <Table.Cell><Header as="h4">{ game.league.positions[p] }</Header></Table.Cell>
+            <Table.Cell>
+              <Header as="h4">{ game.league.positions[p] }</Header>
+              <Button data-position={game.league.positions[p]} circular icon="wizard" onClick={applyPlayerToPosition} />
+            </Table.Cell>
             {fielderCells}
           </Table.Row>
         )
@@ -167,6 +171,7 @@ class CreateGameContainer extends Component {
           <GenericCelledTable header={header} body={body} footer={footer} />
         </Segment>
         <Segment>
+          <Header as="h3">Batting Order</Header>
           <SortableUnorderedList id="roster-sortable-list-create-game" items={battingList} onChange={handleBattingOrder} />
         </Segment>
         <Segment>
@@ -197,6 +202,9 @@ export default withRouter(connect(
       },
       toggleInningLock (event, data) {
         dispatch({ type: 'create-game.lock-inning/toggle', payload: { inning: data.data } })
+      },
+      applyPlayerToPosition (event, data) {
+        dispatch({ type: 'create-game.fielding-lineup/apply-first-inning-player-to-position', payload: { position: data.data } })
       },
       handleRosterOptions (event, data) {
         dispatch(updateLineups(event, data))

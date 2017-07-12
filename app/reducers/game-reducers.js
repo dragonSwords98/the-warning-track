@@ -252,5 +252,13 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       state.lockedInnings.push(action.payload.inning)
     }
   }
+
+  if (action.type === 'create-game.fielding-lineup/apply-first-inning-player-to-position') {
+    state = Object.assign({}, state)
+    console.log(action.payload)
+    // let position = Object.assign([], state.ourFieldingLineup[action.payload.position])
+    // position.fill(position[0])
+    // state.ourFieldingLineup[action.payload.position] = position
+  }
   return state
 }
