@@ -103,12 +103,93 @@ populateGamesCollection = function () {
       ourBattingOrder: [
         ObjectId("d94d563a510cdedef2a06592"),
         ObjectId("58b17d15e9e4fb1c4d034e1e"),
-        ObjectId("21c92149873ad56fe00935df")
+        ObjectId("21c92149873ad56fe00935df"),
+        ObjectId("15ad563a510c3f4cf2a06592"),
+        ObjectId("a94e163a510aabbcf2106592"),
+        ObjectId("15a727bcf035aaddf2106f92"),
+        ObjectId("b44dc63a510519a3f2a077af"),
+        ObjectId("b44dc63a510519a3f2a06592"),
+        ObjectId("3f6ac632984319e3f2ac9cb1")
       ],
-      ourFieldingLineup: [
-        ObjectId("58b17d15e9e4fb1c4d034e1e"),
-        ObjectId("d94d563a510cdedef2a06592"),
-        ObjectId("21c92149873ad56fe00935df")
+      ourFieldingLineup: 
+      [
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        }
       ],
       statusGrid: [], // ours batting order
       scoresheet: [], // ours vs theirs
@@ -126,14 +207,94 @@ populateGamesCollection = function () {
       lockedInnings: [],
       currentFrame: 0,
       ourBattingOrder: [
-        ObjectId("21c92149873ad56fe00935df"),
-        ObjectId("58b17d15e9e4fb1c4d034e1e"),
-        ObjectId("d94d563a510cdedef2a06592")
-      ],
-      ourFieldingLineup: [
         ObjectId("d94d563a510cdedef2a06592"),
         ObjectId("58b17d15e9e4fb1c4d034e1e"),
-        ObjectId("21c92149873ad56fe00935df")
+        ObjectId("21c92149873ad56fe00935df"),
+        ObjectId("15ad563a510c3f4cf2a06592"),
+        ObjectId("a94e163a510aabbcf2106592"),
+        ObjectId("15a727bcf035aaddf2106f92"),
+        ObjectId("b44dc63a510519a3f2a077af"),
+        ObjectId("b44dc63a510519a3f2a06592"),
+        ObjectId("3f6ac632984319e3f2ac9cb1")
+      ],
+      ourFieldingLineup: [
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        },
+        {
+          'C': ObjectId("d94d563a510cdedef2a06592"),
+          '1B': ObjectId("58b17d15e9e4fb1c4d034e1e"),
+          '2B': ObjectId("21c92149873ad56fe00935df"),
+          'SS': ObjectId("15ad563a510c3f4cf2a06592"),
+          '3B': ObjectId("a94e163a510aabbcf2106592"),
+          'LF': ObjectId("15a727bcf035aaddf2106f92"),
+          'LR': ObjectId("b44dc63a510519a3f2a077af"),
+          'CF': ObjectId("b44dc63a510519a3f2a06592"),
+          'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        }
       ],
       statusGrid: [], // ours batting order
       scoresheet: [], // ours vs theirs

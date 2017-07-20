@@ -4,21 +4,30 @@ import { withRouter } from 'react-router'
 import { push as pushLocation } from 'react-router-redux'
 
 import moment from 'moment'
-import { Segment, Table, Header, Select, Button } from 'semantic-ui-react'
+import { Segment, Table, Header, Button } from 'semantic-ui-react'
 
 import LoadingOverlay from '@track/components/LoadingOverlay'
 import GenericCelledTable from '@track/components/GenericCelledTable'
 import SortableUnorderedList from '@track/components/SortableUnorderedList'
 import Sortable from 'sortablejs'
+
 import CreateGame from '@track/components/Form/CreateGame'
+import FielderRow from '@track/components/Game/FielderRow'
 
-import { updateLineups, updateGameForm, submitGameForm } from '@track/actions/game-actions'
-import { fetchDirectory } from '@track/actions/directory-actions' // CR: looks like it don't belong as a 'directory' state
+import {
+  createGameFormWithDefaults,
+  updateAvailableLeagues,
+  updateAvailableTeams,
+  updateAvailableRoster,
+  updateLineups,
+  updateGameForm,
+  submitGameForm
+} from '@track/actions/form-actions'
 
-import { populateOptions } from '@track/utils'
+import { objectToOption } from '@track/utils'
 
 const validateForm = function (game) {
-  return !(game.ourTeam && game.opposingTeam && game.diamond != '' && game.datetime && game.league)
+  return !(game.ourTeam && game.opposingTeam && (game.diamond !== '') && game.datetime && game.league)
   // && game.ourBattingOrder.length > 0
     //  && game.ourFieldingLineup.length > 0) //TODO: ourFieldingLineup will not be empty, its children could be empty
 }
@@ -32,105 +41,78 @@ class CreateGameContainer extends Component {
     this.props.destroy()
   }
 
-  componentDidMount () {
-    let sortable
-    const el = document.getElementById("roster-sortable-list-create-game")
-    if (el) {
-      sortable = Sortable.create(el, {
-        // onUpdate: function (evt) {
-        //   console.log(this.toArray(), evt.target, evt.item, )
-        // },
-        onUpdate: evt => {
-          let newOrder = []
-          Array.prototype.forEach.call(evt.target.children, function(el, i){
-            newOrder.push(el.getAttribute('data-id'))
-          });
-          this.props.handleBattingOrder(newOrder)
-        }
-      })
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.directory.leagues && !nextProps.form.leagues.length) {
+      nextProps.updateAvailableLeagues(nextProps.directory.leagues)
+    }
+    if (nextProps.directory.diamonds && !nextProps.form.diamonds.length) {
+      nextProps.populateOptions('diamonds', objectToOption(nextProps.directory.diamonds))
+    }
+    if (nextProps.directory.teams && !nextProps.form.teams.length) {
+      console.log(nextProps.directory.teams)
+      nextProps.updateAvailableTeams(nextProps.directory.teams)
+    }
+    if (nextProps.directory.players && !nextProps.form.roster.length) {
+      nextProps.updateAvailableRoster(nextProps.directory.players)
+    }
+
+    if (nextProps.form.batters && document.getElementById('battingOrderList')) {
+      const el = document.getElementById('battingOrderList')
+      if (!this.props && el) {
+        this.props.sortable = Sortable.create(el, {
+          onUpdate: evt => {
+            let newOrder = []
+            Array.prototype.forEach.call(evt.target.children, function (el, i) {
+              newOrder.push(el.getAttribute('data-id'))
+            })
+            this.props.handleBattingOrder(newOrder)
+          }
+        })
+      }
     }
   }
 
   render () {
     const {
       game,
+      form,
       directory,
       toggleInningLock,
-      applyPlayerToPosition,
       submitCreateFormQuery,
       updateCreateFormQuery,
       handleRosterOptions,
       handleBattingOrder
     } = this.props
-
-    if (!game || !directory || !directory.players || !directory.teams || !directory.games || !directory.leagues) {
+    if (!game || !form ||
+      !directory.players ||
+      !directory.teams ||
+      !directory.games ||
+      !directory.leagues ||
+      !directory.diamonds) {
       return (<LoadingOverlay />)
     }
 
-    let leagueOptions = []
-    let diamondOptions = []
-    if (directory.leagues) {
-      leagueOptions = populateOptions(directory.leagues)
-    }
-    if (directory.diamonds) {
-      diamondOptions = populateOptions(directory.diamonds)
-    }
-
-    // TODO: Should be in redux...
-    let teamOptions = []
-    let rosterOptions = []
-    let battingList = []
-    if (directory.teams) {
-      let availableTeams = Object.assign([], directory.teams)
-      if (game.league) {
-        availableTeams = availableTeams.filter(t => t.leagues.includes(game.league._id))
-      }
-      teamOptions = populateOptions(availableTeams)
-    }
-    if (directory.players) {
-      let availablePlayers = Object.assign([], directory.players)
-      if (game.ourTeam) {
-        availablePlayers = availablePlayers.filter(p => p.teams.includes(game.ourTeam))
-      }
-      rosterOptions = populateOptions(availablePlayers)
-
-      battingList = availablePlayers.map(function(r) {
-        return [r.name, r.gender]
-      })
-    }
-
-    let fielderCells = []
     let header = []
     let body = []
     let footer = []
     if (game.league) {
       header = [<Table.HeaderCell key={'header-innings-0'} />]
       footer = [<Table.HeaderCell key="footer-cell-0">Lock</Table.HeaderCell>]
-      for (let i = 1; i <= game.league.innings; i++) {
-        let select = <Select fluid placeholder="Player" data-id={i + ':TODO:POSITION'} options={rosterOptions} onChange={handleRosterOptions} />
-        if (game.lockedInnings.indexOf(i) > -1) {
-          select = <Select fluid placeholder="Player" data-id={i + ':TODO:POSITION'} options={rosterOptions} onChange={handleRosterOptions} disabled />
-        }
-        fielderCells.push(
-          <Table.Cell key={'fielder-cell-' + i}>
-            { select }
-          </Table.Cell>
-        )
-      }
 
       for (let i = 1; i <= game.league.innings; i++) {
         header.push(<Table.HeaderCell key={'header-innings' + i}>{ i }</Table.HeaderCell>)
       }
 
       for (let p = 0; p < game.league.positions.length; p++) {
+        let position = game.league.positions[p]
         body.push(
-          <Table.Row key={'fielder-row-' + p}>
-            <Table.Cell>
-              <Header as="h4">{ game.league.positions[p] }</Header>
-              <Button data-position={game.league.positions[p]} circular icon="wizard" onClick={applyPlayerToPosition} />
-            </Table.Cell>
-            {fielderCells}
-          </Table.Row>
+          <FielderRow key={'fielder-row-' + position}
+            lineup={game.ourFieldingLineup.map(l => l[position])}
+            innings={game.league.innings}
+            lockedInnings={game.lockedInnings}
+            position={position}
+            options={form.roster}
+            onChange={handleRosterOptions} />
         )
       }
 
@@ -144,7 +126,6 @@ class CreateGameContainer extends Component {
       }
     }
 
-
     let dateRange = {
       min: game.datetime,
       max: moment(game.datetime).add(1, 'years').format('YYYY-MM-DD')
@@ -155,24 +136,38 @@ class CreateGameContainer extends Component {
     // TODO: find a way to extract the final order of the roster batting lineup
     //       and restrict the ordering to MMF or MMMF if optioned
     // TODO: fix submit button and its actions
+
+    let CreateGameComponent = (<LoadingOverlay />)
+    let BattingOrderComponent = (<LoadingOverlay />)
+
+    if (form.leagues && form.teams && form.diamonds) {
+      CreateGameComponent = (
+        <CreateGame
+          submitCreateGameForm={submitCreateFormQuery}
+          leagueOptions={form.leagues}
+          teamsOptions={form.teams}
+          labelHomeOrAway={game.homeOrAway}
+          diamondOptions={form.diamonds}
+          dateRange={dateRange}
+          handleFormChange={updateCreateFormQuery} />)
+    }
+
+    if (form.batters) {
+      BattingOrderComponent = (<SortableUnorderedList id="battingOrderList" ref="battingOrderList" items={form.batters} onChange={handleBattingOrder} />)
+    }
+
     return (
       <div className="create-game-container">
         <Segment>
-          <CreateGame
-            submitCreateGameForm={submitCreateFormQuery}
-            leagueOptions={leagueOptions}
-            teamsOptions={teamOptions}
-            labelHomeOrAway={game.homeOrAway}
-            diamondOptions={diamondOptions}
-            dateRange={dateRange}
-            handleFormChange={updateCreateFormQuery} />
+          {CreateGameComponent}
         </Segment>
         <Segment>
+          <Header as="h3">Fielding Lineup</Header>
           <GenericCelledTable header={header} body={body} footer={footer} />
         </Segment>
         <Segment>
           <Header as="h3">Batting Order</Header>
-          <SortableUnorderedList id="roster-sortable-list-create-game" items={battingList} onChange={handleBattingOrder} />
+          {BattingOrderComponent}
         </Segment>
         <Segment>
           <Button type="submit" form="createGameForm" disabled={isFormIncomplete}>Submit</Button>
@@ -185,26 +180,30 @@ export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
       directory: state.directory,
-      // createGame: state.createGame,
+      form: state.form,
       game: state.game
     }
   },
   function mapDispatchToProps (dispatch, ownProps) {
     return {
       init () {
-        dispatch({ type: 'route.directory-list/fetch' })
-        dispatch(fetchDirectory('teams'))
-        dispatch(fetchDirectory('players'))
-        dispatch({ type: 'route.game-container/init' })
-        // CR: Clear out old game first?
-        // 1) populate list of available teams to pick
-        // 2) show create game form
+        dispatch(createGameFormWithDefaults())
+        dispatch({ type: 'create-game.form/init' })
+      },
+      populateOptions (type, options) {
+        dispatch({ type: 'create-game.form/populate-options', payload: { type: type, options: options } })
       },
       toggleInningLock (event, data) {
         dispatch({ type: 'create-game.lock-inning/toggle', payload: { inning: data.data } })
       },
-      applyPlayerToPosition (event, data) {
-        dispatch({ type: 'create-game.fielding-lineup/apply-first-inning-player-to-position', payload: { position: data.data } })
+      updateAvailableLeagues (leagues) {
+        dispatch(updateAvailableLeagues(leagues))
+      },
+      updateAvailableTeams (teams) {
+        dispatch(updateAvailableTeams(teams))
+      },
+      updateAvailableRoster (roster) {
+        dispatch(updateAvailableRoster(roster))
       },
       handleRosterOptions (event, data) {
         dispatch(updateLineups(event, data))
@@ -218,11 +217,18 @@ export default withRouter(connect(
       submitCreateFormQuery (event, data) {
         event.preventDefault()
         dispatch(submitGameForm(event, data))
-        dispatch(pushLocation('/games')) //TODO: might not go here
+
+        // TODO: might not go here
+        dispatch(pushLocation('/games'))
       },
       destroy () {
         dispatch({ type: 'route.game-container/destroy' })
+        dispatch({ type: 'create-game.form/destroy' })
       }
     }
   }
 )(CreateGameContainer))
+
+CreateGameContainer.defaultProps = {
+  sortable: null
+}

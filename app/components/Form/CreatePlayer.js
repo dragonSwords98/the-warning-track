@@ -12,7 +12,7 @@ const SliderTooltip = createSliderWithTooltip(Slider)
 class CreatePlayer extends Component {
   // https://stackoverflow.com/questions/44062024/submit-form-using-button-in-parent-component-in-react
   render () {
-    const { gender, thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions, handsArray, positionsArray, createPlayerToggleableLabels, formChangeHandler, formSubmissionHandler } = this.props
+    const { gender, thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions, handsArray, positionsArray, formChangeHandler, formSubmissionHandler } = this.props
     return (
       <Form id="createPlayerForm" onSubmit={formSubmissionHandler}>
         <Form.Field>
@@ -57,7 +57,6 @@ class CreatePlayer extends Component {
 CreatePlayer.propTypes = {
   gender: PropTypes.number.isRequired,
   teamOptions: PropTypes.array.isRequired,
-  createPlayerToggleableLabels: PropTypes.object.isRequired,
   formChangeHandler: PropTypes.func.isRequired,
   formSubmissionHandler: PropTypes.func.isRequired
 }

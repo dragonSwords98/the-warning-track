@@ -11,7 +11,7 @@ import CreatePlayerContainer from '@track/containers/Create/CreatePlayerContaine
 import CardGrid from '@track/components/CardGrid'
 import Segue from '@track/components/Segue'
 import { updateCreateForm, submitCreateForm } from '@track/actions/directory-actions'
-import { populateOptions } from '@track/utils'
+import { objectToOption } from '@track/utils'
 
 class Directory extends Component {
   componentWillUnmount () {
@@ -30,17 +30,17 @@ class Directory extends Component {
     let rosterOptions = []
     let captainOptions = []
     if (directory.players) {
-      playerOptions = populateOptions(directory.players)
+      playerOptions = objectToOption(directory.players)
     }
     if (directory.teams) {
-      teamOptions = populateOptions(directory.teams)
+      teamOptions = objectToOption(directory.teams)
     }
     if (directory.leagues) {
-      leagueOptions = populateOptions(directory.leagues)
+      leagueOptions = objectToOption(directory.leagues)
     }
     if (team.roster) {
       rosterOptions = directory.players.filter(p => team.roster.includes(p._id))
-      captainOptions = populateOptions(rosterOptions)
+      captainOptions = objectToOption(rosterOptions)
     }
 
     let creation = (<div><Button primary onClick={goToCreateGame}>Create Game</Button></div>)

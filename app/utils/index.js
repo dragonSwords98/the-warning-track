@@ -1,6 +1,6 @@
 'use strict'
 
-export function populateOptions (data) {
+export function objectToOption (data) {
   return data.map(d => {
     return {
       key: d._id,
