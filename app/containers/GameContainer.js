@@ -14,7 +14,7 @@ class GameContainer extends Component {
   }
   render () {
     const { game, advanceBatterRunner, onScoresheetChange, toggleInningLock } = this.props
-    console.log(this.props.gameId, game)
+
     if (!game) {
       return <div>Loading Game...</div>
     }
@@ -27,11 +27,6 @@ class GameContainer extends Component {
       return <div>Loading Game State...</div>
     }
 
-    // strict order ( CR, 1B, 2B, SS, 3B, LF, CF, RF, LR, RR )
-    // TODO: game.ourFieldingLineup for fills on specific innings, currently assumes fielding lineup never changes
-    let inningFielding = game.ourFieldingLineup
-    let gameFielding = new Array(game.league.innings).fill(inningFielding)
-
     return (
       <Game
         id={game._id}
@@ -39,7 +34,7 @@ class GameContainer extends Component {
         mercyRuns={game.league.mercyRuns}
         noMercyInningBegin={game.league.noMercyInningBegin}
         positions={game.league.positions}
-        fielding={gameFielding}
+        fielding={game.ourFieldingLineup}
         battingOrder={game.ourBattingOrder}
         statusGrid={game.statusGrid}
         lockedInnings={game.lockedInnings}

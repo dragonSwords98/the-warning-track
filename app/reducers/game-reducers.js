@@ -9,7 +9,7 @@ const INITIAL_STATE = {
   diamond: '',
   datetime: moment().format('YYYY-MM-DD'),
   homeOrAway: 'Away', // or 'Home'
-  // innings: 7, // or 8
+  // innings: 7, // DEFAULT: 7
   // positions: ['C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RF'],
   // homeRunRule: true,
   // mercyRuns: 7, // or 8 or 5
@@ -28,7 +28,7 @@ const INITIAL_STATE = {
   scoresheet: [], // ours vs theirs
   sortable: null,
   // nextHitterPoint: 0, // only ours
-  gameStatus: 0, // =pre-game, 1 = in-game, 2 = post-game
+  gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
 }
 
 const OUT_STATUS = {
@@ -110,6 +110,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.game-container/init') {
     state = Object.assign({}, state, INITIAL_STATE)
   }
+
   if (action.type === 'route.game-container/destroy') {
     state = Object.assign({}, state)
     state = {}
@@ -200,6 +201,13 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     if (!action.payload.isOurTeamInThisLeague) {
       state.ourTeam = null
     }
+    const positions = action.payload.league.positions.reduce((acc, curr, i) => {
+      acc[curr] = ''
+      return acc
+    }, {})
+    state.ourFieldingLineup = new Array(action.payload.league.innings + 1).fill(positions)
+
+    // TODO: warn/prompt the user when they change league again bcuz they will lose all their work -_-
   }
 
   // if (action.type === 'create-game.select-team/set') {
@@ -231,8 +239,16 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'create-game.fielding-lineup/change') {
     state = Object.assign({}, state)
-    // state.ourFieldingLineup = action.payload.ourFieldingLineup
-    console.log(action.type, action.payload.cellId, action.payload.value)
+    state.ourFieldingLineup[action.payload.inning] = Object.assign({}, state.ourFieldingLineup[action.payload.inning], {
+      [action.payload.position]: action.payload.value
+    })
+
+    state.ourFieldingLineup = state.ourFieldingLineup.map(i => {
+      if (!i[action.payload.position]) {
+        i[action.payload.position] = action.payload.value
+      }
+      return i
+    })
   }
 
   if (action.type === 'route.game-container/create-game.success') {
@@ -251,14 +267,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     } else {
       state.lockedInnings.push(action.payload.inning)
     }
-  }
-
-  if (action.type === 'create-game.fielding-lineup/apply-first-inning-player-to-position') {
-    state = Object.assign({}, state)
-    console.log(action.payload)
-    // let position = Object.assign([], state.ourFieldingLineup[action.payload.position])
-    // position.fill(position[0])
-    // state.ourFieldingLineup[action.payload.position] = position
   }
   return state
 }
