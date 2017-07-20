@@ -1,6 +1,7 @@
 'use strict'
 import { client } from './client'
 import moment from 'moment'
+import { push as pushLocation } from 'react-router-redux'
 
 import { objectToOption } from '@track/utils'
 
@@ -92,11 +93,10 @@ export function updateGameForm (event, data) {
       dispatch({ type: 'create-game.form/update', payload: { type: 'games', field: 'ourTeam', value: data.value } })
       dispatch(updateAvailableRoster())
     } else if (data['data-create-id'] === 'diamond') {
-      dispatch({ type: 'create-game.select-diamond/set', payload: { league: state.directory.diamonds.find(d => d._id === data.value) } })
+      dispatch({ type: 'create-game.select-diamond/set', payload: { diamond: state.directory.diamonds.find(d => d._id === data.value) } })
     } else if (data['data-create-id'] === 'homeOrAway') {
       dispatch({ type: 'create-game.home-or-away/set', payload: { isHome: data.checked } })
     } else {
-      console.log('default handle on data-create-id', data['data-create-id'], data.value)
       dispatch({ type: 'create-game.form/update', payload: { type: 'games', field: data['data-create-id'], value: data.value } })
     }
   }
@@ -109,10 +109,8 @@ export function submitGameForm (event, data) {
     // CR: should have a create -> db object converter for all object about to submitted to DB or being received from DB
     let game = Object.assign({}, state.game)
     game.league = state.game.league._id
-    // game.ourTeam = mongo.ObjectId(state.game.ourTeam)
     game.dateTime = moment(state.game.dateTime).format('LLLL')
     game.homeOrAway = state.game.homeOrAway === 'Home'
-    delete game.sortable
 
     let promise = client.addGame(game)
     return promise.then((data) => {
@@ -124,6 +122,7 @@ export function submitGameForm (event, data) {
           newGame: state.game
         }
       })
+      dispatch(pushLocation('/games'))
     }).catch((error) => {
       return dispatch({
         type: 'route.game-container/create-game.rejected',

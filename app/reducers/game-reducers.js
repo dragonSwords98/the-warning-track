@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   ourTeam: null,
   opposingTeam: '',
   diamond: '',
-  datetime: moment().format('YYYY-MM-DD'),
+  dateTime: moment().format('YYYY-MM-DD'),
   homeOrAway: 'Away', // or 'Home'
   // innings: 7, // DEFAULT: 7
   // positions: ['C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RF'],
@@ -26,7 +26,6 @@ const INITIAL_STATE = {
   // awayFieldingLineup: [],
   statusGrid: [], // ours batting order
   scoresheet: [], // ours vs theirs
-  sortable: null,
   // nextHitterPoint: 0, // only ours
   gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
 }
@@ -112,8 +111,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   }
 
   if (action.type === 'route.game-container/destroy') {
-    state = Object.assign({}, state)
-    state = {}
+    state = Object.assign({}, state, INITIAL_STATE)
   }
   // if (action.type === 'route.game-container/start-game.initialize') {
   //   let { game } = action.payload
@@ -219,7 +217,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'create-game.select-diamond/set') {
     state = Object.assign({}, state)
-    state.diamond = action.payload.diamond
+    state.diamond = action.payload.diamond._id
   }
 
   if (action.type === 'create-game.home-or-away/set') {
@@ -256,7 +254,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   }
 
   if (action.type === 'route.game-container/create-game.rejected') {
-    console.log(action.payload)
+    console.error(action.payload)
   }
 
   if (action.type === 'create-game.lock-inning/toggle' || action.type === 'game.lock-inning/toggle') {

@@ -13,7 +13,7 @@ export default function formReducers (state = INITIAL_STATE, action) {
     state = Object.assign({}, INITIAL_STATE)
   }
   if (action.type === 'create-game.form/destroy') {
-    state = {}
+    state = Object.assign({}, INITIAL_STATE)
   }
   if (action.type === 'create-game.form/populate-options') {
     state = Object.assign({}, state)

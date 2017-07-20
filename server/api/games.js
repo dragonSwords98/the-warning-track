@@ -40,6 +40,9 @@ exports.findById = function(req, res) {
 
 exports.addGame = function(req, res) {
   var game = req.body;
+  game.league = mongo.ObjectId(game.league)
+  game.diamond = mongo.ObjectId(game.diamond)
+  game.ourTeam = mongo.ObjectId(game.ourTeam)
   console.log('Adding game: ' + JSON.stringify(game));
   db.collection('games', function(err, collection) {
       collection.insert(game, {safe:true}, function(err, result) {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import { push as pushLocation } from 'react-router-redux'
 
 import moment from 'moment'
 import { Segment, Table, Header, Button } from 'semantic-ui-react'
@@ -19,6 +18,7 @@ import {
   updateAvailableLeagues,
   updateAvailableTeams,
   updateAvailableRoster,
+  updateAvailableBatters,
   updateLineups,
   updateGameForm,
   submitGameForm
@@ -27,7 +27,7 @@ import {
 import { objectToOption } from '@track/utils'
 
 const validateForm = function (game) {
-  return !(game.ourTeam && game.opposingTeam && (game.diamond !== '') && game.datetime && game.league)
+  return !(game.ourTeam && game.opposingTeam && (game.diamond !== '') && game.dateTime && game.league)
   // && game.ourBattingOrder.length > 0
     //  && game.ourFieldingLineup.length > 0) //TODO: ourFieldingLineup will not be empty, its children could be empty
 }
@@ -49,7 +49,6 @@ class CreateGameContainer extends Component {
       nextProps.populateOptions('diamonds', objectToOption(nextProps.directory.diamonds))
     }
     if (nextProps.directory.teams && !nextProps.form.teams.length) {
-      console.log(nextProps.directory.teams)
       nextProps.updateAvailableTeams(nextProps.directory.teams)
     }
     if (nextProps.directory.players && !nextProps.form.roster.length) {
@@ -58,16 +57,23 @@ class CreateGameContainer extends Component {
 
     if (nextProps.form.batters && document.getElementById('battingOrderList')) {
       const el = document.getElementById('battingOrderList')
-      if (!this.props && el) {
-        this.props.sortable = Sortable.create(el, {
-          onUpdate: evt => {
-            let newOrder = []
-            Array.prototype.forEach.call(evt.target.children, function (el, i) {
-              newOrder.push(el.getAttribute('data-id'))
+      if (!this.props.sortable && el) {
+        this.setState((prevState, props) => {
+          return {
+            sortable: Sortable.create(el, {
+              onUpdate: evt => {
+                let newOrder = []
+                Array.prototype.forEach.call(evt.target.children, function (el, i) {
+                  newOrder.push(el.getAttribute('data-id'))
+                })
+                this.props.handleBattingOrder(newOrder)
+              }
             })
-            this.props.handleBattingOrder(newOrder)
           }
         })
+        if (!nextProps.game.ourBattingOrder.length) {
+          nextProps.handleBattingOrder(nextProps.form.batters)
+        }
       }
     }
   }
@@ -127,8 +133,8 @@ class CreateGameContainer extends Component {
     }
 
     let dateRange = {
-      min: game.datetime,
-      max: moment(game.datetime).add(1, 'years').format('YYYY-MM-DD')
+      min: game.dateTime,
+      max: moment(game.dateTime).add(1, 'years').format('YYYY-MM-DD')
     }
 
     let isFormIncomplete = validateForm(game)
@@ -217,9 +223,6 @@ export default withRouter(connect(
       submitCreateFormQuery (event, data) {
         event.preventDefault()
         dispatch(submitGameForm(event, data))
-
-        // TODO: might not go here
-        dispatch(pushLocation('/games'))
       },
       destroy () {
         dispatch({ type: 'route.game-container/destroy' })
