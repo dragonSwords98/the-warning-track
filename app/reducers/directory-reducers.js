@@ -63,19 +63,22 @@ export default function directoryReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'directory.create-team/success') {
     state = Object.assign({}, state)
-    let newTeam = Object.assign(action.payload.newTeam, action.payload._id)
+    let newTeam = Object.assign(action.payload.newTeam)
+    newTeam._id = action.payload._id
     state.teams.push(newTeam)
   }
 
   if (action.type === 'directory.create-player/success') {
     state = Object.assign({}, state)
-    let newPlayer = Object.assign(action.payload.newPlayer, action.payload._id)
+    let newPlayer = Object.assign(action.payload.newPlayer)
+    newPlayer._id = action.payload._id
     state.players.push(newPlayer)
   }
 
   if (action.type === 'route.game-container/create-game.success') {
     state = Object.assign({}, state)
-    let newGame = Object.assign(action.payload.newGame, action.payload._id)
+    let newGame = Object.assign(action.payload.newGame)
+    newGame._id = action.payload._id
     state.games.push(newGame)
   }
 

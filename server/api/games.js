@@ -43,6 +43,14 @@ exports.addGame = function(req, res) {
   game.league = mongo.ObjectId(game.league)
   game.diamond = mongo.ObjectId(game.diamond)
   game.ourTeam = mongo.ObjectId(game.ourTeam)
+  game.ourBattingOrder = game.ourBattingOrder.map(o => mongo.ObjectId(o))
+  game.ourFieldingLineup = game.ourFieldingLineup.map(lineup => {
+    let keys = Object.keys(lineup)
+    for (k in keys) {
+      lineup[k] = mongo.ObjectId(lineup[k])
+    }
+    return lineup
+  })
   console.log('Adding game: ' + JSON.stringify(game));
   db.collection('games', function(err, collection) {
       collection.insert(game, {safe:true}, function(err, result) {

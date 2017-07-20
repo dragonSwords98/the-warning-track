@@ -102,16 +102,21 @@ export function updateGameForm (event, data) {
   }
 }
 
+const saveGameObject = function (state, game) {
+  game.league = state.game.league._id
+  game.dateTime = moment(state.game.dateTime).format('LLLL')
+  game.homeOrAway = state.game.homeOrAway === 'Away' ? 0 : 1
+
+  // CR: converting the batting order back to ids here may not be ideal, maybe should be in reducer while the batting order is created/updated
+  // Another issue is finding by batter's name is not ideal, susceptible to duplicate name errors
+  game.ourBattingOrder = game.ourBattingOrder.map(batter => state.directory.players.find(p => p.name === batter)._id)
+  return game
+}
+
 export function submitGameForm (event, data) {
   return function (dispatch, getState) {
     const state = getState()
-    // TODO: missing battingOrder, mongo.ObjectId should never land in this app
-    // CR: should have a create -> db object converter for all object about to submitted to DB or being received from DB
-    let game = Object.assign({}, state.game)
-    game.league = state.game.league._id
-    game.dateTime = moment(state.game.dateTime).format('LLLL')
-    game.homeOrAway = state.game.homeOrAway === 'Home'
-
+    let game = saveGameObject(state, Object.assign({}, state.game))
     let promise = client.addGame(game)
     return promise.then((data) => {
       const state = getState()

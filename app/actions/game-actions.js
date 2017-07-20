@@ -1,7 +1,7 @@
 'use strict'
 import { client } from './client'
 
-const populateTeamsAndPlayers = function (state, data) {
+const loadGameObject = function (state, data) {
   data.ourBattingOrder = data.ourBattingOrder.map(batter => {
     return state.directory.players.find(p => p._id === batter)
   })
@@ -12,6 +12,7 @@ const populateTeamsAndPlayers = function (state, data) {
     return map
   })
   data.ourTeam = state.directory.teams.find(t => t._id === data.ourTeam)
+  data.homeOrAway = data.homeOrAway ? 'Home' : 'Away'
   return data
 }
 
@@ -23,7 +24,7 @@ export function loadGame (gameId) {
       dispatch({
         type: 'route.game-container/load-game.success',
         payload: {
-          game: populateTeamsAndPlayers(state, data)
+          game: loadGameObject(state, data)
         }
       })
       return client.getLeagueById(data.league)
