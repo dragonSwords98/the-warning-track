@@ -146,7 +146,12 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       ours: populateScoresheet(state.league.innings),
       theirs: populateScoresheet(state.league.innings)
     }
+
+    // if it is not the current inning, it is locked
+    state.lockedInnings = Array.from({length:state.league.innings},(v,k)=>k+1)
+    state.lockedInnings.splice(state.lockedInnings.indexOf(parseInt(state.currentInning)), 1)
   }
+
   if (action.type === 'route.game-container/load-game.rejected') {
     state = Object.assign({}, state, INITIAL_STATE)
   }
@@ -289,6 +294,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       state.lockedInnings.splice(index, 1)
     } else {
       state.lockedInnings.push(action.payload.inning)
+      state.lockedInnings.sort()
     }
   }
   return state

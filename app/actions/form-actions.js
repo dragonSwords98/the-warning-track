@@ -107,6 +107,9 @@ const saveGameObject = function (state, game) {
   game.dateTime = moment(state.game.dateTime).format('LLLL')
   game.homeOrAway = state.game.homeOrAway === 'Away' ? 0 : 1
 
+  // Don't save these
+  game.lockedInnings = undefined
+
   // CR: converting the batting order back to ids here may not be ideal, maybe should be in reducer while the batting order is created/updated
   // Another issue is finding by batter's name is not ideal, susceptible to duplicate name errors
   game.ourBattingOrder = game.ourBattingOrder.map(batter => state.directory.players.find(p => p.name === batter)._id)

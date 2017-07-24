@@ -68,9 +68,9 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
     ourFooterRuns.push(<Table.Cell key={'footer-our-runs-' + i}>{scoresheet.ours[i - 1][0]}</Table.Cell>)
   }
 
-  let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Lock</Header></Table.Cell>]
+  let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Completed</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    let icon = lockedInnings.indexOf(i) > -1 ? 'lock' : 'unlock'
+    let icon = lockedInnings.indexOf(i) > -1 ? 'lock' : 'checkmark'
     lockInnings.push(<Table.Cell key={'footer-lock-' + i}><Button data={i} circular icon={icon} onClick={toggleInningLock} /></Table.Cell>)
   }
 

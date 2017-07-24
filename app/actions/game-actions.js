@@ -1,19 +1,19 @@
 'use strict'
 import { client } from './client'
 
-const loadGameObject = function (state, data) {
-  data.ourBattingOrder = data.ourBattingOrder.map(batter => {
+const loadGameObject = function (state, game) {
+  game.ourBattingOrder = game.ourBattingOrder.map(batter => {
     return state.directory.players.find(p => p._id === batter)
   })
-  data.ourFieldingLineup = data.ourFieldingLineup.map(inning => {
+  game.ourFieldingLineup = game.ourFieldingLineup.map(inning => {
     let map = Object.keys(inning).map(k => {
       return state.directory.players.find(p => p._id === inning[k])
     })
     return map
   })
-  data.ourTeam = state.directory.teams.find(t => t._id === data.ourTeam)
-  data.homeOrAway = data.homeOrAway ? 'Home' : 'Away'
-  return data
+  game.ourTeam = state.directory.teams.find(t => t._id === game.ourTeam)
+  game.homeOrAway = game.homeOrAway ? 'Home' : 'Away'
+  return game
 }
 
 export function loadGame (gameId) {
