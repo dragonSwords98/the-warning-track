@@ -5,9 +5,9 @@ import { Button, Input, Checkbox, Table, Header } from 'semantic-ui-react'
 
 import BattersBox from '@track/components/Game/BattersBox'
 
-function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, lockedInnings, statusGrid, advanceRunner, onScoresheetChange, toggleInningLock }) {
+function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, lockedInnings, statusGrid, scoresheet, advanceRunner, onScoresheetChange, toggleInningLock }) {
   // Header Cells
-  let headerCells = [<Table.HeaderCell key={'inning-header-cell'}>Batting</Table.HeaderCell>]
+  let headerCells = [<Table.HeaderCell key={'inning-header-cell'} width='two'>Batting</Table.HeaderCell>]
   for (let i = 1; i <= innings; i++) {
     headerCells.push(<Table.HeaderCell key={'inning-header-cell-' + i}>{i}</Table.HeaderCell>)
   }
@@ -31,7 +31,7 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
   for (let r = 0; r < battingOrder.length; r++) {
     batterRows.push(
       <Table.Row key={'batter-row-' + r}>
-        <Table.Cell><Header as="h4">{ battingOrder[r].name }</Header></Table.Cell>
+        <Table.Cell width='two'><Header as="h4">{ battingOrder[r].name }</Header></Table.Cell>
         { generateBatterCells(r, statusGrid) }
       </Table.Row>
     )
@@ -39,45 +39,33 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
 
   // Our Runs and Our Outs Cells, along with mercies and max outs
   const THREEOUTS = 3
-  const mercyRunInput = (disabled) => (<Input type="number" min="0" max={mercyRuns} defaultValue="0" fluid disabled={disabled} onChange={onScoresheetChange} />)
-  const noMercyRunInput = (disabled) => (<Input type="number" min="0" defaultValue="0" fluid disabled={disabled} onChange={onScoresheetChange} />)
-  const outsInput = (disabled) => (<Checkbox toggle disabled={disabled} onChange={onScoresheetChange} />)
-
-  let scoresheet = statusGrid.map((s, i) => {
-    return s.reduce((acc, value) => {
-      if (value.name === 'OUT' && acc[0] < THREEOUTS) {
-        acc[0]++
-      }
-      if (value.name === 'HOME' && i < noMercyInningBegin && acc[1] < mercyRuns) {
-        acc[1]++
-      }
-      return acc
-    }, [0, 0])
-  })
+  const mercyRunInput = (inning, team, disabled) => (<Input data-team={team} data-inning={inning} type="number" min="0" max={mercyRuns} defaultValue="0" fluid disabled={disabled} onChange={onScoresheetChange} />)
+  const noMercyRunInput = (inning, team, disabled) => (<Input data-team={team} data-inning={inning} type="number" min="0" defaultValue="0" fluid disabled={disabled} onChange={onScoresheetChange} />)
+  const outsInput = (inning, team, disabled) => (<Checkbox data-team={team} data-inning={inning} toggle disabled={disabled} onChange={onScoresheetChange} />)
 
   // Creating Footer Cells
   let theirfooterOuts = [<Table.Cell key={'footer-their-outs-0'}><Header as="h4">THEIR OUTS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    theirfooterOuts.push(<Table.Cell key={'footer-their-outs-' + i}>{outsInput(lockedInnings.indexOf(i) > -1)}{outsInput(lockedInnings.indexOf(i) > -1)}{outsInput(lockedInnings.indexOf(i) > -1)}</Table.Cell>)
+    theirfooterOuts.push(<Table.Cell key={'footer-their-outs-' + i}>{outsInput(i, 'theirs', lockedInnings.indexOf(i) > -1)}{outsInput(i, lockedInnings.indexOf(i) > -1)}{outsInput(i, lockedInnings.indexOf(i) > -1)}</Table.Cell>)
   }
 
   let ourfooterOuts = [<Table.Cell key={'footer-our-outs-0'}><Header as="h4">OUR OUTS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    ourfooterOuts.push(<Table.Cell key={'footer-our-outs-' + i}>{scoresheet[i - 1][0]}</Table.Cell>)
+    ourfooterOuts.push(<Table.Cell key={'footer-our-outs-' + i}>{scoresheet.ours[i - 1][1]}</Table.Cell>)
   }
 
   let theirFooterRuns = [<Table.Cell key={'footer-their-runs-0'}><Header as="h4">THEIR RUNS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
     if (i < noMercyInningBegin) {
-      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{mercyRunInput(lockedInnings.indexOf(i) > -1)}</Table.Cell>)
+      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{mercyRunInput(i, 'theirs', lockedInnings.indexOf(i) > -1)}</Table.Cell>)
     } else {
-      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{noMercyRunInput(lockedInnings.indexOf(i) > -1)}</Table.Cell>)
+      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{noMercyRunInput(i, 'theirs', lockedInnings.indexOf(i) > -1)}</Table.Cell>)
     }
   }
 
   let ourFooterRuns = [<Table.Cell key={'footer-our-runs-0'}><Header as="h4">OUR RUNS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    ourFooterRuns.push(<Table.Cell key={'footer-our-runs-' + i}>{scoresheet[i - 1][1]}</Table.Cell>)
+    ourFooterRuns.push(<Table.Cell key={'footer-our-runs-' + i}>{scoresheet.ours[i - 1][0]}</Table.Cell>)
   }
 
   let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Lock</Header></Table.Cell>]
@@ -87,7 +75,7 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
   }
 
   return (
-    <Table celled>
+    <Table celled collapsing>
       <Table.Header>
         <Table.Row>
           { headerCells }
@@ -124,6 +112,7 @@ OffenseTable.propTypes = {
   noMercyInningBegin: PropTypes.number.isRequired,
   battingOrder: PropTypes.array.isRequired,
   statusGrid: PropTypes.array.isRequired,
+  scoresheet: PropTypes.object.isRequired,
   advanceRunner: PropTypes.func.isRequired,
   onScoresheetChange: PropTypes.func.isRequired,
   toggleInningLock: PropTypes.func.isRequired

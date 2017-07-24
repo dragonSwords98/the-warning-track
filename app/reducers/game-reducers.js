@@ -102,6 +102,19 @@ const populateScoresheet = function (innings) {
   return array
 }
 
+const updateScoresheet = function (score, statusInning) {
+  score = [0, 0]
+  statusInning.forEach(g => {
+    if (g.name === 'HOME') {
+      score[0]++
+    }
+    if (g.name === 'OUT') {
+      score[1]++
+    }
+  })
+  return score
+}
+
 // Future features: Pinch runner, designated pinch runner, scouting reports on hits
 // Rotating co-ed roles
 
@@ -113,6 +126,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.game-container/destroy') {
     state = Object.assign({}, state, INITIAL_STATE)
   }
+  
   // if (action.type === 'route.game-container/start-game.initialize') {
   //   let { game } = action.payload
   //   state = Object.assign({}, INITIAL_STATE, state, game)
@@ -120,6 +134,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   //   state.scoresheet = populateScoresheet(state.league.innings)
   //   state.gameStatus = 1
   // }
+
   if (action.type === 'route.game-container/load-game.success') {
     state = Object.assign({}, INITIAL_STATE, state, action.payload.game)
   }
@@ -127,7 +142,10 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state = Object.assign({}, state)
     state.league = action.payload.league
     state.statusGrid = populateStatusGrid(state.league.innings, state.ourBattingOrder.length)
-    state.scoresheet = populateScoresheet(state.league.innings)
+    state.scoresheet = {
+      ours: populateScoresheet(state.league.innings),
+      theirs: populateScoresheet(state.league.innings)
+    }
   }
   if (action.type === 'route.game-container/load-game.rejected') {
     state = Object.assign({}, state, INITIAL_STATE)
@@ -141,12 +159,19 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       statusIndex = 0
     }
     state.statusGrid[inning - 1][row] = STATUS_ORDERING[statusIndex]
+    state.scoresheet.ours[inning - 1] = updateScoresheet(state.scoresheet.ours[inning - 1], state.statusGrid[inning - 1])
   }
 
   if (action.type === 'game.scoresheet/update') {
     state = Object.assign({}, state)
-    //  1) determine which input/checkbox was modified,
-    //  2) update the scoresheet respectively
+
+    if (action.payload.data.type === 'number') {
+      state.scoresheet.theirs[action.payload.data["data-inning"]][0] = parseInt(action.payload.data.value)
+    } else if (action.payload.data.type === 'checkbox') {
+      state.scoresheet.theirs[action.payload.data["data-inning"]][1] = +action.payload.data.checked
+    } else {
+      console.error('Unhandled scoresheet input type:', action.payload.data.type)
+    }
   }
 
   if (action.type === 'game.advance-batter-runner/inning-over') {

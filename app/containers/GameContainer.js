@@ -37,6 +37,7 @@ class GameContainer extends Component {
         fielding={game.ourFieldingLineup}
         battingOrder={game.ourBattingOrder}
         statusGrid={game.statusGrid}
+        scoresheet={game.scoresheet}
         lockedInnings={game.lockedInnings}
         advanceRunner={advanceBatterRunner}
         onScoresheetChange={onScoresheetChange}
