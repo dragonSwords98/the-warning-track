@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Grid, Segment, List } from 'semantic-ui-react'
 
-function FieldingLineup ({ positions, fielding }) {
+function FieldingLineup ({ positions, fielding, currentInning }) {
   return (
     <Segment padded>
       <Grid columns={fielding.length + 1} divided>
@@ -29,7 +29,7 @@ function FieldingLineup ({ positions, fielding }) {
                   </List.Item>
                   {
                     inningLineup.map((fielder) => {
-                      return (<List.Item key={inning + '-' + fielder._id}>{fielder.name}</List.Item>)
+                      return (<List.Item key={inning + '-' + fielder._id} disabled={currentInning - 1 !== inning}>{fielder.name}</List.Item>)
                     })
                   }
                 </List>
@@ -43,6 +43,7 @@ function FieldingLineup ({ positions, fielding }) {
 }
 FieldingLineup.propTypes = {
   positions: PropTypes.array.isRequired,
-  fielding: PropTypes.array.isRequired
+  fielding: PropTypes.array.isRequired,
+  currentInning: PropTypes.number.isRequired
 }
 export default FieldingLineup

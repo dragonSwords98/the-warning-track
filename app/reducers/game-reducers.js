@@ -146,10 +146,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       ours: populateScoresheet(state.league.innings),
       theirs: populateScoresheet(state.league.innings)
     }
-
-    // if it is not the current inning, it is locked
-    state.lockedInnings = Array.from({length:state.league.innings},(v,k)=>k+1)
-    state.lockedInnings.splice(state.lockedInnings.indexOf(parseInt(state.currentInning)), 1)
   }
 
   if (action.type === 'route.game-container/load-game.rejected') {
@@ -289,12 +285,12 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'create-game.lock-inning/toggle' || action.type === 'game.lock-inning/toggle') {
     state = Object.assign({}, state)
-    let index = state.lockedInnings.indexOf(action.payload.inning)
-    if (index > -1) {
-      state.lockedInnings.splice(index, 1)
+    if (action.payload.inning === state.currentInning && state.currentInning <= state.league.innings - 1) {
+      state.currentInning++
+    } else if (action.payload.inning === state.currentInning) {
+      state.currentInning = 1
     } else {
-      state.lockedInnings.push(action.payload.inning)
-      state.lockedInnings.sort()
+      state.currentInning = action.payload.inning
     }
   }
   return state

@@ -31,6 +31,7 @@ class GameContainer extends Component {
       <Game
         id={game._id}
         innings={game.league.innings}
+        currentInning={game.currentInning}
         mercyRuns={game.league.mercyRuns}
         noMercyInningBegin={game.league.noMercyInningBegin}
         positions={game.league.positions}
@@ -38,7 +39,6 @@ class GameContainer extends Component {
         battingOrder={game.ourBattingOrder}
         statusGrid={game.statusGrid}
         scoresheet={game.scoresheet}
-        lockedInnings={game.lockedInnings}
         advanceRunner={advanceBatterRunner}
         onScoresheetChange={onScoresheetChange}
         toggleInningLock={toggleInningLock} />

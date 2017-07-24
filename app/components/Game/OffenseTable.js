@@ -5,7 +5,7 @@ import { Button, Input, Checkbox, Table, Header } from 'semantic-ui-react'
 
 import BattersBox from '@track/components/Game/BattersBox'
 
-function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, lockedInnings, statusGrid, scoresheet, advanceRunner, onScoresheetChange, toggleInningLock }) {
+function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, battingOrder, statusGrid, scoresheet, advanceRunner, onScoresheetChange, toggleInningLock }) {
   // Header Cells
   let headerCells = [<Table.HeaderCell key={'inning-header-cell'} width='two'>Batting</Table.HeaderCell>]
   for (let i = 1; i <= innings; i++) {
@@ -17,7 +17,7 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
     let batterCells = []
     for (let i = 1; i <= innings; i++) {
       let box
-      if (lockedInnings.indexOf(i) > -1) {
+      if (currentInning !== i) {
         box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} advanceRunner={advanceRunner} disabled />
       } else {
         box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} advanceRunner={advanceRunner} />
@@ -46,7 +46,7 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
   // Creating Footer Cells
   let theirfooterOuts = [<Table.Cell key={'footer-their-outs-0'}><Header as="h4">THEIR OUTS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    theirfooterOuts.push(<Table.Cell key={'footer-their-outs-' + i}>{outsInput(i, 'theirs', lockedInnings.indexOf(i) > -1)}{outsInput(i, lockedInnings.indexOf(i) > -1)}{outsInput(i, lockedInnings.indexOf(i) > -1)}</Table.Cell>)
+    theirfooterOuts.push(<Table.Cell key={'footer-their-outs-' + i}>{outsInput(i, 'theirs', currentInning !== i)}{outsInput(i, currentInning !== i)}{outsInput(i, currentInning !== i)}</Table.Cell>)
   }
 
   let ourfooterOuts = [<Table.Cell key={'footer-our-outs-0'}><Header as="h4">OUR OUTS</Header></Table.Cell>]
@@ -57,9 +57,9 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
   let theirFooterRuns = [<Table.Cell key={'footer-their-runs-0'}><Header as="h4">THEIR RUNS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
     if (i < noMercyInningBegin) {
-      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{mercyRunInput(i, 'theirs', lockedInnings.indexOf(i) > -1)}</Table.Cell>)
+      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{mercyRunInput(i, 'theirs', currentInning !== i)}</Table.Cell>)
     } else {
-      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{noMercyRunInput(i, 'theirs', lockedInnings.indexOf(i) > -1)}</Table.Cell>)
+      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{noMercyRunInput(i, 'theirs', currentInning !== i)}</Table.Cell>)
     }
   }
 
@@ -70,7 +70,7 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
 
   let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Completed</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    let icon = lockedInnings.indexOf(i) > -1 ? 'lock' : 'checkmark'
+    let icon = currentInning === i ? 'checkmark' : 'lock'
     lockInnings.push(<Table.Cell key={'footer-lock-' + i}><Button data={i} circular icon={icon} onClick={toggleInningLock} /></Table.Cell>)
   }
 
@@ -108,6 +108,7 @@ function OffenseTable ({ innings, mercyRuns, noMercyInningBegin, battingOrder, l
 }
 OffenseTable.propTypes = {
   innings: PropTypes.number.isRequired,
+  currentInning: PropTypes.number.isRequired,
   mercyRuns: PropTypes.number.isRequired,
   noMercyInningBegin: PropTypes.number.isRequired,
   battingOrder: PropTypes.array.isRequired,
