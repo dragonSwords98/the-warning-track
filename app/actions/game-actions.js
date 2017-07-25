@@ -49,7 +49,7 @@ export function loadGame (gameId) {
 export function saveGame () {
   return function (dispatch, getState) {
     const state = getState()
-    let promise = client.updateGame(state.game)
+    let promise = client.updateGameById(state.game._id, state.game)
     return promise.then((data) => {
       return dispatch({ type: 'game.save/success' })
     }).catch((error) => {

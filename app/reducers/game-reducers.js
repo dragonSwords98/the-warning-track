@@ -1,6 +1,11 @@
 'use strict'
 import moment from 'moment'
 
+import { STATUS_ORDERING } from '@track/utils/constants'
+
+// CR: Consider deprecating
+import { populateScoresheet, populateStatusGrid } from '@track/utils'
+
 const INITIAL_STATE = {
   league: null,
   _id: null,
@@ -28,78 +33,6 @@ const INITIAL_STATE = {
   scoresheet: [], // ours vs theirs
   // nextHitterPoint: 0, // only ours
   gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
-}
-
-const OUT_STATUS = {
-  name: 'OUT',
-  label: 'Out',
-  color: 'black'
-}
-const BENCH_STATUS = {
-  name: 'BENCH',
-  label: 'Bench',
-  color: 'grey'
-}
-const IN_THE_HOLE_STATUS = {
-  name: 'IN_THE_HOLE',
-  label: 'Hole',
-  color: 'yellow'
-}
-const ON_DECK_STATUS = {
-  name: 'ON_DECK',
-  label: 'Deck',
-  color: 'orange'
-}
-const AT_BAT_STATUS = {
-  name: 'AT_BAT',
-  label: 'Bat',
-  color: 'red'
-}
-const FIRST_STATUS = {
-  name: 'FIRST',
-  label: 'First',
-  color: 'olive'
-}
-const SECOND_STATUS = {
-  name: 'SECOND',
-  label: 'Second',
-  color: 'green'
-}
-const THIRD_STATUS = {
-  name: 'THIRD',
-  label: 'Third',
-  color: 'teal'
-}
-const HOME_STATUS = {
-  name: 'HOME',
-  label: 'Home',
-  color: 'blue'
-}
-
-const STATUS_ORDERING = [
-  BENCH_STATUS,
-  IN_THE_HOLE_STATUS,
-  ON_DECK_STATUS,
-  AT_BAT_STATUS,
-  FIRST_STATUS,
-  SECOND_STATUS,
-  THIRD_STATUS,
-  HOME_STATUS,
-  OUT_STATUS
-]
-
-const populateStatusGrid = function (activeRosterLength, innings) {
-  let array = []
-  let row = new Array(innings)
-  row.fill(BENCH_STATUS)
-  while (activeRosterLength--) array.push(row.slice())
-  return array
-}
-
-const populateScoresheet = function (innings) {
-  let array = new Array(innings)
-  array.fill([0, 0])
-  return array
 }
 
 const updateScoresheet = function (score, statusInning) {
@@ -141,10 +74,17 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.game-container/load-league.success') {
     state = Object.assign({}, state)
     state.league = action.payload.league
-    state.statusGrid = populateStatusGrid(state.league.innings, state.ourBattingOrder.length)
-    state.scoresheet = {
-      ours: populateScoresheet(state.league.innings),
-      theirs: populateScoresheet(state.league.innings)
+
+    // CR: consider deprecating
+    if (!state.statusGrid.length) {
+      state.statusGrid = populateStatusGrid(state.league.innings, state.ourBattingOrder.length)
+    }
+    // CR: consider deprecating
+    if (!state.scoresheet.ours || !state.scoresheet.theirs) {
+      state.scoresheet = {
+        ours: populateScoresheet(state.league.innings),
+        theirs: populateScoresheet(state.league.innings)
+      }
     }
   }
 
@@ -275,6 +215,17 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     })
   }
 
+  if (action.type === 'create-game.lock-inning/toggle') {
+    state = Object.assign({}, state)
+    let index = state.lockedInnings.indexOf(action.payload.inning)
+    if (index > -1) {
+      state.lockedInnings.splice(index, 1)
+    } else {
+      state.lockedInnings.push(action.payload.inning)
+      state.lockedInnings.sort()
+    }
+  }
+
   if (action.type === 'route.game-container/create-game.success') {
     state = Object.assign({}, state, INITIAL_STATE)
   }
@@ -283,7 +234,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     console.error(action.payload)
   }
 
-  if (action.type === 'create-game.lock-inning/toggle' || action.type === 'game.lock-inning/toggle') {
+  if (action.type === 'game.lock-inning/toggle') {
     state = Object.assign({}, state)
     if (action.payload.inning === state.currentInning && state.currentInning <= state.league.innings - 1) {
       state.currentInning++

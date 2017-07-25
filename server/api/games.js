@@ -47,7 +47,8 @@ exports.addGame = function(req, res) {
   game.ourFieldingLineup = game.ourFieldingLineup.map(lineup => {
     let keys = Object.keys(lineup)
     for (k in keys) {
-      lineup[k] = mongo.ObjectId(lineup[k])
+      let pos = keys[k]
+      lineup[pos] = mongo.ObjectId(lineup[pos])
     }
     return lineup
   })

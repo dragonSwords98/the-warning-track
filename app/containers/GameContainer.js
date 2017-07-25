@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
-import { loadGame } from '@track/actions/game-actions'
+import { loadGame, saveGame } from '@track/actions/game-actions'
 import Game from '@track/components/Game'
 
 class GameContainer extends Component {
@@ -64,9 +64,10 @@ export default withRouter(connect(
       },
       toggleInningLock (event, data) {
         dispatch({ type: 'game.lock-inning/toggle', payload: { inning: data.data } })
+        dispatch(saveGame())
       },
       saveGame () {
-        dispatch({ type: 'game/save' })
+        dispatch(saveGame())
       },
       destroy () {
         dispatch({ type: 'route.game-container/destroy' })

@@ -75,7 +75,7 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
   }
 
   return (
-    <Table celled collapsing>
+    <Table celled>
       <Table.Header>
         <Table.Row>
           { headerCells }

@@ -3,7 +3,8 @@ import { client } from './client'
 import moment from 'moment'
 import { push as pushLocation } from 'react-router-redux'
 
-import { objectToOption } from '@track/utils'
+import { objectToOption, populateScoresheet, populateStatusGrid } from '@track/utils'
+import { BENCH_STATUS } from '@track/utils/constants'
 
 /**
  * Called when new leagues are available
@@ -113,6 +114,11 @@ const saveGameObject = function (state, game) {
   // CR: converting the batting order back to ids here may not be ideal, maybe should be in reducer while the batting order is created/updated
   // Another issue is finding by batter's name is not ideal, susceptible to duplicate name errors
   game.ourBattingOrder = game.ourBattingOrder.map(batter => state.directory.players.find(p => p.name === batter)._id)
+  game.statusGrid = populateStatusGrid(state.game.league.innings, state.game.ourBattingOrder.length)
+  game.scoresheet = {
+    ours: populateScoresheet(state.game.league.innings),
+    theirs: populateScoresheet(state.game.league.innings)
+  }
   return game
 }
 
