@@ -46,10 +46,23 @@ export function loadGame (gameId) {
   }
 }
 
+const saveGameObject = function (state, game) {
+  // ** Do not manipulate state **
+  // Only scoresheet, statusGrid, and gameStatus would change
+  return {
+    currentInning: game.currentInning,
+    currentFrame: game.currentFrame,
+    scoresheet: game.scoresheet,
+    statusGrid: game.statusGrid,
+    gameStatus: game.gameStatus
+  }
+}
+
 export function saveGame () {
   return function (dispatch, getState) {
     const state = getState()
-    let promise = client.updateGameById(state.game._id, state.game)
+    let game = saveGameObject(state, Object.assign({}, state.game))
+    let promise = client.updateGameById(state.game._id, game)
     return promise.then((data) => {
       return dispatch({ type: 'game.save/success' })
     }).catch((error) => {

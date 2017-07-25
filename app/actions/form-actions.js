@@ -103,7 +103,7 @@ export function updateGameForm (event, data) {
   }
 }
 
-const saveGameObject = function (state, game) {
+const saveNewGameObject = function (state, game) {
   game.league = state.game.league._id
   game.dateTime = moment(state.game.dateTime).format('LLLL')
   game.homeOrAway = state.game.homeOrAway === 'Away' ? 0 : 1
@@ -125,7 +125,7 @@ const saveGameObject = function (state, game) {
 export function submitGameForm (event, data) {
   return function (dispatch, getState) {
     const state = getState()
-    let game = saveGameObject(state, Object.assign({}, state.game))
+    let game = saveNewGameObject(state, Object.assign({}, state.game))
     let promise = client.addGame(game)
     return promise.then((data) => {
       const state = getState()
