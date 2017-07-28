@@ -1,3 +1,12 @@
 v.0.3
 
 a basic setup with react, react-router, redux, eslint, webpack, and hello world!
+
+v1.0.0
+
+- team, players, and games directory
+- create team, player, or game interfaces
+- create game to play game mode
+- saving games midway
+- play game mode is now functional and can play a whole game
+- create game is now functional and can create a whole lineup for one team before their game
