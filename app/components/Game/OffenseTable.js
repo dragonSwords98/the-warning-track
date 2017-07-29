@@ -39,14 +39,15 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
 
   // Our Runs and Our Outs Cells, along with mercies and max outs
   const THREEOUTS = 3
-  const mercyRunInput = (inning, team, disabled) => (<Input data-team={team} data-inning={inning} type="number" min="0" max={mercyRuns} defaultValue="0" fluid disabled={disabled} onChange={onScoresheetChange} />)
-  const noMercyRunInput = (inning, team, disabled) => (<Input data-team={team} data-inning={inning} type="number" min="0" defaultValue="0" fluid disabled={disabled} onChange={onScoresheetChange} />)
-  const outsInput = (inning, team, disabled) => (<Checkbox data-team={team} data-inning={inning} toggle disabled={disabled} onChange={onScoresheetChange} />)
+  const mercyRunInput = (inning, team, disabled, value) => (<Input data-team={team} data-inning={inning} type="number" min="0" max={mercyRuns} value={value} fluid disabled={disabled} onChange={onScoresheetChange} />)
+  const noMercyRunInput = (inning, team, disabled, value) => (<Input data-team={team} data-inning={inning} type="number" min="0" value={value} fluid disabled={disabled} onChange={onScoresheetChange} />)
+  const outsInput = (inning, team, disabled, checked) => (<Checkbox data-team={team} data-inning={inning} checked={checked} toggle disabled={disabled} onChange={onScoresheetChange} />)
 
   // Creating Footer Cells
   let theirfooterOuts = [<Table.Cell key={'footer-their-outs-0'}><Header as="h4">THEIR OUTS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    theirfooterOuts.push(<Table.Cell key={'footer-their-outs-' + i}>{outsInput(i, 'theirs', currentInning !== i)}{outsInput(i, currentInning !== i)}{outsInput(i, currentInning !== i)}</Table.Cell>)
+    let outs = scoresheet.theirs[i-1][1]
+    theirfooterOuts.push(<Table.Cell key={'footer-their-outs-' + i}>{outsInput(i, 'theirs', currentInning !== i, outs > 2)}{outsInput(i, 'theirs', currentInning !== i, outs > 1)}{outsInput(i, 'theirs', currentInning !== i, outs > 0)}</Table.Cell>)
   }
 
   let ourfooterOuts = [<Table.Cell key={'footer-our-outs-0'}><Header as="h4">OUR OUTS</Header></Table.Cell>]
@@ -56,10 +57,11 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
 
   let theirFooterRuns = [<Table.Cell key={'footer-their-runs-0'}><Header as="h4">THEIR RUNS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
+    let runs = scoresheet.theirs[i-1][0]
     if (i < noMercyInningBegin) {
-      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{mercyRunInput(i, 'theirs', currentInning !== i)}</Table.Cell>)
+      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{mercyRunInput(i, 'theirs', currentInning !== i, runs)}</Table.Cell>)
     } else {
-      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{noMercyRunInput(i, 'theirs', currentInning !== i)}</Table.Cell>)
+      theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{noMercyRunInput(i, 'theirs', currentInning !== i, runs)}</Table.Cell>)
     }
   }
 

@@ -6,12 +6,13 @@ const square = { width: 175, height: 175 }
 
 function Segue ({ children, teams, goToGame }) {
   let content = children.map(function (child) {
+    console.log(child)
     let homeTeamRuns = 0
     let awayTeamRuns = 0
     let ourTeam = teams.find(t => t._id === child.ourTeam)
-    if (child.scoresheet.length) {
-      homeTeamRuns = child.scoresheet[0].reduce((a, b) => a + b, 0)
-      awayTeamRuns = child.scoresheet[1].reduce((a, b) => a + b, 0)
+    if (child.scoresheet.ours && child.scoresheet.theirs) {
+      homeTeamRuns = child.scoresheet.ours.reduce((a, b) => parseInt(a) + parseInt(b), 0)
+      awayTeamRuns = child.scoresheet.theirs.reduce((a, b) => parseInt(a) + parseInt(b), 0)
     }
     let frameIndicator = child.currentFrame ? (<Icon name="chevron up" size="mini" />) : (<Icon name="chevron down" size="mini" />)
 
