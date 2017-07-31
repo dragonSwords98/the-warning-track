@@ -20,7 +20,23 @@ export const populateStatusGrid = function (activeRosterLength, innings) {
 }
 
 export const populateScoresheet = function (innings) {
-  let array = new Array(innings)
-  array.fill([0, 0])
-  return array
+  return {
+    runs: new Array(innings).fill(0),
+    outs: new Array(innings).fill(0)
+  }
+}
+
+/**
+ *  runs: runs of that inning (modified by this method)
+ *  score: score of that inning (modified by this method)
+ *  statuses: the statuses of the batters of one team for inning id-ed by @param inning
+ */
+export const updateScoresheet = function (value, statuses) {
+  let count = 0
+  statuses.forEach(g => {
+    if (g.name === value) {
+      count++
+    }
+  })
+  return count
 }

@@ -46,18 +46,18 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
   // Creating Footer Cells
   let theirfooterOuts = [<Table.Cell key={'footer-their-outs-0'}><Header as="h4">THEIR OUTS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    let outs = scoresheet.theirs[i-1][1]
+    let outs = scoresheet.theirs.outs[i-1]
     theirfooterOuts.push(<Table.Cell key={'footer-their-outs-' + i}>{outsInput(i, 'theirs', currentInning !== i, outs > 2)}{outsInput(i, 'theirs', currentInning !== i, outs > 1)}{outsInput(i, 'theirs', currentInning !== i, outs > 0)}</Table.Cell>)
   }
 
   let ourfooterOuts = [<Table.Cell key={'footer-our-outs-0'}><Header as="h4">OUR OUTS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    ourfooterOuts.push(<Table.Cell key={'footer-our-outs-' + i}>{scoresheet.ours[i - 1][1]}</Table.Cell>)
+    ourfooterOuts.push(<Table.Cell key={'footer-our-outs-' + i}>{scoresheet.ours.outs[i - 1]}</Table.Cell>)
   }
 
   let theirFooterRuns = [<Table.Cell key={'footer-their-runs-0'}><Header as="h4">THEIR RUNS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    let runs = scoresheet.theirs[i-1][0]
+    let runs = scoresheet.theirs.runs[i-1]
     if (i < noMercyInningBegin) {
       theirFooterRuns.push(<Table.Cell key={'footer-their-runs-' + i}>{mercyRunInput(i, 'theirs', currentInning !== i, runs)}</Table.Cell>)
     } else {
@@ -67,7 +67,7 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
 
   let ourFooterRuns = [<Table.Cell key={'footer-our-runs-0'}><Header as="h4">OUR RUNS</Header></Table.Cell>]
   for (let i = 1; i <= innings; i++) {
-    ourFooterRuns.push(<Table.Cell key={'footer-our-runs-' + i}>{scoresheet.ours[i - 1][0]}</Table.Cell>)
+    ourFooterRuns.push(<Table.Cell key={'footer-our-runs-' + i}>{scoresheet.ours.runs[i - 1]}</Table.Cell>)
   }
 
   let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Completed</Header></Table.Cell>]

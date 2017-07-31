@@ -4,7 +4,7 @@ import moment from 'moment'
 import { STATUS_ORDERING } from '@track/utils/constants'
 
 // CR: Consider deprecating
-import { populateScoresheet, populateStatusGrid } from '@track/utils'
+import { populateScoresheet, populateStatusGrid, updateScoresheet } from '@track/utils'
 
 const INITIAL_STATE = {
   league: null,
@@ -33,19 +33,6 @@ const INITIAL_STATE = {
   scoresheet: [], // ours vs theirs
   // nextHitterPoint: 0, // only ours
   gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
-}
-
-const updateScoresheet = function (score, statusInning) {
-  score = [0, 0]
-  statusInning.forEach(g => {
-    if (g.name === 'HOME') {
-      score[0]++
-    }
-    if (g.name === 'OUT') {
-      score[1]++
-    }
-  })
-  return score
 }
 
 // Future features: Pinch runner, designated pinch runner, scouting reports on hits
@@ -100,16 +87,20 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       statusIndex = 0
     }
     state.statusGrid[inning - 1][row] = STATUS_ORDERING[statusIndex]
-    state.scoresheet.ours[inning - 1] = updateScoresheet(state.scoresheet.ours[inning - 1], state.statusGrid[inning - 1])
+
+    state.scoresheet.ours.runs[inning - 1] = updateScoresheet('HOME', state.statusGrid[inning - 1])
+    state.scoresheet.ours.outs[inning - 1] = updateScoresheet('OUT', state.statusGrid[inning - 1])
   }
 
   if (action.type === 'game.scoresheet/update') {
     state = Object.assign({}, state)
 
     if (action.payload.data.type === 'number') {
-      state.scoresheet.theirs[action.payload.data["data-inning"]][0] = parseInt(action.payload.data.value)
-    } else if (action.payload.data.type === 'checkbox') {
-      state.scoresheet.theirs[action.payload.data["data-inning"]][1] = +action.payload.data.checked
+      state.scoresheet.theirs.runs[parseInt(action.payload.data["data-inning"]) - 1] = parseInt(action.payload.data.value)
+    } else if (action.payload.data.type === 'checkbox' && action.payload.data.checked) {
+      state.scoresheet.theirs.outs[parseInt(action.payload.data["data-inning"]) - 1]++
+    } else if (action.payload.data.type === 'checkbox' && !action.payload.data.checked) {
+      state.scoresheet.theirs.outs[parseInt(action.payload.data["data-inning"]) - 1]--
     } else {
       console.error('Unhandled scoresheet input type:', action.payload.data.type)
     }
