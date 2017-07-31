@@ -95,6 +95,8 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'game.scoresheet/update') {
     state = Object.assign({}, state)
 
+    // TODO: Please confirm the OUTS are working reasonably properly
+
     if (action.payload.data.type === 'number') {
       state.scoresheet.theirs.runs[parseInt(action.payload.data["data-inning"]) - 1] = parseInt(action.payload.data.value)
     } else if (action.payload.data.type === 'checkbox' && action.payload.data.checked) {
