@@ -20,6 +20,7 @@ import {
   updateAvailableRoster,
   updateAvailableBatters,
   updateLineups,
+  autoFillFieldingLineup,
   updateGameForm,
   submitGameForm
 } from '@track/actions/form-actions'
@@ -87,7 +88,11 @@ class CreateGameContainer extends Component {
       submitCreateFormQuery,
       updateCreateFormQuery,
       handleRosterOptions,
-      handleBattingOrder
+      handleBattingOrder,
+      clearFielderRow,
+      clearFielderInning,
+      clearFielderAll,
+      autoFillFielders
     } = this.props
     if (!game || !form ||
       !directory.players ||
@@ -102,11 +107,19 @@ class CreateGameContainer extends Component {
     let body = []
     let footer = []
     if (game.league) {
-      header = [<Table.HeaderCell key={'header-innings-0'} />]
+      header = [
+        <Table.HeaderCell key={'header-innings-0'}>
+            <Button circular icon='rocket' onClick={autoFillFielders} />
+            <Button circular icon='bomb' onClick={clearFielderAll} />
+        </Table.HeaderCell>]
       footer = [<Table.HeaderCell key="footer-cell-0">Lock</Table.HeaderCell>]
 
       for (let i = 1; i <= game.league.innings; i++) {
-        header.push(<Table.HeaderCell key={'header-innings' + i}>{ i }</Table.HeaderCell>)
+        header.push(
+          <Table.HeaderCell key={'header-innings' + i}>
+            { i + ' ' }
+            <Button data={i} circular icon='erase' onClick={clearFielderInning} />
+          </Table.HeaderCell>)
       }
 
       for (let p = 0; p < game.league.positions.length; p++) {
@@ -118,7 +131,8 @@ class CreateGameContainer extends Component {
             lockedInnings={game.lockedInnings}
             position={position}
             options={form.roster}
-            onChange={handleRosterOptions} />
+            onChange={handleRosterOptions}
+            clearFielderRow={clearFielderRow} />
         )
       }
 
@@ -216,6 +230,20 @@ export default withRouter(connect(
       },
       handleBattingOrder (newOrder) {
         dispatch({ type: 'create-game.batting-order/change', payload: { newOrder: newOrder } })
+      },
+      clearFielderRow (event, data) {
+        dispatch({ type: 'create-game.fielder-row/clear', payload: { position: data.data } })
+      },
+      clearFielderInning (event, data) {
+        dispatch({ type: 'create-game.fielder-inning/clear', payload: { inning: data.data } })
+      },
+      clearFielderAll (event, data) {
+        // TODO: Prompt user before erasing all
+        dispatch({ type: 'create-game.fielder-all/clear' })
+      },
+      autoFillFielders (event, data) {
+        // TODO: Prompt user for strategy to auto-fill
+        dispatch(autoFillFieldingLineup())
       },
       updateCreateFormQuery (event, data) {
         dispatch(updateGameForm(event, data))

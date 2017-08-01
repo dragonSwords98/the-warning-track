@@ -1,42 +1,52 @@
-
-const teamOptions = [
-  { key: 'lt', value: 'looney-tunes', text: 'Looney Tunes' },
-  { key: 'bd', value: 'bolders', text: 'CCCF Bolders' }
-]
-const playerOptions = [
-  { key: 'bling', value: 'bling', text: 'Bryan Ling' },
-  { key: 'sling', value: 'sling', text: 'Sinto Ling' }
-]
-
 const INITIAL_STATE = {
-  activeItem: 'teams',
-  activeOptions: teamOptions,
-  placeholder: 'Select Team'
+  activeItem: 'players',
+  activeFilter: 'teams',
+  activeOptions: [],
+  placeholder: 'Filter by Team'
+}
+
+const setPlaceholder = function (state) {
+  if (state.activeFilter === 'leagues') {
+    state.placeholder = 'Filter by League'
+  }
+  if (state.activeFilter === 'teams') {
+    state.placeholder = 'Filter by Team'
+  }
 }
 
 export default function navigationReducers (state = INITIAL_STATE, action) {
   if (action.type === 'app-menu/init') {
     state = Object.assign({}, state, INITIAL_STATE)
-    state.activeItem = action.payload.path.replace('/', '')
-    return state
+    let location = action.payload.path.replace('/', '')
+    state.activeItem = location
+
+    if (location === 'teams') {
+      state.activeFilter = 'leagues'
+    } else if (location === 'players') {
+      state.activeFilter = 'teams'
+    } else if (location === 'games') {
+      state.activeFilter = 'leagues'
+    } else {
+      // TODO: DEFAULT CASE
+      state.activeFilter = null
+    }
+    setPlaceholder(state)
   }
+
   if (action.type === 'app-menu/item-action') {
     state = Object.assign({}, state)
     state.activeItem = action.payload.name
-    if (state.activeItem === 'teams') {
-      state.activeOptions = teamOptions
-    }
-    if (state.activeItem === 'players') {
-      state.activeOptions = playerOptions
-    }
-    // if (state.activeItem === 'games') {
-    //   state.activeOptions = gameOptions
-    // }
-    return state
+    state.activeFilter = action.payload.filter
+    state.activeOptions = action.payload.options
+    setPlaceholder(state)
   }
+
   if (action.type === 'app-menu/select-action') {
+  }
+
+  if (action.type === 'app-menu/clear-options') {
     state = Object.assign({}, state)
-    return state
+    state.activeOptions = []
   }
 
   return state

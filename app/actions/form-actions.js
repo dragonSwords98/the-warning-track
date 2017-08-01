@@ -3,7 +3,7 @@ import { client } from './client'
 import moment from 'moment'
 import { push as pushLocation } from 'react-router-redux'
 
-import { objectToOption, populateScoresheet, populateStatusGrid } from '@track/utils'
+import { objectToOption, populateScoresheet, populateStatusGrid, firstFindFirstApply } from '@track/utils'
 import { BENCH_STATUS } from '@track/utils/constants'
 
 /**
@@ -72,6 +72,26 @@ function updateAvailableBatters (availablePlayers) {
 export function createGameFormWithDefaults () {
   return function (dispatch, getState) {
     dispatch({ type: 'route.game-container/init' })
+  }
+}
+
+export function autoFillFieldingLineup () {
+  return function (dispatch, getState) {
+    const state = getState()
+    let fieldingLineup = Object.assign([], state.game.ourFieldingLineup)
+
+    // 1. Get roster positions
+    // CR: Should never map backwards... from option back to object is taboo...
+    let availableFielders = state.form.roster.map(r => {
+      let player = state.directory.players.find(p => p._id === r.key)
+      return Object.assign({}, r, { positions: player.positions })
+    })
+
+    // 2. Apply algorithm
+    // Default: Greedy first find first apply
+    fieldingLineup = firstFindFirstApply(availableFielders, Object.assign([], fieldingLineup))
+
+    dispatch({ type: 'create-game.fielder-all/fill', payload: { fieldingLineup: fieldingLineup } })
   }
 }
 

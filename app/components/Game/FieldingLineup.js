@@ -10,7 +10,7 @@ function FieldingLineup ({ positions, fielding, currentInning }) {
         <Grid.Column key={'fielding-grid0'}>
           <List key={'fielding-list0'} animated selection relaxed>
             <List.Item key={'fielding-list-title'}>
-              <List.Header>Positions</List.Header>
+              <List.Header>Fielding</List.Header>
             </List.Item>
             {
               positions.map((p, i) => {
