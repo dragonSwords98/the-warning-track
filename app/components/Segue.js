@@ -11,8 +11,9 @@ function Segue ({ children, teams, goToGame }) {
     let awayTeamRuns = 0
     let ourTeam = teams.find(t => t._id === child.ourTeam)
     if (child.scoresheet.ours && child.scoresheet.theirs) {
-      homeTeamRuns = child.scoresheet.ours.reduce((a, b) => parseInt(a) + parseInt(b), 0)
-      awayTeamRuns = child.scoresheet.theirs.reduce((a, b) => parseInt(a) + parseInt(b), 0)
+      console.log(child.scoresheet)
+      homeTeamRuns = child.scoresheet.ours.runs.reduce((a, b) => parseInt(a) + parseInt(b), 0)
+      awayTeamRuns = child.scoresheet.theirs.runs.reduce((a, b) => parseInt(a) + parseInt(b), 0)
     }
     let frameIndicator = child.currentFrame ? (<Icon name="chevron up" size="mini" />) : (<Icon name="chevron down" size="mini" />)
 
