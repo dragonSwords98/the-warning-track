@@ -1,6 +1,7 @@
 'use strict'
 
 import { client } from './client'
+import { getMenuSelectOptions } from '@track/actions/navigation-actions'
 
 /**
  * Fetch directories by type. For directory pages AND for initial populating of web app data
@@ -12,6 +13,9 @@ export function fetchDirectory (type) {
       promise = client.getAllTeams()
       promise.then((data) => {
         return dispatch({ type: 'fetch-directory.teams/received', payload: { teams: data } })
+      }).then((data) => {
+        const state = getState()
+        if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
       }).catch((error) => {
         return dispatch({ type: 'fetch-directory.teams/rejected', payload: { error: error } })
       })
@@ -20,6 +24,8 @@ export function fetchDirectory (type) {
       promise = client.getAllPlayers()
       promise.then((data) => {
         return dispatch({ type: 'fetch-directory.players/received', payload: { players: data } })
+      // }).then((data) => {
+      //   if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
       }).catch((error) => {
         return dispatch({ type: 'fetch-directory.players/rejected', payload: { error: error } })
       })
@@ -28,6 +34,8 @@ export function fetchDirectory (type) {
       promise = client.getAllGames()
       promise.then((data) => {
         return dispatch({ type: 'fetch-directory.games/received', payload: { games: data } })
+      // }).then((data) => {
+      //   if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
       }).catch((error) => {
         return dispatch({ type: 'fetch-directory.games/rejected', payload: { error: error } })
       })
@@ -36,6 +44,8 @@ export function fetchDirectory (type) {
       promise = client.getAllDiamonds()
       promise.then((data) => {
         return dispatch({ type: 'fetch-directory.diamonds/received', payload: { diamonds: data } })
+      // }).then((data) => {
+      //   if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
       }).catch((error) => {
         return dispatch({ type: 'fetch-directory.diamonds/rejected', payload: { error: error } })
       })
@@ -44,6 +54,9 @@ export function fetchDirectory (type) {
       promise = client.getAllLeagues()
       promise.then((data) => {
         return dispatch({ type: 'fetch-directory.leagues/received', payload: { leagues: data } })
+      }).then((data) => {
+        const state = getState()
+        if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
       }).catch((error) => {
         return dispatch({ type: 'fetch-directory.leagues/rejected', payload: { error: error } })
       })

@@ -1,6 +1,6 @@
 'use strict'
 
-import { push as pushLocation } from 'react-router-redux'
+import { objectToOption } from '@track/utils'
 
 export function initMenu (locationPath) {
   return function (dispatch, getState) {
@@ -10,24 +10,21 @@ export function initMenu (locationPath) {
 
 export function handleMenuItemAction (name) {
   return function (dispatch, getState) {
-    dispatch({
-      type: 'app-menu/item-action',
-      payload: { name }
-    })
-    if (name === 'home') {
-      dispatch(pushLocation('/creategame')) // TODO: work out the workflow for create game, schedule games
-    }
+
+    // if (name === 'home') {
+    //   dispatch(pushLocation('/games')) // TODO: work out the workflow for create game, schedule games
+    // }
 
     if (name === 'teams') {
-      dispatch(pushLocation('/teams'))
+      dispatch(getMenuSelectOptions(name, 'leagues'))
     }
 
     if (name === 'players') {
-      dispatch(pushLocation('/players'))
+      dispatch(getMenuSelectOptions(name, 'teams'))
     }
 
     if (name === 'games') {
-      dispatch(pushLocation('/games'))
+      dispatch(getMenuSelectOptions(name, 'leagues'))
     }
   }
 }
@@ -37,6 +34,20 @@ export function handleMenuSelectAction (selection) {
     dispatch({
       type: 'app-menu/select-action',
       payload: { selection }
+    })
+  }
+}
+
+export function getMenuSelectOptions (name, filter) {
+  return function (dispatch, getState) {
+    const state = getState()
+    dispatch({
+      type: 'app-menu/item-action',
+      payload: {
+        name: name,
+        filter: filter,
+        options: objectToOption(Object.assign([], state.directory[filter]))
+      }
     })
   }
 }

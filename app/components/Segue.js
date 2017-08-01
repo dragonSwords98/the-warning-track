@@ -6,12 +6,10 @@ const square = { width: 175, height: 175 }
 
 function Segue ({ children, teams, goToGame }) {
   let content = children.map(function (child) {
-    console.log(child)
     let homeTeamRuns = 0
     let awayTeamRuns = 0
     let ourTeam = teams.find(t => t._id === child.ourTeam)
     if (child.scoresheet.ours && child.scoresheet.theirs) {
-      console.log(child.scoresheet)
       homeTeamRuns = child.scoresheet.ours.runs.reduce((a, b) => parseInt(a) + parseInt(b), 0)
       awayTeamRuns = child.scoresheet.theirs.runs.reduce((a, b) => parseInt(a) + parseInt(b), 0)
     }

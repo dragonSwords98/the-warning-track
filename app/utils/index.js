@@ -6,7 +6,7 @@ export const objectToOption = function (data) {
     return {
       key: d._id,
       value: d._id,
-      text: d.name
+      text: d.name ? d.name : d._id
     }
   })
 }

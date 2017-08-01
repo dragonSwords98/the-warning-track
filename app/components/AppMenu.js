@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
 import { Menu, Header, Dropdown } from 'semantic-ui-react'
+import { push as pushLocation } from 'react-router-redux'
 
 import { initMenu, handleMenuItemAction, handleMenuSelectAction } from '@track/actions/navigation-actions'
 
@@ -13,7 +14,15 @@ class AppMenu extends Component {
   }
 
   render () {
-    let { placeholder, activeItem, activeOptions } = this.props
+    let { placeholder, activeFilter, activeItem, activeOptions } = this.props
+    let menuRight
+    if (activeFilter) {
+      menuRight = (
+        <Menu.Item position="right">
+          <Dropdown placeholder={placeholder} search selection className="icon" options={activeOptions} onChange={this.props.handleMenuSelect} />
+        </Menu.Item>
+      )
+    }
     return (
       <Menu>
         <Menu.Item>
@@ -22,9 +31,7 @@ class AppMenu extends Component {
         <Menu.Item name="teams" active={activeItem === 'teams'} onClick={this.props.handleMenuItem} />
         <Menu.Item name="players" active={activeItem === 'players'} onClick={this.props.handleMenuItem} />
         <Menu.Item name="games" active={activeItem === 'games'} onClick={this.props.handleMenuItem} />
-        <Menu.Item position="right">
-          <Dropdown placeholder={placeholder} search selection className="icon" options={activeOptions} onChange={this.props.handleMenuSelect} />
-        </Menu.Item>
+        { menuRight }
       </Menu>
     )
   }
@@ -33,6 +40,7 @@ export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
       activeItem: state.navigation.activeItem,
+      activeFilter: state.navigation.activeFilter,
       activeOptions: state.navigation.activeOptions,
       placeholder: state.navigation.placeholder
     }
@@ -43,6 +51,8 @@ export default withRouter(connect(
         dispatch(initMenu(ownProps.location.pathname))
       },
       handleMenuItem (e, data) {
+        dispatch(pushLocation('/' + data.name))
+        dispatch({ type: 'app-menu/clear-options' })
         dispatch(handleMenuItemAction(data.name))
       },
       handleMenuSelect (e, data) {
