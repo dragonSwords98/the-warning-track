@@ -52,7 +52,8 @@ export const firstFindFirstApply = function(availableFielders, copiedFieldingLin
       let match = availableFielders.find(f => {
         return f.positions.includes(p)
       })
-      if (match) inning[p] = match.value
+      if (match && !inning[p]) inning[p] = match.value
+
     })
   })
   return copiedFieldingLineup
