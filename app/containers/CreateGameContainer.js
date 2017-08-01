@@ -87,7 +87,9 @@ class CreateGameContainer extends Component {
       submitCreateFormQuery,
       updateCreateFormQuery,
       handleRosterOptions,
-      handleBattingOrder
+      handleBattingOrder,
+      clearFielderRow,
+      clearFielderInning
     } = this.props
     if (!game || !form ||
       !directory.players ||
@@ -106,7 +108,11 @@ class CreateGameContainer extends Component {
       footer = [<Table.HeaderCell key="footer-cell-0">Lock</Table.HeaderCell>]
 
       for (let i = 1; i <= game.league.innings; i++) {
-        header.push(<Table.HeaderCell key={'header-innings' + i}>{ i }</Table.HeaderCell>)
+        header.push(
+          <Table.HeaderCell key={'header-innings' + i}>
+            { i }
+            <Button data={i} circular icon='erase' onClick={clearFielderInning} />
+          </Table.HeaderCell>)
       }
 
       for (let p = 0; p < game.league.positions.length; p++) {
@@ -118,7 +124,8 @@ class CreateGameContainer extends Component {
             lockedInnings={game.lockedInnings}
             position={position}
             options={form.roster}
-            onChange={handleRosterOptions} />
+            onChange={handleRosterOptions}
+            clearFielderRow={clearFielderRow} />
         )
       }
 
@@ -216,6 +223,12 @@ export default withRouter(connect(
       },
       handleBattingOrder (newOrder) {
         dispatch({ type: 'create-game.batting-order/change', payload: { newOrder: newOrder } })
+      },
+      clearFielderRow (event, data) {
+        dispatch({ type: 'create-game.fielder-row/clear', payload: { position: data.data } })
+      },
+      clearFielderInning (event, data) {
+        dispatch({ type: 'create-game.fielder-inning/clear', payload: { inning: data.data } })
       },
       updateCreateFormQuery (event, data) {
         dispatch(updateGameForm(event, data))

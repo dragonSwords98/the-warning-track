@@ -35,6 +35,13 @@ const INITIAL_STATE = {
   gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
 }
 
+const populatePositions = function(positions) {
+  return positions.reduce((acc, curr, i) => {
+    acc[curr] = ''
+    return acc
+  }, {})
+}
+
 // Future features: Pinch runner, designated pinch runner, scouting reports on hits
 // Rotating co-ed roles
 
@@ -158,10 +165,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     if (!action.payload.isOurTeamInThisLeague) {
       state.ourTeam = null
     }
-    const positions = action.payload.league.positions.reduce((acc, curr, i) => {
-      acc[curr] = ''
-      return acc
-    }, {})
+    let positions = populatePositions(action.payload.league.positions)
     state.ourFieldingLineup = new Array(action.payload.league.innings + 1).fill(positions)
 
     // TODO: warn/prompt the user when they change league again bcuz they will lose all their work -_-
@@ -217,6 +221,18 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       state.lockedInnings.push(action.payload.inning)
       state.lockedInnings.sort()
     }
+  }
+
+  if (action.type === 'create-game.fielder-row/clear') {
+    state = Object.assign({}, state)
+    state.ourFieldingLineup.forEach(inning => {
+      inning[action.payload.position] = ""
+    })
+  }
+
+  if (action.type === 'create-game.fielder-inning/clear') {
+    state = Object.assign({}, state)
+    state.ourFieldingLineup[action.payload.inning] = populatePositions(state.league.positions)
   }
 
   if (action.type === 'route.game-container/create-game.success') {

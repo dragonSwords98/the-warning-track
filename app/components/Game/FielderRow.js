@@ -1,14 +1,14 @@
 'use strict'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Header, Table } from 'semantic-ui-react'
+import { Header, Table, Button } from 'semantic-ui-react'
 
 import LoadingOverlay from '@track/components/LoadingOverlay'
 import FielderCell from '@track/components/Game/FielderCell'
 
 class FielderRow extends Component {
   render () {
-    const { lineup, innings, lockedInnings, position, options, onChange } = this.props
+    const { lineup, innings, lockedInnings, position, options, onChange, clearFielderRow } = this.props
 
     if (!innings || !position || !options || !onChange) {
       return <LoadingOverlay />
@@ -28,6 +28,7 @@ class FielderRow extends Component {
       <Table.Row>
         <Table.Cell>
           <Header as="h4">{ position }</Header>
+          <Button data={position} circular icon='erase' onClick={clearFielderRow} />
         </Table.Cell>
         {cells}
       </Table.Row>)
@@ -39,6 +40,7 @@ FielderRow.propTypes = {
   lockedInnings: PropTypes.array.isRequired,
   position: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  clearFielderRow: PropTypes.func.isRequired
 }
 export default FielderRow
