@@ -13,7 +13,7 @@ class GameContainer extends Component {
     this.props.destroy()
   }
   render () {
-    const { game, advanceBatterRunner, onScoresheetChange, toggleInningLock } = this.props
+    const { game, saveGame, advanceBatterRunner, onScoresheetChange, toggleInningLock } = this.props
 
     if (!game) {
       return <div>Loading Game...</div>
@@ -41,7 +41,8 @@ class GameContainer extends Component {
         scoresheet={game.scoresheet}
         advanceRunner={advanceBatterRunner}
         onScoresheetChange={onScoresheetChange}
-        toggleInningLock={toggleInningLock} />
+        toggleInningLock={toggleInningLock}
+        saveGame={saveGame} />
     )
   }
 }

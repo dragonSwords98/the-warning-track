@@ -5,9 +5,13 @@ import { Button, Input, Checkbox, Table, Header } from 'semantic-ui-react'
 
 import BattersBox from '@track/components/Game/BattersBox'
 
-function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, battingOrder, statusGrid, scoresheet, advanceRunner, onScoresheetChange, toggleInningLock }) {
+function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, battingOrder, statusGrid, scoresheet, advanceRunner, onScoresheetChange, toggleInningLock, saveGame }) {
   // Header Cells
-  let headerCells = [<Table.HeaderCell key={'inning-header-cell'} width='two'>Batting</Table.HeaderCell>]
+  let headerCells = [
+    <Table.HeaderCell key={'inning-header-cell'} width='two'>
+      { 'Batting ' }
+      <Button circular icon='save' onClick={saveGame} />
+    </Table.HeaderCell>]
   for (let i = 1; i <= innings; i++) {
     headerCells.push(<Table.HeaderCell key={'inning-header-cell-' + i}>{i}</Table.HeaderCell>)
   }
@@ -118,6 +122,7 @@ OffenseTable.propTypes = {
   scoresheet: PropTypes.object.isRequired,
   advanceRunner: PropTypes.func.isRequired,
   onScoresheetChange: PropTypes.func.isRequired,
-  toggleInningLock: PropTypes.func.isRequired
+  toggleInningLock: PropTypes.func.isRequired,
+  saveGame: PropTypes.func.isRequired
 }
 export default OffenseTable

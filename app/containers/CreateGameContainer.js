@@ -110,7 +110,7 @@ class CreateGameContainer extends Component {
       for (let i = 1; i <= game.league.innings; i++) {
         header.push(
           <Table.HeaderCell key={'header-innings' + i}>
-            { i }
+            { i + ' ' }
             <Button data={i} circular icon='erase' onClick={clearFielderInning} />
           </Table.HeaderCell>)
       }
