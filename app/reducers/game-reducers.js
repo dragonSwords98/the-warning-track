@@ -235,6 +235,17 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state.ourFieldingLineup[action.payload.inning] = populatePositions(state.league.positions)
   }
 
+  if (action.type === 'create-game.fielder-all/clear') {
+    state = Object.assign({}, state)
+    let positions = populatePositions(state.league.positions)
+    state.ourFieldingLineup = new Array(state.league.innings + 1).fill(positions)
+  }
+
+  if (action.type === 'create-game.fielder-all/fill') {
+    state = Object.assign({}, state)
+    state.ourFieldingLineup = action.payload.fieldingLineup
+  }
+
   if (action.type === 'route.game-container/create-game.success') {
     state = Object.assign({}, state, INITIAL_STATE)
   }

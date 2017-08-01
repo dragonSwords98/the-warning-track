@@ -40,3 +40,22 @@ export const updateScoresheet = function (value, statuses) {
   })
   return count
 }
+
+/**
+ * @param availableFielders: the roster and their potential positions
+ * @param copiedFieldingLineup: the current shallow copy of fielding lineup with innings, will be modified and returned
+ * @return: the new fielding lineup with algo applied 
+ */
+export const firstFindFirstApply = function(availableFielders, copiedFieldingLineup) {
+  copiedFieldingLineup.forEach(inning => {
+    Object.keys(inning).forEach(p => {
+      let match = availableFielders.find(f => {
+        return f.positions.includes(p)
+      })
+      if (match) inning[p] = match.value
+    })
+  })
+  return copiedFieldingLineup
+}
+
+// TODO: nonDupInInningFirstFindFirstApply, nonDupInInningLimitAcrossPositionFirstFindFirstApply, nonDupInInningLimitAcrossPositionFirstFindFirstApply

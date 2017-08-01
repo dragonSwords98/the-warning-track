@@ -20,6 +20,7 @@ import {
   updateAvailableRoster,
   updateAvailableBatters,
   updateLineups,
+  autoFillFieldingLineup,
   updateGameForm,
   submitGameForm
 } from '@track/actions/form-actions'
@@ -89,7 +90,9 @@ class CreateGameContainer extends Component {
       handleRosterOptions,
       handleBattingOrder,
       clearFielderRow,
-      clearFielderInning
+      clearFielderInning,
+      clearFielderAll,
+      autoFillFielders
     } = this.props
     if (!game || !form ||
       !directory.players ||
@@ -104,7 +107,11 @@ class CreateGameContainer extends Component {
     let body = []
     let footer = []
     if (game.league) {
-      header = [<Table.HeaderCell key={'header-innings-0'} />]
+      header = [
+        <Table.HeaderCell key={'header-innings-0'}>
+            <Button circular icon='rocket' onClick={autoFillFielders} />
+            <Button circular icon='bomb' onClick={clearFielderAll} />
+        </Table.HeaderCell>]
       footer = [<Table.HeaderCell key="footer-cell-0">Lock</Table.HeaderCell>]
 
       for (let i = 1; i <= game.league.innings; i++) {
@@ -229,6 +236,14 @@ export default withRouter(connect(
       },
       clearFielderInning (event, data) {
         dispatch({ type: 'create-game.fielder-inning/clear', payload: { inning: data.data } })
+      },
+      clearFielderAll (event, data) {
+        // TODO: Prompt user before erasing all
+        dispatch({ type: 'create-game.fielder-all/clear' })
+      },
+      autoFillFielders (event, data) {
+        // TODO: Prompt user for strategy to auto-fill
+        dispatch(autoFillFieldingLineup())
       },
       updateCreateFormQuery (event, data) {
         dispatch(updateGameForm(event, data))

@@ -25,6 +25,7 @@ export function fetchDirectory (type) {
       promise.then((data) => {
         return dispatch({ type: 'fetch-directory.players/received', payload: { players: data } })
       // }).then((data) => {
+      //   const state = getState()
       //   if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
       }).catch((error) => {
         return dispatch({ type: 'fetch-directory.players/rejected', payload: { error: error } })
@@ -35,6 +36,7 @@ export function fetchDirectory (type) {
       promise.then((data) => {
         return dispatch({ type: 'fetch-directory.games/received', payload: { games: data } })
       // }).then((data) => {
+      //   const state = getState()
       //   if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
       }).catch((error) => {
         return dispatch({ type: 'fetch-directory.games/rejected', payload: { error: error } })
@@ -45,6 +47,7 @@ export function fetchDirectory (type) {
       promise.then((data) => {
         return dispatch({ type: 'fetch-directory.diamonds/received', payload: { diamonds: data } })
       // }).then((data) => {
+      //   const state = getState()
       //   if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
       }).catch((error) => {
         return dispatch({ type: 'fetch-directory.diamonds/rejected', payload: { error: error } })
