@@ -97,7 +97,8 @@ populateLeaguesCollection = function () {
         mercyRuns: 5,
         noMercyInningBegin: 6,
         sliding: true,
-        coedRule: 'MMMF'
+        coedRule: 'MMMF',
+        color: 'orange'
     },
     {
         _id: ObjectId("31c92149873ad56fe0093592"),
@@ -108,7 +109,8 @@ populateLeaguesCollection = function () {
         mercyRuns: 7,
         noMercyInningBegin: 5,
         sliding: true,
-        coedRule: 'MMF'
+        coedRule: 'MMF',
+        color: 'red'
 
     },
     {
@@ -120,7 +122,8 @@ populateLeaguesCollection = function () {
         mercyRuns: 5,
         noMercyInningBegin: 6,
         sliding: true,
-        coedRule: 'MMF'
+        coedRule: 'MMF',
+        color: 'olive'
     }];
 
     db.collection('leagues', function(err, collection) {

@@ -41,6 +41,22 @@ export const updateScoresheet = function (value, statuses) {
   return count
 }
 
+
+export const mapLeaguesIntoTeams = function (teams, leagues) {
+  return teams.map(t => {
+    t.leagues = Object.assign([], t.leagues).map(tl => leagues.find(l => l._id === tl) ? leagues.find(l => l._id === tl) : tl)
+    return t
+  })
+}
+
+export const mapTeamsIntoPlayers = function (players, teams) {
+  players = players.map(p => {
+    p.teams = Object.assign([], p.teams).map(pt => teams.find(t => t._id === pt) ? teams.find(t => t._id === pt) : pt)
+    return p
+  })
+  return players
+}
+
 /**
  * @param availableFielders: the roster and their potential positions
  * @param copiedFieldingLineup: the current shallow copy of fielding lineup with innings, will be modified and returned

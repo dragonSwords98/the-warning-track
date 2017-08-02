@@ -95,6 +95,7 @@ populateTeamsCollection = function () {
       image: 'looney-tunes.jpg',
       leagues: [ObjectId("31c92149873ad56fe0093592")],
       description: 'We play on Wednesdays and Thursdays (6:30, 8, 9:30 PM time slots)',
+      color: 'blue',
       size: 30 // should just use roster.length
     },
     {
@@ -103,6 +104,7 @@ populateTeamsCollection = function () {
       image: 'bolders.jpg',
       leagues: [ObjectId("22c92149873ad56fe00935df")],
       description: 'We play on Saturdays and Sundays (2, 4, 6 PM time slots)',
+      color: 'grey',
       size: 25
     },
     {
@@ -111,6 +113,7 @@ populateTeamsCollection = function () {
       image: 'katallage.jpg',
       leagues: [ObjectId("24c92149873ad56fe0093e1e")],
       description: 'We play on Saturdays and Sundays (2, 4, 6 PM time slots)',
+      color: 'black',
       size: 25
     }];
 

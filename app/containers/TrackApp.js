@@ -8,7 +8,7 @@ import Page from '@track/components/Page'
 import AppMenu from '@track/components/AppMenu'
 import Footer from '@track/components/Footer'
 
-import { fetchDirectory } from '@track/actions/directory-actions'
+import { fetchAll } from '@track/actions/directory-actions'
 
 class TrackApp extends Component {
   componentWillMount () {
@@ -37,11 +37,7 @@ export default withRouter(connect(
       init () {
         // dispatch({ type: 'track/init' })
         dispatch({ type: 'directory-list/init' })
-        dispatch(fetchDirectory('players'))
-        dispatch(fetchDirectory('teams'))
-        dispatch(fetchDirectory('games'))
-        dispatch(fetchDirectory('leagues'))
-        dispatch(fetchDirectory('diamonds'))
+        dispatch(fetchAll())
       },
       destroy () {
         // dispatch({ type: 'track/destroy' })

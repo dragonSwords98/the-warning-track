@@ -11,7 +11,7 @@ import CreatePlayerContainer from '@track/containers/Create/CreatePlayerContaine
 import CardGrid from '@track/components/CardGrid'
 import Segue from '@track/components/Segue'
 import { updateCreateForm, submitCreateForm } from '@track/actions/directory-actions'
-import { objectToOption } from '@track/utils'
+import { objectToOption, mapLeaguesIntoTeams, mapTeamsIntoPlayers } from '@track/utils'
 
 class Directory extends Component {
   componentWillUnmount () {
@@ -58,7 +58,7 @@ class Directory extends Component {
             formSubmissionHandler={submitCreateFormQuery} />
         )
       }
-      exhibit = <CardGrid collection={directory[type]} type={type} />
+      exhibit = <CardGrid collection={mapLeaguesIntoTeams(Object.assign([], directory[type]), Object.assign([], directory.leagues))} type={type} />
     }
     if (type === 'players') {
       creation = (<div><Button onClick={toggleCreateForm}>Create Player</Button></div>)
@@ -71,7 +71,7 @@ class Directory extends Component {
             formSubmissionHandler={submitCreateFormQuery} />
         )
       }
-      exhibit = <CardGrid collection={directory[type]} type={type} />
+      exhibit = <CardGrid collection={mapTeamsIntoPlayers(Object.assign([], directory[type]), Object.assign([], directory.teams))} type={type} />
     }
 
     if (type === 'games') {

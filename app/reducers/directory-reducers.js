@@ -20,6 +20,11 @@ export default function directoryReducers (state = INITIAL_STATE, action) {
     state.createGame = {}
   }
 
+  if (action.type === 'fetch-directory.leagues/received') {
+    state = Object.assign({}, state)
+    state.leagues = action.payload.leagues
+  }
+
   if (action.type === 'fetch-directory.teams/received') {
     state = Object.assign({}, state)
     state.teams = action.payload.teams
@@ -33,11 +38,6 @@ export default function directoryReducers (state = INITIAL_STATE, action) {
   if (action.type === 'fetch-directory.games/received') {
     state = Object.assign({}, state)
     state.games = action.payload.games
-  }
-
-  if (action.type === 'fetch-directory.leagues/received') {
-    state = Object.assign({}, state)
-    state.leagues = action.payload.leagues
   }
 
   if (action.type === 'fetch-directory.diamonds/received') {

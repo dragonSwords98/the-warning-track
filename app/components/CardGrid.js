@@ -59,12 +59,13 @@ function CardGrid ({ collection, type }) {
 
   if (type === 'teams') {
     grid = collection.map(entry => {
+      let meta = entry.leagues.map(l => <div key={'label-tag-' + l.name} className={"ui tag olive label " + l.color}>{l.name}</div>)
       return (
         <Card
           key={'card' + entry._id}
           image={publicImageDir + entry.image}
           header={entry.name}
-          meta={entry.league}
+          meta={meta}
           description={entry.description}
           href={`#/${type}/${entry._id}/${entry.name}`}
           extra={extra(entry.size)}
@@ -74,12 +75,14 @@ function CardGrid ({ collection, type }) {
   }
   if (type === 'players') {
     grid = collection.map(entry => {
+      let meta = entry.teams.map(t => <div key={'label-tag-' + t.name} className={"ui tag label " + t.color}>{t.name}</div>)
+
       return (
         <Card
           key={'card' + entry._id}
           image={publicImageDir + entry.image}
           header={entry.name}
-          meta={entry.teams[0]}
+          meta={meta}
           description={entry.description}
           href={`#/${type}/${entry._id}/${entry.name}`}
           extra={extra([entry.throws, entry.hits])}
