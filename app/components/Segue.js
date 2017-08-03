@@ -23,7 +23,7 @@ function Segue ({ children, teams, filter, goToGame }) {
     let colorLabel = GAME_STATUS_COLOR_INDICATOR[child.gameStatus]
 
     return (
-      <Button circular key={'game-' + child._id} data-game-id={child._id} onClick={goToGame}>
+      <Button className={'square'} circular key={'game-' + child._id} data-game-id={child._id} onClick={goToGame}>
         <Segment circular color={colorLabel} style={square}>
           <Header as="h2">
             {homeTeamRuns} : {awayTeamRuns}

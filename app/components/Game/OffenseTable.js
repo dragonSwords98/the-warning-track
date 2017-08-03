@@ -20,13 +20,10 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
   const generateBatterCells = function (r, statusGrid) {
     let batterCells = []
     for (let i = 1; i <= innings; i++) {
-      let box
-      if (currentInning !== i) {
-        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} advanceRunner={advanceRunner} disabled />
-      } else {
-        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} advanceRunner={advanceRunner} />
-      }
-      batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">{box}</Table.Cell>)
+      batterCells.push(
+        <Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">
+          <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} advanceRunner={advanceRunner} disabled={currentInning !== i} />
+        </Table.Cell>)
     }
     return batterCells
   }

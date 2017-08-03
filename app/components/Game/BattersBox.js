@@ -13,7 +13,7 @@ class BattersBox extends Component {
       return <LoadingOverlay />
     }
 
-    if (!advanceRunner || disabled) {
+    if (!advanceRunner || disabled || status.disabled) {
       return (
         <Button data-row={row} data-inning={inning} fluid color={status.color} disabled>{status.label}</Button>
       )

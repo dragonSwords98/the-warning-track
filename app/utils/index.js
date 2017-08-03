@@ -1,5 +1,5 @@
 'use strict'
-import { BENCH_STATUS } from './constants'
+import { BENCH_STATUS, IN_THE_HOLE_STATUS, ON_DECK_STATUS, AT_BAT_STATUS } from './constants'
 
 export const objectToOption = function (data) {
   return data.map(d => {
@@ -11,11 +11,27 @@ export const objectToOption = function (data) {
   })
 }
 
-export const populateStatusGrid = function (activeRosterLength, innings) {
+/**
+  * @param jumpStart: if the game has not begun, kick start the first batter
+  */
+export const populateStatusGrid = function (activeRosterLength, innings, leadoff=true) {
   let array = []
   let row = new Array(innings)
   row.fill(BENCH_STATUS)
   while (activeRosterLength--) array.push(row.slice())
+
+  // CR: STEP 2: leadoff hitter should be 'at-bat'
+  if (leadoff) {
+    let firstInning = array[0]
+    if (firstInning.length < 3) {
+      console.error('Illegal roster size')
+    }
+    firstInning[0] = AT_BAT_STATUS
+    firstInning[0].disabled = !firstInning[0].disabled
+    firstInning[1] = ON_DECK_STATUS
+    firstInning[2] = IN_THE_HOLE_STATUS
+  }
+
   return array
 }
 

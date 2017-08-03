@@ -23,6 +23,7 @@ const INITIAL_STATE = {
   currentInning: 1, // to emphasis specific off/def lineups
   lockedInnings: [],
   currentFrame: 0, // 0 for top, 1 for bottom
+  // currentBatterIndex: 0, // index of the order
   ourBattingOrder: [],
   ourFieldingLineup: [],
   // homeBattingOrder: [],
@@ -71,7 +72,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
     // CR: consider deprecating
     if (!state.statusGrid.length) {
-      state.statusGrid = populateStatusGrid(state.league.innings, state.ourBattingOrder.length)
+      state.statusGrid = populateStatusGrid(state.league.innings, state.ourBattingOrder.length, true)
     }
     // CR: consider deprecating
     if (!state.scoresheet.ours || !state.scoresheet.theirs) {
@@ -115,10 +116,10 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     }
   }
 
-  if (action.type === 'game.advance-batter-runner/inning-over') {
-    state = Object.assign({}, state)
-    // freeze this inning, unfreeze the next inning, set the next batter as at-bat
-  }
+  // if (action.type === 'game.advance-batter-runner/inning-over') {
+  //   state = Object.assign({}, state)
+  //   // freeze this inning, unfreeze the next inning, set the next batter as at-bat
+  // }
 
   // if (action.type === 'game.opponent-action/run') {
   //   state = Object.assign({}, state)
