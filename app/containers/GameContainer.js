@@ -4,6 +4,7 @@ import { withRouter } from 'react-router'
 
 import { loadGame, saveGame } from '@track/actions/game-actions'
 import Game from '@track/components/Game'
+import LoadingOverlay from '@track/components/LoadingOverlay'
 
 class GameContainer extends Component {
   componentWillMount () {
@@ -16,15 +17,15 @@ class GameContainer extends Component {
     const { game, saveGame, advanceBatterRunner, onScoresheetChange, toggleInningLock } = this.props
 
     if (!game) {
-      return <div>Loading Game...</div>
+      return <LoadingOverlay msg={"Loading Game..."} />
     }
 
     if (!game._id || !game.league) {
-      return <div>Loading Game Details...</div>
+      return <LoadingOverlay msg={"Loading Game Details..."} />
     }
 
     if (!game.league.innings) {
-      return <div>Loading Game State...</div>
+      return <LoadingOverlay msg={"Loading Game State..."} />
     }
 
     return (

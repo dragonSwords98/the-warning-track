@@ -1,9 +1,9 @@
 'use strict'
 import React from 'react'
-function LoadingOverlay () {
+function LoadingOverlay ({ msg='Loading...' }) {
   return (
     <div className="loading content">
-      Loading...
+      { msg }
     </div>
   )
 }

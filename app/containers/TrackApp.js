@@ -7,6 +7,7 @@ import routes from '../routes'
 import Page from '@track/components/Page'
 import AppMenu from '@track/components/AppMenu'
 import Footer from '@track/components/Footer'
+import LoadingOverlay from '@track/components/LoadingOverlay'
 
 import { fetchAll } from '@track/actions/directory-actions'
 
@@ -18,12 +19,19 @@ class TrackApp extends Component {
     this.props.destroy()
   }
   render () {
+    const { directory } = this.props
+    let content = (<LoadingOverlay msg={'Reticulating Splines...'} />)
+    
+    if (directory && directory.players && directory.teams && directory.games && directory.leagues) {
+      content = routes
+    }
+
     return (
       <Page
         className="track"
         menu={<AppMenu />}
         footerContent={<Footer />}>
-        { routes }
+        { content }
       </Page>
     )
   }

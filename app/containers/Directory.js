@@ -19,9 +19,10 @@ class Directory extends Component {
   }
   render () {
     const { type, directory, team, player, goToCreateGame, goToGame, toggleCreateForm, updateCreateFormQuery, submitCreateFormQuery } = this.props
-    // if (!directory[type]) {
+
     if (!directory || !directory.players || !directory.teams || !directory.games || !directory.leagues) {
-      return (<LoadingOverlay />)
+      // CR: TrackApp now loads directories on init and will not mount child components until it receives this data. So this should be at best an ERROR case
+      return (<LoadingOverlay msg={ "Loading Directories..." } />)
     }
 
     let playerOptions = []

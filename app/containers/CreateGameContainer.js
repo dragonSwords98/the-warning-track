@@ -100,7 +100,7 @@ class CreateGameContainer extends Component {
       !directory.games ||
       !directory.leagues ||
       !directory.diamonds) {
-      return (<LoadingOverlay />)
+      return (<LoadingOverlay msg={'Loading Game Creator...'} />)
     }
 
     let header = []
