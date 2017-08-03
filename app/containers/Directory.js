@@ -18,7 +18,7 @@ class Directory extends Component {
     this.props.destroy()
   }
   render () {
-    const { type, directory, team, player, goToCreateGame, goToGame, toggleCreateForm, updateCreateFormQuery, submitCreateFormQuery } = this.props
+    const { type, navigation, directory, team, player, goToCreateGame, goToGame, toggleCreateForm, updateCreateFormQuery, submitCreateFormQuery } = this.props
 
     if (!directory || !directory.players || !directory.teams || !directory.games || !directory.leagues) {
       // CR: TrackApp now loads directories on init and will not mount child components until it receives this data. So this should be at best an ERROR case
@@ -45,7 +45,7 @@ class Directory extends Component {
     }
 
     let creation = (<div><Button primary onClick={goToCreateGame}>Create Game</Button></div>)
-    let form
+    let form, filter
     let exhibit = (<div />)
     if (type === 'teams') {
       creation = (<div><Button secondary onClick={toggleCreateForm}>Create Team</Button></div>)
@@ -59,7 +59,7 @@ class Directory extends Component {
             formSubmissionHandler={submitCreateFormQuery} />
         )
       }
-      exhibit = <CardGrid collection={mapLeaguesIntoTeams(Object.assign([], directory[type]), Object.assign([], directory.leagues))} type={type} />
+      exhibit = <CardGrid collection={mapLeaguesIntoTeams(Object.assign([], directory[type]), Object.assign([], directory.leagues))} filter={navigation.selectedOption} type={type} />
     }
     if (type === 'players') {
       creation = (<div><Button onClick={toggleCreateForm}>Create Player</Button></div>)
@@ -72,11 +72,11 @@ class Directory extends Component {
             formSubmissionHandler={submitCreateFormQuery} />
         )
       }
-      exhibit = <CardGrid collection={mapTeamsIntoPlayers(Object.assign([], directory[type]), Object.assign([], directory.teams))} type={type} />
+      exhibit = <CardGrid collection={mapTeamsIntoPlayers(Object.assign([], directory[type]), Object.assign([], directory.teams))} filter={navigation.selectedOption} type={type} />
     }
 
     if (type === 'games') {
-      exhibit = <Segue children={directory[type]} teams={directory.teams} goToGame={goToGame} />
+      exhibit = <Segue children={directory[type]} teams={directory.teams} filter={navigation.selectedOption} goToGame={goToGame} />
     }
 
     return (
@@ -92,6 +92,7 @@ class Directory extends Component {
 export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
+      navigation: state.navigation,
       directory: state.directory,
       team: state.team,
       player: state.player

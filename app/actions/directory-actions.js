@@ -1,7 +1,7 @@
 'use strict'
 
 import { client } from './client'
-import { getMenuSelectOptions } from '@track/actions/navigation-actions'
+import { updateMenuFilter } from '@track/actions/navigation-actions'
 
 export function fetchAll () {
   return function (dispatch, getState) {
@@ -12,9 +12,11 @@ export function fetchAll () {
       dispatch({ type: 'fetch-directory.leagues/received', payload: { leagues: data } })
       return client.getAllTeams()
     }).then((data) => {
+
       dispatch({ type: 'fetch-directory.teams/received', payload: { teams: data } })
       return client.getAllPlayers()
     }).then((data) => {
+
       dispatch({ type: 'fetch-directory.players/received', payload: { players: data } })
       return client.getAllGames()
     }).then((data) => {
@@ -23,72 +25,9 @@ export function fetchAll () {
     }).then((data) => {
       dispatch({ type: 'fetch-directory.diamonds/received', payload: { diamonds: data } })
       return
+    }).then(() => {
+      dispatch(updateMenuFilter())
     })
-  }
-}
-
-/**
- * Fetch directories by type. For directory pages AND for initial populating of web app data
- */
-export function fetchDirectory (type) {
-  return function (dispatch, getState) {
-    let promise
-    if (type === 'teams') {
-      promise = client.getAllTeams()
-      promise.then((data) => {
-        return dispatch({ type: 'fetch-directory.teams/received', payload: { teams: data } })
-      }).then((data) => {
-        const state = getState()
-        if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
-      }).catch((error) => {
-        return dispatch({ type: 'fetch-directory.teams/rejected', payload: { error: error } })
-      })
-    }
-    if (type === 'players') {
-      promise = client.getAllPlayers()
-      promise.then((data) => {
-        return dispatch({ type: 'fetch-directory.players/received', payload: { players: data } })
-      // }).then((data) => {
-      //   const state = getState()
-      //   if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
-      }).catch((error) => {
-        return dispatch({ type: 'fetch-directory.players/rejected', payload: { error: error } })
-      })
-    }
-    if (type === 'games') {
-      promise = client.getAllGames()
-      promise.then((data) => {
-        return dispatch({ type: 'fetch-directory.games/received', payload: { games: data } })
-      // }).then((data) => {
-      //   const state = getState()
-      //   if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
-      }).catch((error) => {
-        return dispatch({ type: 'fetch-directory.games/rejected', payload: { error: error } })
-      })
-    }
-    if (type === 'diamonds') {
-      promise = client.getAllDiamonds()
-      promise.then((data) => {
-        return dispatch({ type: 'fetch-directory.diamonds/received', payload: { diamonds: data } })
-      // }).then((data) => {
-      //   const state = getState()
-      //   if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
-      }).catch((error) => {
-        return dispatch({ type: 'fetch-directory.diamonds/rejected', payload: { error: error } })
-      })
-    }
-    if (type === 'leagues') {
-      promise = client.getAllLeagues()
-      promise.then((data) => {
-        return dispatch({ type: 'fetch-directory.leagues/received', payload: { leagues: data } })
-      }).then((data) => {
-        const state = getState()
-        if (state.navigation.activeFilter === type) return dispatch(getMenuSelectOptions(state.navigation.activeItem, type))
-      }).catch((error) => {
-        return dispatch({ type: 'fetch-directory.leagues/rejected', payload: { error: error } })
-      })
-    }
-    return promise
   }
 }
 

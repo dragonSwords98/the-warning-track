@@ -15,6 +15,8 @@ export function handleMenuItemAction (name) {
     //   dispatch(pushLocation('/games')) // TODO: work out the workflow for create game, schedule games
     // }
 
+    dispatch({ type: 'app-menu/clear-select' })
+
     if (name === 'teams') {
       dispatch(getMenuSelectOptions(name, 'leagues'))
     }
@@ -31,6 +33,8 @@ export function handleMenuItemAction (name) {
 
 export function handleMenuSelectAction (selection) {
   return function (dispatch, getState) {
+    const state = getState()
+
     dispatch({
       type: 'app-menu/select-action',
       payload: { selection }
@@ -49,5 +53,13 @@ export function getMenuSelectOptions (name, filter) {
         options: objectToOption(Object.assign([], state.directory[filter]))
       }
     })
+  }
+}
+
+export function updateMenuFilter () {
+  return function (dispatch, getState) {
+    const state = getState()
+    if (state.navigation.activeFilter === 'leagues') return dispatch(getMenuSelectOptions(state.navigation.activeItem, 'leagues'))
+    if (state.navigation.activeFilter === 'teams') return dispatch(getMenuSelectOptions(state.navigation.activeItem, 'teams'))
   }
 }

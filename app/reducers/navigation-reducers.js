@@ -2,6 +2,7 @@ const INITIAL_STATE = {
   activeItem: 'players',
   activeFilter: 'teams',
   activeOptions: [],
+  selectedOption: '',
   placeholder: 'Filter by Team'
 }
 
@@ -42,11 +43,17 @@ export default function navigationReducers (state = INITIAL_STATE, action) {
   }
 
   if (action.type === 'app-menu/select-action') {
+    state = Object.assign({}, state)
+    state.selectedOption = action.payload.selection
   }
 
   if (action.type === 'app-menu/clear-options') {
     state = Object.assign({}, state)
     state.activeOptions = []
+  }
+
+  if (action.type === 'app-menu/clear-select') {
+    state = Object.assign({}, state, INITIAL_STATE)
   }
 
   return state

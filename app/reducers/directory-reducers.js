@@ -6,6 +6,11 @@ const INITIAL_STATE = {
   games: null,
   leagues: null,
   diamonds: null,
+  filteredTeams: null,
+  filteredPlayers: null,
+  filteredGames: null,
+  filteredLeagues: null,
+  filteredDiamonds: null,
   showCreateForm: false
 }
 

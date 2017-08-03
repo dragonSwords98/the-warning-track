@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, List, Icon } from 'semantic-ui-react'
 
-function CardGrid ({ collection, type }) {
+function CardGrid ({ collection, filter, type }) {
   const publicImageDir = '../images/'
   let grid = ''
 
@@ -59,6 +59,9 @@ function CardGrid ({ collection, type }) {
 
   if (type === 'teams') {
     grid = collection.map(entry => {
+      if (!entry.leagues.find(l => l._id === filter) && filter) {
+        return
+      }
       let meta = entry.leagues.map(l => <div key={'label-tag-' + l.name} className={"ui tag olive label " + l.color}>{l.name}</div>)
       return (
         <Card
@@ -75,8 +78,10 @@ function CardGrid ({ collection, type }) {
   }
   if (type === 'players') {
     grid = collection.map(entry => {
+      if (!entry.teams.find(l => l._id === filter) && filter) {
+        return
+      }
       let meta = entry.teams.map(t => <div key={'label-tag-' + t.name} className={"ui tag label " + t.color}>{t.name}</div>)
-
       return (
         <Card
           key={'card' + entry._id}

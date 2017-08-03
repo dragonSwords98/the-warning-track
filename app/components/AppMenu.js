@@ -14,12 +14,12 @@ class AppMenu extends Component {
   }
 
   render () {
-    let { placeholder, activeFilter, activeItem, activeOptions } = this.props
+    let { navigation } = this.props
     let menuRight
-    if (activeFilter) {
+    if (navigation.activeFilter) {
       menuRight = (
         <Menu.Item position="right">
-          <Dropdown placeholder={placeholder} search selection className="icon" options={activeOptions} onChange={this.props.handleMenuSelect} />
+          <Dropdown placeholder={navigation.placeholder} search selection className="icon" options={navigation.activeOptions} value={navigation.selectedOption} onChange={this.props.handleMenuSelect} />
         </Menu.Item>
       )
     }
@@ -28,9 +28,9 @@ class AppMenu extends Component {
         <Menu.Item>
           <Header as="h1">TRACK</Header>
         </Menu.Item>
-        <Menu.Item name="teams" active={activeItem === 'teams'} onClick={this.props.handleMenuItem} />
-        <Menu.Item name="players" active={activeItem === 'players'} onClick={this.props.handleMenuItem} />
-        <Menu.Item name="games" active={activeItem === 'games'} onClick={this.props.handleMenuItem} />
+        <Menu.Item name="teams" active={navigation.activeItem === 'teams'} onClick={this.props.handleMenuItem} />
+        <Menu.Item name="players" active={navigation.activeItem === 'players'} onClick={this.props.handleMenuItem} />
+        <Menu.Item name="games" active={navigation.activeItem === 'games'} onClick={this.props.handleMenuItem} />
         { menuRight }
       </Menu>
     )
@@ -39,10 +39,7 @@ class AppMenu extends Component {
 export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
-      activeItem: state.navigation.activeItem,
-      activeFilter: state.navigation.activeFilter,
-      activeOptions: state.navigation.activeOptions,
-      placeholder: state.navigation.placeholder
+      navigation: state.navigation
     }
   },
   function mapDispatchToProps (dispatch, ownProps) {

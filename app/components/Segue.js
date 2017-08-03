@@ -4,8 +4,12 @@ import { Button, Header, Segment, Icon } from 'semantic-ui-react'
 
 const square = { width: 175, height: 175 }
 
-function Segue ({ children, teams, goToGame }) {
+function Segue ({ children, teams, filter, goToGame }) {
   let content = children.map(function (child) {
+    if (child.league !== filter && filter) {
+      return
+    }
+
     let homeTeamRuns = 0
     let awayTeamRuns = 0
     let ourTeam = teams.find(t => t._id === child.ourTeam)
