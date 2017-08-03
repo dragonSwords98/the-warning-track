@@ -1,7 +1,7 @@
 'use strict'
 import moment from 'moment'
 
-import { STATUS_ORDERING } from '@track/utils/constants'
+import { STATUS_ORDERING, IN_THE_HOLE_STATUS, ON_DECK_STATUS, AT_BAT_STATUS } from '@track/utils/constants'
 
 // CR: Consider deprecating
 import { populateScoresheet, populateStatusGrid, updateScoresheet } from '@track/utils'
@@ -87,17 +87,55 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state = Object.assign({}, state, INITIAL_STATE)
   }
 
-  if (action.type === 'game.advance-runner/advance') {
+  if (action.type === 'game.advance-batter/advance') {
     state = Object.assign({}, state)
     const { row, inning } = action.payload.target.dataset
+
     let statusIndex = STATUS_ORDERING.indexOf(state.statusGrid[inning - 1][row]) + 1
     if (statusIndex > STATUS_ORDERING.length - 1) {
       statusIndex = 0
     }
+    // 1. Advance the runner
     state.statusGrid[inning - 1][row] = STATUS_ORDERING[statusIndex]
+    state.statusGrid[inning - 1][row].disabled = !state.statusGrid[inning - 1][row].disabled // CR: current should not be disabled
 
+    // 2. Calculate the new score/outs
     state.scoresheet.ours.runs[inning - 1] = updateScoresheet('HOME', state.statusGrid[inning - 1])
     state.scoresheet.ours.outs[inning - 1] = updateScoresheet('OUT', state.statusGrid[inning - 1])
+
+    let index = parseInt(row)
+    // 3. Find the next at-bat and on-deck and in-the-hole if necessary (CR: Currently let's throw an error when we find a batter that's already been 'at-bat'/'activated' this inning)
+    if (state.statusGrid[inning - 1][index].name !== 'AT_BAT') {
+      if (row + 1 < state.statusGrid[inning - 1].length - 3) {
+        state.statusGrid[inning - 1][index + 1] = AT_BAT_STATUS
+        state.statusGrid[inning - 1][index + 2] = ON_DECK_STATUS
+        if (state.statusGrid[inning - 1][index + 3].name !== 'BENCH') {
+          console.error('ERROR: A previous batter is about to come to bat again in the same inning. We don\'t currently support this feature.')
+        }
+        state.statusGrid[inning - 1][index + 3] = IN_THE_HOLE_STATUS
+      } else if (row + 1 < state.statusGrid[inning - 1].length - 2) {
+        state.statusGrid[inning - 1][index + 1] = AT_BAT_STATUS
+        state.statusGrid[inning - 1][index + 2] = ON_DECK_STATUS
+        if (state.statusGrid[inning - 1][0].name !== 'BENCH') {
+          console.error('ERROR: A previous batter is about to come to bat again in the same inning. We don\'t currently support this feature.')
+        }
+        state.statusGrid[inning - 1][0] = IN_THE_HOLE_STATUS
+      } else if (row + 1 < state.statusGrid[inning - 1].length - 1) {
+        state.statusGrid[inning - 1][index + 1] = AT_BAT_STATUS
+        state.statusGrid[inning - 1][0] = ON_DECK_STATUS
+        if (state.statusGrid[inning - 1][1].name !== 'BENCH') {
+          console.error('ERROR: A previous batter is about to come to bat again in the same inning. We don\'t currently support this feature.')
+        }
+        state.statusGrid[inning - 1][1] = IN_THE_HOLE_STATUS
+      } else {
+        state.statusGrid[inning - 1][0] = AT_BAT_STATUS
+        state.statusGrid[inning - 1][1] = ON_DECK_STATUS
+        if (state.statusGrid[inning - 1][2].name !== 'BENCH') {
+          console.error('ERROR: A previous batter is about to come to bat again in the same inning. We don\'t currently support this feature.')
+        }
+        state.statusGrid[inning - 1][2] = IN_THE_HOLE_STATUS
+      }
+    }
   }
 
   if (action.type === 'game.scoresheet/update') {

@@ -59,7 +59,7 @@ export default withRouter(connect(
         dispatch(loadGame(gameId))
       },
       advanceBatterRunner (event, data) {
-        dispatch({ type: 'game.advance-runner/advance', payload: { target: event.target, data: data } })
+        dispatch({ type: 'game.advance-batter/advance', payload: { target: event.target, data: data } })
       },
       onScoresheetChange (event, data) {
         dispatch({ type: 'game.scoresheet/update', payload: { target: event.target, data: data } })
