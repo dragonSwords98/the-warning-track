@@ -1,5 +1,5 @@
 'use strict'
-import { client } from './client'
+import { client } from '../client'
 import moment from 'moment'
 import { push as pushLocation } from 'react-router-redux'
 
@@ -82,7 +82,7 @@ export function autoFillFieldingLineup () {
 
     // 1. Get roster positions
     // CR: Should never map backwards... from option back to object is taboo...
-    let availableFielders = state.form.roster.map(r => {
+    let availableFielders = state.createGame.roster.map(r => {
       let player = state.directory.players.find(p => p._id === r.key)
       return Object.assign({}, r, { positions: player.positions })
     })

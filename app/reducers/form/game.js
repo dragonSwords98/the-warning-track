@@ -8,7 +8,7 @@ const INITIAL_STATE = {
   batters: []
 }
 
-export default function formReducers (state = INITIAL_STATE, action) {
+export default function createGameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'create-game.form/init') {
     state = Object.assign({}, INITIAL_STATE)
   }

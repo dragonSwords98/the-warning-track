@@ -23,7 +23,7 @@ import {
   autoFillFieldingLineup,
   updateGameForm,
   submitGameForm
-} from '@track/actions/form-actions'
+} from '@track/actions/form/game'
 
 import { objectToOption } from '@track/utils'
 
@@ -43,20 +43,20 @@ class CreateGameContainer extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.directory.leagues && !nextProps.form.leagues.length) {
+    if (nextProps.directory.leagues && !nextProps.createGame.leagues.length) {
       nextProps.updateAvailableLeagues(nextProps.directory.leagues)
     }
-    if (nextProps.directory.diamonds && !nextProps.form.diamonds.length) {
+    if (nextProps.directory.diamonds && !nextProps.createGame.diamonds.length) {
       nextProps.populateOptions('diamonds', objectToOption(nextProps.directory.diamonds))
     }
-    if (nextProps.directory.teams && !nextProps.form.teams.length) {
+    if (nextProps.directory.teams && !nextProps.createGame.teams.length) {
       nextProps.updateAvailableTeams(nextProps.directory.teams)
     }
-    if (nextProps.directory.players && !nextProps.form.roster.length) {
+    if (nextProps.directory.players && !nextProps.createGame.roster.length) {
       nextProps.updateAvailableRoster(nextProps.directory.players)
     }
 
-    if (nextProps.form.batters && document.getElementById('battingOrderList')) {
+    if (nextProps.createGame.batters && document.getElementById('battingOrderList')) {
       const el = document.getElementById('battingOrderList')
       if (!this.props.sortable && el) {
         this.setState((prevState, props) => {
@@ -73,7 +73,7 @@ class CreateGameContainer extends Component {
           }
         })
         if (!nextProps.game.ourBattingOrder.length) {
-          nextProps.handleBattingOrder(nextProps.form.batters)
+          nextProps.handleBattingOrder(nextProps.createGame.batters)
         }
       }
     }
@@ -82,7 +82,7 @@ class CreateGameContainer extends Component {
   render () {
     const {
       game,
-      form,
+      createGame,
       directory,
       toggleInningLock,
       submitCreateFormQuery,
@@ -94,7 +94,7 @@ class CreateGameContainer extends Component {
       clearFielderAll,
       autoFillFielders
     } = this.props
-    if (!game || !form ||
+    if (!game || !createGame ||
       !directory.players ||
       !directory.teams ||
       !directory.games ||
@@ -130,7 +130,7 @@ class CreateGameContainer extends Component {
             innings={game.league.innings}
             lockedInnings={game.lockedInnings}
             position={position}
-            options={form.roster}
+            options={createGame.roster}
             onChange={handleRosterOptions}
             clearFielderRow={clearFielderRow} />
         )
@@ -160,20 +160,20 @@ class CreateGameContainer extends Component {
     let CreateGameComponent = (<LoadingOverlay />)
     let BattingOrderComponent = (<LoadingOverlay />)
 
-    if (form.leagues && form.teams && form.diamonds) {
+    if (createGame.leagues && createGame.teams && createGame.diamonds) {
       CreateGameComponent = (
         <CreateGame
           submitCreateGameForm={submitCreateFormQuery}
-          leagueOptions={form.leagues}
-          teamsOptions={form.teams}
+          leagueOptions={createGame.leagues}
+          teamsOptions={createGame.teams}
           labelHomeOrAway={game.homeOrAway}
-          diamondOptions={form.diamonds}
+          diamondOptions={createGame.diamonds}
           dateRange={dateRange}
           handleFormChange={updateCreateFormQuery} />)
     }
 
-    if (form.batters) {
-      BattingOrderComponent = (<SortableUnorderedList id="battingOrderList" ref="battingOrderList" items={form.batters} onChange={handleBattingOrder} />)
+    if (createGame.batters) {
+      BattingOrderComponent = (<SortableUnorderedList id="battingOrderList" ref="battingOrderList" items={createGame.batters} onChange={handleBattingOrder} />)
     }
 
     return (
@@ -200,7 +200,7 @@ export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
       directory: state.directory,
-      form: state.form,
+      createGame: state.createGame,
       game: state.game
     }
   },

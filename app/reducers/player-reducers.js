@@ -1,7 +1,7 @@
 'use strict'
 
 const INITIAL_STATE = {
-  name: 'Anonymous Chan',
+  name: '',
   image: 'anonymous-chan.jpg',
   gender: 0,
   birthyear: 1990,
