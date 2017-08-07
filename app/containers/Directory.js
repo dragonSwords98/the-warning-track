@@ -6,11 +6,11 @@ import { push as pushLocation } from 'react-router-redux'
 
 import LoadingOverlay from '@track/components/LoadingOverlay'
 // import CreationModalForm from '@track/components/CreationModalForm'
-import CreateTeamContainer from '@track/containers/Create/CreateTeamContainer'
+import CreateTeam from '@track/components/Form/CreateTeam'
 import CreatePlayerContainer from '@track/containers/Create/CreatePlayerContainer'
 import CardGrid from '@track/components/CardGrid'
 import Segue from '@track/components/Segue'
-import { updateCreateForm, submitCreateForm } from '@track/actions/directory-actions'
+import { updateCreateForm, validateCreateForm } from '@track/actions/directory-actions'
 import { objectToOption, mapLeaguesIntoTeams, mapTeamsIntoPlayers } from '@track/utils'
 
 class Directory extends Component {
@@ -18,7 +18,18 @@ class Directory extends Component {
     this.props.destroy()
   }
   render () {
-    const { type, navigation, directory, team, player, goToCreateGame, goToGame, toggleCreateForm, updateCreateFormQuery, submitCreateFormQuery } = this.props
+    const {
+      type,
+      form,
+      navigation,
+      directory,
+      team,
+      player,
+      goToCreateGame,
+      goToGame,
+      toggleCreateForm,
+      updateCreateFormQuery,
+      validateAndSubmitCreateFormQuery } = this.props
 
     if (!directory || !directory.players || !directory.teams || !directory.games || !directory.leagues) {
       // CR: TrackApp now loads directories on init and will not mount child components until it receives this data. So this should be at best an ERROR case
@@ -45,18 +56,19 @@ class Directory extends Component {
     }
 
     let creation = (<div><Button primary onClick={goToCreateGame}>Create Game</Button></div>)
-    let form, filter
+    let formComponent, filter
     let exhibit = (<div />)
     if (type === 'teams') {
       creation = (<div><Button secondary onClick={toggleCreateForm}>Create Team</Button></div>)
       if (directory.showCreateForm) {
-        form = (
-          <CreateTeamContainer
+        formComponent = (
+          <CreateTeam
             captainOptions={captainOptions}
             playerOptions={playerOptions}
             leagueOptions={leagueOptions}
             formChangeHandler={updateCreateFormQuery}
-            formSubmissionHandler={submitCreateFormQuery} />
+            formSubmissionHandler={validateAndSubmitCreateFormQuery}
+            fieldErrors={form.invalidTeamFields} />
         )
       }
       exhibit = <CardGrid collection={mapLeaguesIntoTeams(Object.assign([], directory[type]), Object.assign([], directory.leagues))} filter={navigation.selectedOption} type={type} />
@@ -64,12 +76,12 @@ class Directory extends Component {
     if (type === 'players') {
       creation = (<div><Button onClick={toggleCreateForm}>Create Player</Button></div>)
       if (directory.showCreateForm) {
-        form = (
+        formComponent = (
           <CreatePlayerContainer
             teamOptions={teamOptions}
             gender={player.gender}
             formChangeHandler={updateCreateFormQuery}
-            formSubmissionHandler={submitCreateFormQuery} />
+            formSubmissionHandler={validateAndSubmitCreateFormQuery} />
         )
       }
       exhibit = <CardGrid collection={mapTeamsIntoPlayers(Object.assign([], directory[type]), Object.assign([], directory.teams))} filter={navigation.selectedOption} type={type} />
@@ -83,7 +95,7 @@ class Directory extends Component {
       <div>
         <Header as="h3">{type.toUpperCase()}</Header>
         { creation }
-        { form }
+        { formComponent }
         { exhibit }
       </div>
     )
@@ -95,7 +107,8 @@ export default withRouter(connect(
       navigation: state.navigation,
       directory: state.directory,
       team: state.team,
-      player: state.player
+      player: state.player,
+      form: state.form
     }
   },
   function mapDispatchToProps (dispatch, ownProps) {
@@ -107,11 +120,9 @@ export default withRouter(connect(
         dispatch(updateCreateForm(ownProps.type, event, data))
         // dispatch({ type: 'route.directory-list/update-form-query', payload: { type: ownProps.type, field: data['data-create-id'], value: data.value } })
       },
-      submitCreateFormQuery (event, data) {
+      validateAndSubmitCreateFormQuery (event, data) {
         event.preventDefault()
-        dispatch({ type: 'route.directory-list/submit-form-query', payload: { id: event.target.id } })
-        dispatch(submitCreateForm(event.target.id))
-        dispatch({ type: 'route.directory-list/toggle-create-form' })
+        dispatch(validateCreateForm(event.target.id))
       },
       goToCreateGame () {
         dispatch(pushLocation('/games/create'))

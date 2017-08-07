@@ -55,28 +55,58 @@ export function updateCreateForm (type, event, data) {
   }
 }
 
-export function submitCreateForm (id) {
+
+// dispatch({ type: 'route.directory-list/submit-form-query', payload: { id: event.target.id } })
+// dispatch({ type: 'route.directory-list/toggle-create-form' })
+
+export function validateCreateForm (id) {
+  return function (dispatch, getState) {
+    const state = getState()
+    if (id === 'createTeamForm') {
+      dispatch({ type: 'create-team.form/validate', payload: { team: state.team} })
+      return dispatch(submitCreateTeamForm())
+    }
+    if (id === 'createPlayerForm') {
+      console.log('validate player', state.player)
+    }
+    if (id === 'createGameForm') {
+      console.log('validate game', state.game)
+    }
+  }
+}
+
+function submitCreateTeamForm () {
+  return function (dispatch, getState) {
+    const state = getState()
+
+    if (!state.form.invalidTeamFields.valid) {
+      return dispatch({ type: 'directory.create-team/invalid', payload: { validateTeam: state.form.validateTeam } })
+    }
+
+    let promise
+    promise = client.addTeam(state.team)
+    promise.then((data) => {
+      return dispatch({
+        type: 'directory.create-team/success',
+        payload: {
+          _id: data._id,
+          newTeam: state.team
+        }
+      }) // move new team to team directory, clear the team form
+    }).catch((error) => {
+      return dispatch({
+        type: 'directory.create-team/rejected',
+        payload: { error: error }
+      })
+    })
+  }
+}
+
+function submitCreateForm (id) {
   return function (dispatch, getState) {
     const state = getState()
     let promise
 
-    if (id === 'createTeamForm') {
-      promise = client.addTeam(state.team)
-      promise.then((data) => {
-        return dispatch({
-          type: 'directory.create-team/success',
-          payload: {
-            _id: data._id,
-            newTeam: state.team
-          }
-        }) // move new team to team directory, clear the team form
-      }).catch((error) => {
-        return dispatch({
-          type: 'directory.create-team/rejected',
-          payload: { error: error }
-        })
-      })
-    }
     if (id === 'createPlayerForm') {
       promise = client.addPlayer(state.player)
       promise.then((data) => {
