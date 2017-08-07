@@ -137,7 +137,8 @@ export default withRouter(connect(
         dispatch(pushLocation('/games/' + data['data-game-id']))
       },
       destroy () {
-        dispatch({ type: 'directory.create-form/destroy' })
+        dispatch({ type: 'create-form/destroy' })
+        dispatch({ type: 'route.directory-list/toggle-create-form', payload: { hide: true } })
       }
     }
   }

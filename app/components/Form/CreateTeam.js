@@ -23,7 +23,7 @@ function CreateTeam ({ team, captainOptions, playerOptions, leagueOptions, formC
       </Form.Field>
       <Form.Field>
         <label>Description</label>
-        <Input placeholder="Description" data-create-id="description" value={team.description} onChange={formChangeHandler} />
+        <Form.Input placeholder="Description" data-create-id="description" defaultValue={''} onChange={formChangeHandler} />
       </Form.Field>
       <Button type="submit">Submit</Button>
     </Form>

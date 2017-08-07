@@ -6,23 +6,12 @@ const INITIAL_STATE = {
   games: null,
   leagues: null,
   diamonds: null,
-  filteredTeams: null,
-  filteredPlayers: null,
-  filteredGames: null,
-  filteredLeagues: null,
-  filteredDiamonds: null,
   showCreateForm: false
 }
 
 export default function directoryReducers (state = INITIAL_STATE, action) {
   if (action.type === 'directory-list/init') {
     state = Object.assign({}, state, INITIAL_STATE)
-  }
-  if (action.type === 'directory.create-form/destroy') {
-    state = Object.assign({}, state)
-    state.createPlayer = {}
-    state.createTeam = {}
-    state.createGame = {}
   }
 
   if (action.type === 'fetch-directory.leagues/received') {
@@ -52,7 +41,8 @@ export default function directoryReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'route.directory-list/toggle-create-form') {
     state = Object.assign({}, state)
-    state.showCreateForm = !state.showCreateForm
+    if (!action.payload) state.showCreateForm = !state.showCreateForm
+    else if (action.payload.hide) state.showCreateForm = false
   }
 
   // if (action.type === 'route.directory-list/update-form-query') {

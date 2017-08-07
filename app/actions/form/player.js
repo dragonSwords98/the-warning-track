@@ -9,10 +9,10 @@ export function submitCreatePlayerForm () {
     dispatch({ type: 'create-form.player/validate', payload: { player: state.player} })
 
     // 2. Is the form valid?
-    // if (!state.playerForm.valid) {
-    //   // 3. Show the user why its not valid TODO: Implement??
-    //   return dispatch({ type: 'directory.create-player/invalid', payload: { validatePlayer: state.playerForm.invalidFields } })
-    // }
+    if (!state.create.valid) {
+      // 3. Show the user why its not valid TODO: Implement??
+      return dispatch({ type: 'directory.create-player/invalid', payload: { player: state.create.invalidFields } })
+    }
 
     // OR 3. save the valid player
     let promise

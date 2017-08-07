@@ -9,10 +9,10 @@ export function submitCreateTeamForm () {
     dispatch({ type: 'create-form.team/validate', payload: { team: state.team} })
 
     // 2. Is the form valid?
-    // if (!state.teamForm.valid) {
-    //   // 3. Show the user why its not valid TODO: Implement??
-    //   return dispatch({ type: 'directory.create-team/invalid', payload: { validateTeam: state.teamForm.invalidFields } })
-    // }
+    if (!state.create.valid) {
+      // 3. Show the user why its not valid TODO: Implement??
+      return dispatch({ type: 'directory.create-team/invalid', payload: { team: state.create.invalidFields } })
+    }
 
     // OR 3. save the valid team
     let promise
