@@ -14,8 +14,9 @@ export function handleMenuItemAction (name) {
     // if (name === 'home') {
     //   dispatch(pushLocation('/games')) // TODO: work out the workflow for create game, schedule games
     // }
-
     dispatch({ type: 'app-menu/clear-select' })
+    dispatch({ type: 'route.directory-list/toggle-create-form', payload: { hide: true } })
+    dispatch({ type: 'create-form/destroy' })
 
     if (name === 'teams') {
       dispatch(getMenuSelectOptions(name, 'leagues'))

@@ -1,36 +1,31 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 import CreatePlayer from '@track/components/Form/CreatePlayer'
 
 class CreatePlayerContainer extends Component {
   render () {
-    const { gender, thisYear, twentyYearsAgo, oneHundredYearsAgo, teamOptions, handsArray, positionsArray, formChangeHandler, formSubmissionHandler } = this.props
+    const { player, teamOptions, formChangeHandler, formSubmissionHandler, fieldErrors, handsArray, positionsArray } = this.props
     return (
       <CreatePlayer
-        thisYear={thisYear}
-        twentyYearsAgo={twentyYearsAgo}
-        oneHundredYearsAgo={oneHundredYearsAgo}
+        player={player}
         teamOptions={teamOptions}
-        handsArray={handsArray}
-        gender={gender}
-        positionsArray={positionsArray}
         formChangeHandler={formChangeHandler}
         formSubmissionHandler={formSubmissionHandler}
+        fieldErrors={fieldErrors}
+        handsArray={handsArray}
+        positionsArray={positionsArray}
       />
     )
   }
 }
 CreatePlayerContainer.propTypes = {
-  gender: PropTypes.number.isRequired,
+  player: PropTypes.object.isRequired,
   teamOptions: PropTypes.array.isRequired,
   formChangeHandler: PropTypes.func.isRequired,
-  formSubmissionHandler: PropTypes.func.isRequired
+  formSubmissionHandler: PropTypes.func.isRequired,
+  fieldErrors: PropTypes.object.isRequired
 }
-CreatePlayerContainer.defaultProps = {
-  thisYear: moment().year(),
-  twentyYearsAgo: moment().subtract(20, 'year').year(),
-  oneHundredYearsAgo: moment().subtract(100, 'year').year(),
+CreatePlayer.defaultProps = {
   handsArray: [
     { key: 'Right', value: 'Right', text: 'Right' },
     { key: 'Left', value: 'Left', text: 'Left' },

@@ -2,7 +2,7 @@
 
 const INITIAL_STATE = {
   name: '',
-  captain: [],
+  captain: '',
   leagues: [],
   roster: [], // TODO: this is not a field we store in MongoDB Team Collection, instead, the server side of API should pick up this roster and make appropriate updates to Players Collection
   size: 0
