@@ -6,9 +6,15 @@ const INITIAL_STATE = {
   diamonds: [],
   roster: [],
   batters: [],
-  invalidGameFields: {},
-  invalidPlayerFields: {},
-  invalidTeamFields: {}
+  invalidGameFields: {
+    valid: false
+  },
+  invalidPlayerFields: {
+    valid: false
+  },
+  invalidTeamFields: {
+    valid: false
+  }
 }
 
 export default function formReducers (state = INITIAL_STATE, action) {
@@ -34,5 +40,6 @@ export default function formReducers (state = INITIAL_STATE, action) {
     }
     console.log(action.payload, state)
   }
+
   return state
 }

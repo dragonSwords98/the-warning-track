@@ -10,6 +10,7 @@ import CreateTeam from '@track/components/Form/CreateTeam'
 import CreatePlayerContainer from '@track/containers/Create/CreatePlayerContainer'
 import CardGrid from '@track/components/CardGrid'
 import Segue from '@track/components/Segue'
+import { updateCreateTeamForm, submitCreateTeamForm } from '@track/actions/form/team'
 import { updateCreateForm, validateCreateForm } from '@track/actions/directory-actions'
 import { objectToOption, mapLeaguesIntoTeams, mapTeamsIntoPlayers } from '@track/utils'
 
@@ -20,7 +21,7 @@ class Directory extends Component {
   render () {
     const {
       type,
-      form,
+      teamForm,
       navigation,
       directory,
       team,
@@ -29,6 +30,8 @@ class Directory extends Component {
       goToGame,
       toggleCreateForm,
       updateCreateFormQuery,
+      updateCreateTeamForm,
+      validateAndSubmitTeamForm,
       validateAndSubmitCreateFormQuery } = this.props
 
     if (!directory || !directory.players || !directory.teams || !directory.games || !directory.leagues) {
@@ -63,12 +66,13 @@ class Directory extends Component {
       if (directory.showCreateForm) {
         formComponent = (
           <CreateTeam
+            team={team}
             captainOptions={captainOptions}
             playerOptions={playerOptions}
             leagueOptions={leagueOptions}
-            formChangeHandler={updateCreateFormQuery}
-            formSubmissionHandler={validateAndSubmitCreateFormQuery}
-            fieldErrors={form.invalidTeamFields} />
+            formChangeHandler={updateCreateTeamForm}
+            formSubmissionHandler={validateAndSubmitTeamForm}
+            fieldErrors={teamForm.invalidFields} />
         )
       }
       exhibit = <CardGrid collection={mapLeaguesIntoTeams(Object.assign([], directory[type]), Object.assign([], directory.leagues))} filter={navigation.selectedOption} type={type} />
@@ -108,7 +112,7 @@ export default withRouter(connect(
       directory: state.directory,
       team: state.team,
       player: state.player,
-      form: state.form
+      teamForm: state.teamForm
     }
   },
   function mapDispatchToProps (dispatch, ownProps) {
@@ -116,9 +120,16 @@ export default withRouter(connect(
       toggleCreateForm () {
         dispatch({ type: 'route.directory-list/toggle-create-form' })
       },
+      updateCreateTeamForm  (event, data) {
+        dispatch(updateCreateTeamForm(ownProps.type, event, data))
+      },
       updateCreateFormQuery (event, data) {
         dispatch(updateCreateForm(ownProps.type, event, data))
         // dispatch({ type: 'route.directory-list/update-form-query', payload: { type: ownProps.type, field: data['data-create-id'], value: data.value } })
+      },
+      validateAndSubmitTeamForm (event, data) {
+        event.preventDefault()
+        dispatch(submitCreateTeamForm(event.target.id))
       },
       validateAndSubmitCreateFormQuery (event, data) {
         event.preventDefault()

@@ -10,6 +10,7 @@ import navigationReducers from './reducers/navigation-reducers'
 import gameReducers from './reducers/game-reducers'
 import playerReducers from './reducers/player-reducers'
 import formReducers from './reducers/form-reducers'
+import teamFormReducers from './reducers/form/team'
 
 let enhancedCompose
 if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
@@ -37,7 +38,8 @@ let rootReducer = combineReducers({
   player: playerReducers,
   directory: directoryReducers,
   game: gameReducers,
-  form: formReducers
+  form: formReducers,
+  teamForm: teamFormReducers
 })
 
 export const store = createStore(rootReducer, undefined, enhancers)
