@@ -6,18 +6,19 @@ export function submitCreateTeamForm () {
     const state = getState()
 
     // 1. Validate the form now
-    dispatch({ type: 'create-team.form/validate', payload: { team: state.team} })
+    dispatch({ type: 'create-form.team/validate', payload: { team: state.team} })
 
     // 2. Is the form valid?
-    if (!state.teamForm.valid) {
-      // 3. Show the user why its not valid TODO: Implement??
-      return dispatch({ type: 'directory.create-team/invalid', payload: { validateTeam: state.teamForm.invalidFields } })
-    }
+    // if (!state.teamForm.valid) {
+    //   // 3. Show the user why its not valid TODO: Implement??
+    //   return dispatch({ type: 'directory.create-team/invalid', payload: { validateTeam: state.teamForm.invalidFields } })
+    // }
 
     // OR 3. save the valid team
     let promise
     promise = client.addTeam(state.team)
     promise.then((data) => {
+      dispatch({ type: 'create-form/destroy' })
       return dispatch({
         type: 'directory.create-team/success',
         payload: {
@@ -34,13 +35,13 @@ export function submitCreateTeamForm () {
   }
 }
 
-export function updateCreateTeamForm (type, event, data) {
+export function updateCreateTeamForm (data) {
   return function (dispatch, getState) {
     // 1. Update the form
     dispatch({ type: 'directory.create-team/update', payload: { field: data['data-create-id'], value: data.value } })
     const state = getState()
 
     // 2. Is the form valid?
-    return dispatch({ type: 'create-team.form/validate', payload: { team: state.team } })
+    return dispatch({ type: 'create-form.team/validate', payload: { team: state.team} })
   }
 }
