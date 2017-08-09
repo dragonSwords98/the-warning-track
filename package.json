@@ -42,8 +42,8 @@
     "redux": "^3.6.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "semantic-ui-css": "^2.2.10",
-    "semantic-ui-react": "^0.68.3",
+    "semantic-ui-css": "^2.2.11",
+    "semantic-ui-react": "^0.71.3",
     "sortablejs": "^1.5.1",
     "webpack-dev-server": "^2.4.5"
   },

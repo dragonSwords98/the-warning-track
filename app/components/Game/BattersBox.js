@@ -7,7 +7,7 @@ import LoadingOverlay from '@track/components/LoadingOverlay'
 
 class BattersBox extends Component {
   render () {
-    let { status, advanceRunner, row, inning, disabled } = this.props
+    let { status, hit, advanceRunner, changeHitType, row, inning, disabled } = this.props
 
     if (!status) {
       return <LoadingOverlay />
@@ -15,12 +15,18 @@ class BattersBox extends Component {
 
     if (!advanceRunner || disabled) {
       return (
-        <Button data-row={row} data-inning={inning} fluid color={status.color} disabled>{status.label}</Button>
+        <div>
+          <Button data-row={row} data-inning={inning} fluid color={status.color} disabled>{status.label}</Button>
+          <Button data-row={row} data-inning={inning} fluid color={hit.color} disabled>{hit.label}</Button>
+        </div>
       )
     }
 
     return (
-      <Button data-row={row} data-inning={inning} fluid color={status.color} onClick={advanceRunner.bind(this)} >{status.label}</Button>
+      <div>
+        <Button data-row={row} data-inning={inning} fluid color={status.color} onClick={advanceRunner.bind(this)} >{status.label}</Button>
+        <Button data-row={row} data-inning={inning} fluid color={hit.color} onClick={changeHitType.bind(this)} >{hit.label}</Button>
+      </div>
     )
   }
 }

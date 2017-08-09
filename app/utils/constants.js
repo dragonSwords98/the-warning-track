@@ -1,3 +1,5 @@
+/* BATTING STATUSES */
+
 export const OUT_STATUS = {
   name: 'OUT',
   label: 'Out',
@@ -55,3 +57,83 @@ export const STATUS_ORDERING = [
   HOME_STATUS,
   OUT_STATUS
 ]
+
+/* HITTING TYPES */
+
+export const SINGLE_HIT = {
+  name: 'SINGLE',
+  label: 'Single',
+  color: 'olive'
+}
+
+export const DOUBLE_HIT = {
+  name: 'DOUBLE',
+  label: 'Double',
+  color: 'green'
+}
+
+export const TRIPLE_HIT = {
+  name: 'TRIPLE',
+  label: 'Triple',
+  color: 'teal'
+}
+
+export const HOME_RUN_HIT = {
+  name: 'HOME RUN',
+  label: 'HR',
+  color: 'blue'
+}
+
+export const GROUND_OUT = {
+  name: 'GROUNDOUT',
+  label: 'Ground',
+  color: 'pink'
+}
+
+export const FLY_OUT = {
+  name: 'FLYOUT',
+  label: 'Fly',
+  color: 'purple'
+}
+
+export const POP_OUT = {
+  name: 'POPOUT',
+  label: 'Pop',
+  color: 'yellow'
+}
+
+export const FOUL_OUT = {
+  name: 'FOULOUT',
+  label: 'Foul',
+  color: 'orange'
+}
+
+export const STRIKE_OUT = {
+  name: 'STRIKEOUT',
+  label: 'K',
+  color: 'red'
+}
+
+export const HIT_ORDERING = [
+  SINGLE_HIT,
+  DOUBLE_HIT,
+  TRIPLE_HIT,
+  HOME_RUN_HIT,
+  GROUND_OUT,
+  FLY_OUT,
+  POP_OUT,
+  FOUL_OUT,
+  STRIKE_OUT
+]
+
+/* MISC. */
+
+export const GENERIC_OPPOSING_BATTER = {
+  name: '',
+  number: 0,
+  hits: [],
+  attempts: []
+}
+
+export const MINIMAL_BATTERS_COUNT = 8 // CR: should be a league rule, no?
+export const REALISTIC_MAX_BATTERS_COUNT = 30
