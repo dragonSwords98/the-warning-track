@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Tab } from 'semantic-ui-react'
 
+
+import { objectToOption } from '@track/utils/constants'
 import { loadGame, saveGame } from '@track/actions/game-actions'
 import Game from '@track/components/Game'
 import OpponentOffenseTable from '@track/components/Game/OpponentOffenseTable'
@@ -16,7 +18,10 @@ class GameContainer extends Component {
     this.props.destroy()
   }
   render () {
-    const { game, saveGame, advanceBatterRunner, changeHitType, onScoresheetChange, toggleInningLock, onChangeOpposingBattersCount } = this.props
+    const { game, opponent, saveGame, advanceBatterRunner, changeHitType,
+      onScoresheetChange, toggleInningLock, onChangeOpposingBattersCount,
+      onChangeHitType, onChangeDepth, onChangeLane
+    } = this.props
 
     if (!game) {
       return <LoadingOverlay msg={"Loading Game..."} />
@@ -47,11 +52,19 @@ class GameContainer extends Component {
       toggleInningLock={toggleInningLock}
       saveGame={saveGame} />
 
-    const OpponentComponent = <OpponentOffenseTable
-      innings={game.league.innings}
-      opposingBattingOrder={game.opposingBattingOrder}
-      onChangeOpposingBattersCount={onChangeOpposingBattersCount}
-    />
+    const OpponentComponent = (
+      <OpponentOffenseTable
+        innings={game.league.innings}
+        currentInning={game.currentInning}
+        opposingBattingOrder={game.opposingBattingOrder}
+        onChangeOpposingBattersCount={onChangeOpposingBattersCount}
+        toggleInningLock={toggleInningLock}
+        hitTypeOptions={opponent.hitTypeOptions}
+        depthOptions={opponent.depthOptions}
+        laneOptions={opponent.laneOptions}
+        onChangeHitType={onChangeHitType}
+        onChangeDepth={onChangeDepth}
+        onChangeLane={onChangeLane} />)
 
     const panes = [
       { menuItem: game.ourTeam.name, render: () => <Tab.Pane attached={false}>{ OurTeamComponent }</Tab.Pane> },
@@ -69,13 +82,15 @@ class GameContainer extends Component {
 export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
-      game: state.game
+      game: state.game,
+      opponent: state.opponent
     }
   },
   function mapDispatchToProps (dispatch, ownProps) {
     return {
       loadGame (gameId) {
         dispatch(loadGame(gameId))
+        dispatch({ type: 'game.opponent/init' })
       },
       changeHitType (event, data) {
         dispatch({ type: 'game.hit/change-type', payload: { target: event.target, data: data } })
@@ -91,7 +106,16 @@ export default withRouter(connect(
         dispatch(saveGame())
       },
       onChangeOpposingBattersCount (event, data) {
-        dispatch({ type: 'game.opponent/set-number-of-batters', payload: { increment: data.icon === 'plus' }})
+        dispatch({ type: 'game.opponent/set-number-of-batters', payload: { target: event.target, data: data } })
+      },
+      onChangeHitType (event, data) {
+        dispatch({ type: 'game.opponent-batter/change-hit-type', payload: { target: event.target, data: data } })
+      },
+      onChangeDepth (event, data) {
+        dispatch({ type: 'game.opponent-batter/change-depth', payload: { target: event.target, data: data } })
+      },
+      onChangeLane (event, data) {
+        dispatch({ type: 'game.opponent-batter/change-lane', payload: { target: event.target, data: data } })
       },
       saveGame () {
         dispatch(saveGame())

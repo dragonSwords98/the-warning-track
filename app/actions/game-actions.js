@@ -16,7 +16,6 @@ const loadGameObject = function (state, game) {
   game.ourTeam = state.directory.teams.find(t => t._id === game.ourTeam)
   game.homeOrAway = game.homeOrAway ? 'Home' : 'Away'
   game.opposingBattingOrder = new Array(MINIMAL_BATTERS_COUNT).fill(GENERIC_OPPOSING_BATTER)
-
   return game
 }
 

@@ -18,6 +18,8 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
 
   // Batter Cells
   const generateBatterCells = function (r, statusGrid) {
+
+    // TODO: hit chart
     let SINGLE_HIT = {
       name: 'SINGLE',
       label: 'Single',

@@ -2,20 +2,25 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Table, Dropdown, Button } from 'semantic-ui-react'
+import { Table, Header, Button } from 'semantic-ui-react'
 
 import { MINIMAL_BATTERS_COUNT, REALISTIC_MAX_BATTERS_COUNT } from '@track/utils/constants'
-
+import OpponentBattersBox from './OpponentBattersBox'
 import LoadingOverlay from '@track/components/LoadingOverlay'
 
 class OpponentOffenseTable extends Component {
 
   render () {
-    let { innings, opposingBattingOrder, onChangeOpposingBattersCount } = this.props
+    let {
+      innings, currentInning,
+      opposingBattingOrder, onChangeOpposingBattersCount,
+      hitTypeOptions, depthOptions, laneOptions, toggleInningLock,
+      onChangeHitType, onChangeDepth, onChangeLane
+    } = this.props
 
-    //if (!status) {
-      // return <LoadingOverlay />
-    //}
+    if (!opposingBattingOrder) {
+      return <LoadingOverlay />
+    }
 
     let i = 0
     let r = 0
@@ -24,25 +29,43 @@ class OpponentOffenseTable extends Component {
       <Table.Row key={'batter-head'} >
         <Table.HeaderCell>{'Batting Report'}</Table.HeaderCell>
         {
-          new Array(innings).fill().map((e,j)=>(<Table.HeaderCell key={r + 'inning-' + j}>{j+1}</Table.HeaderCell>))
+          new Array(innings).fill().map((e,j)=>(<Table.HeaderCell key={r + 'inning-' + j}>{++j}</Table.HeaderCell>))
         }
       </Table.Row>
     )
 
-    let BatterInfoCell = 'WHATS YOUR NAME'
-    console.log('table.cell name + number doesnt work cuz it must be mapped')
-    // const BattingRow = (r) => (
-    //   <Table.Row key={'batter-' + r} >
-    //     <Table.Cell>
-    //       { opposingBattingOrder[r].name + ' ' + opposingBattingOrder[r].number } 
-    //     </Table.Cell>
-    //     {
-    //       new Array(innings).fill().map((e,j)=>(<Table.Cell key={r + 'inning-' + j}>{j+1}</Table.Cell>))
-    //     }
-    //   </Table.Row>
-    // )
+    const BattingCells = opposingBattingOrder.map(o => {
+      return (<Table.Cell>{ o.name + ' batter - number: ' + o.number }</Table.Cell>)
+    })
+
+    const BattingRow = (r) => (
+      <Table.Row key={'batter-' + r} >
+        { BattingCells[r] }
+        {
+          new Array(innings).fill().map((e,j)=>(<Table.Cell key={r + 'inning-' + j}>
+            <OpponentBattersBox
+              row={r}
+              inning={j} 
+              disabled={currentInning - 1 !== j}
+              hitTypeOptions={hitTypeOptions}
+              depthOptions={depthOptions}
+              laneOptions={laneOptions}
+              onChangeHitType={onChangeHitType}
+              onChangeDepth={onChangeDepth}
+              onChangeLane={onChangeLane} />
+          </Table.Cell>))
+        }
+      </Table.Row>
+    )
     
-    let BattingTable = new Array(opposingBattingOrder.length).fill().map((e,i)=>BattingRow(i+1))
+
+    let BattingTable = new Array(opposingBattingOrder.length).fill().map((e,i)=>BattingRow(i++))
+
+    let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Completed</Header></Table.Cell>]
+    for (let i = 1; i <= innings; i++) {
+      let icon = currentInning === i ? 'checkmark' : 'lock'
+      lockInnings.push(<Table.Cell key={'footer-lock-' + i}><Button data={i} circular icon={icon} onClick={toggleInningLock} /></Table.Cell>)
+    }
 
     return (
       <div>
@@ -61,14 +84,7 @@ class OpponentOffenseTable extends Component {
 
           <Table.Footer>
             <Table.Row>
-            </Table.Row>
-            <Table.Row>
-            </Table.Row>
-            <Table.Row>
-            </Table.Row>
-            <Table.Row>
-            </Table.Row>
-            <Table.Row>
+              { lockInnings }
             </Table.Row>
           </Table.Footer>
         </Table>
@@ -78,7 +94,9 @@ class OpponentOffenseTable extends Component {
 }
 OpponentOffenseTable.propTypes = {
   innings: PropTypes.number.isRequired,
+  currentInning: PropTypes.number.isRequired,
   opposingBattingOrder: PropTypes.array.isRequired,
-  onChangeOpposingBattersCount: PropTypes.func.isRequired
+  onChangeOpposingBattersCount: PropTypes.func.isRequired,
+  toggleInningLock: PropTypes.func.isRequired
 }
 export default OpponentOffenseTable

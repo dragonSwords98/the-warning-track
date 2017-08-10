@@ -9,6 +9,7 @@ import directoryReducers from './reducers/directory-reducers'
 import navigationReducers from './reducers/navigation-reducers'
 import gameReducers from './reducers/game-reducers'
 import playerReducers from './reducers/player-reducers'
+import opponentReducers from './reducers/opponent'
 import createGameReducers from './reducers/form/game'
 import createReducers from './reducers/form/create'
 
@@ -38,6 +39,7 @@ let rootReducer = combineReducers({
   player: playerReducers,
   directory: directoryReducers,
   game: gameReducers,
+  opponent: opponentReducers,
   createGame: createGameReducers,
   create: createReducers
 })
