@@ -261,6 +261,18 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       state.currentInning = action.payload.inning
     }
   }
+
+  if (action.type === 'game.opponent-name/change') {
+    state = Object.assign({}, state)
+    state.opposingBattingOrder = Object.assign([], state.opposingBattingOrder)
+    state.opposingBattingOrder[action.payload.data['data-order']].name = action.payload.data.value
+  }
+
+  if (action.type === 'game.opponent-number/change') {
+    state = Object.assign({}, state)
+    state.opposingBattingOrder[action.payload.data['data-order']].number = action.payload.data.value
+  }
+
   if (action.type === 'game.opponent/set-number-of-batters') {
     state = Object.assign({}, state)
     if (action.payload.increment) {

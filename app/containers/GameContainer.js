@@ -20,6 +20,7 @@ class GameContainer extends Component {
   render () {
     const { game, opponent, saveGame, advanceBatterRunner, changeHitType,
       onScoresheetChange, toggleInningLock, onChangeOpposingBattersCount,
+      onChangeOpponentName, onChangeOpponentNumber,
       onChangeHitType, onChangeDepth, onChangeLane
     } = this.props
 
@@ -62,6 +63,8 @@ class GameContainer extends Component {
         hitTypeOptions={opponent.hitTypeOptions}
         depthOptions={opponent.depthOptions}
         laneOptions={opponent.laneOptions}
+        onChangeOpponentName={onChangeOpponentName}
+        onChangeOpponentNumber={onChangeOpponentNumber}
         onChangeHitType={onChangeHitType}
         onChangeDepth={onChangeDepth}
         onChangeLane={onChangeLane} />)
@@ -104,6 +107,12 @@ export default withRouter(connect(
       toggleInningLock (event, data) {
         dispatch({ type: 'game.lock-inning/toggle', payload: { inning: data.data } })
         dispatch(saveGame())
+      },
+      onChangeOpponentName (event, data) {
+        dispatch({ type: 'game.opponent-name/change', payload: { target: event.target, data: data } })
+      },
+      onChangeOpponentNumber (event, data) {
+        dispatch({ type: 'game.opponent-number/change', payload: { target: event.target, data: data } })
       },
       onChangeOpposingBattersCount (event, data) {
         dispatch({ type: 'game.opponent/set-number-of-batters', payload: { increment: data.icon === 'plus' } })

@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Table, Header, Button } from 'semantic-ui-react'
+import { Table, Header, Input, Button } from 'semantic-ui-react'
 
 import { MINIMAL_BATTERS_COUNT, REALISTIC_MAX_BATTERS_COUNT } from '@track/utils/constants'
 import OpponentBattersBox from './OpponentBattersBox'
@@ -15,6 +15,7 @@ class OpponentOffenseTable extends Component {
       innings, currentInning,
       opposingBattingOrder, onChangeOpposingBattersCount,
       hitTypeOptions, depthOptions, laneOptions, toggleInningLock,
+      onChangeOpponentName, onChangeOpponentNumber,
       onChangeHitType, onChangeDepth, onChangeLane
     } = this.props
 
@@ -34,8 +35,11 @@ class OpponentOffenseTable extends Component {
       </Table.Row>
     )
 
-    const BattingCells = opposingBattingOrder.map(o => {
-      return (<Table.Cell>{ o.name + ' batter - number: ' + o.number }</Table.Cell>)
+    const BattingCells = opposingBattingOrder.map((o, i) => {
+      return (<Table.Cell>
+          <Input key={'name' + i} data-order={i} transparent placeholder='Name' value={o.name} onChange={onChangeOpponentName.bind(this)} />
+          <Input key={'number' + i} data-order={i} transparent placeholder='Jersey' type='number' value={o.number} onChange={onChangeOpponentNumber.bind(this)} />
+        </Table.Cell>)
     })
 
     const BattingRow = (r) => (
