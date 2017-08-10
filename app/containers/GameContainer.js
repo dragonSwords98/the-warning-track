@@ -106,7 +106,7 @@ export default withRouter(connect(
         dispatch(saveGame())
       },
       onChangeOpposingBattersCount (event, data) {
-        dispatch({ type: 'game.opponent/set-number-of-batters', payload: { target: event.target, data: data } })
+        dispatch({ type: 'game.opponent/set-number-of-batters', payload: { increment: data.icon === 'plus' } })
       },
       onChangeHitType (event, data) {
         dispatch({ type: 'game.opponent-batter/change-hit-type', payload: { target: event.target, data: data } })
