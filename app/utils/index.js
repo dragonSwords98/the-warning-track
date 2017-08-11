@@ -85,6 +85,11 @@ export const firstFindFirstApply = function(availableFielders, copiedFieldingLin
   return copiedFieldingLineup
 }
 
+/**
+ * @param battingOrder: array of batting order [[player, gender], [player, gender], ...]
+ * @param coedRule: rule for coed (currently only accepting 'MMF' or 'MMMF'), defaults to legal batting order
+ * @return: false for legal batting order, true for illegal batting order
+ */
 export const validateBattingOrder = function (battingOrder, coedRule) {
   // CR: Hardcoded rules
   let rule = null
@@ -93,7 +98,7 @@ export const validateBattingOrder = function (battingOrder, coedRule) {
   } else if (coedRule === 'MMMF') {
     rule = 3
   } else {
-    return true
+    return false
   }
 
   let batters = Object.assign([], battingOrder).concat(Object.assign([], battingOrder))
@@ -101,8 +106,8 @@ export const validateBattingOrder = function (battingOrder, coedRule) {
   for (let i = 0; i < batters.length - 1; i++) {
     if (ruleCheck < 1 && !batters[i][1]) {
       // Illegal male in order
-      return false
-    } else if (ruleCheck >= 1 && batters[i][1]){
+      return true
+    } else if (ruleCheck >= 1 && !batters[i][1]){
       // Legal male in order
       ruleCheck--
     } else {
@@ -110,7 +115,7 @@ export const validateBattingOrder = function (battingOrder, coedRule) {
       ruleCheck = rule
     }
   }
-  return true
+  return false
 }
 
 // TODO: nonDupInInningFirstFindFirstApply, nonDupInInningLimitAcrossPositionFirstFindFirstApply, nonDupInInningLimitAcrossPositionFirstFindFirstApply

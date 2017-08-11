@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
 import moment from 'moment'
-import { Message, Confirm, Segment, Table, Header, Button } from 'semantic-ui-react'
+import { Message, Label, Icon, Confirm, Segment, Table, Header, Button } from 'semantic-ui-react'
 
 import LoadingOverlay from '@track/components/LoadingOverlay'
 import GenericCelledTable from '@track/components/GenericCelledTable'
@@ -167,6 +167,7 @@ class CreateGameContainer extends Component {
 
     let CreateGameComponent = (<LoadingOverlay />)
     let BattingOrderComponent = (<LoadingOverlay />)
+    let BattingOrderRule = ''
 
     if (createGame.leagues && createGame.teams && createGame.diamonds) {
       CreateGameComponent = (
@@ -184,6 +185,10 @@ class CreateGameContainer extends Component {
 
     if (createGame.batters) {
       BattingOrderComponent = (<SortableUnorderedList id="battingOrderList" ref="battingOrderList" items={createGame.batters} onChange={handleBattingOrder} />)
+    }
+
+    if (game.league) {
+      BattingOrderRule = <Label>Coed Rule: {game.league.coedRule}</Label>
     }
 
     // TODO: the GenericCelledTable events should trigger validate too!
@@ -206,7 +211,12 @@ class CreateGameContainer extends Component {
           />
         </Segment>
         <Segment>
-          <Header as="h3">Batting Order</Header>
+          <Header as="h3">Batting Order
+            <Icon
+            name={createGame.invalidFields.illegalBattingOrder ? 'exclamation triangle' : 'check circle' }
+            color={createGame.invalidFields.illegalBattingOrder ? 'red' : 'green' } />
+          </Header>
+          {BattingOrderRule}
           {BattingOrderComponent}
         </Segment>
         <Segment>

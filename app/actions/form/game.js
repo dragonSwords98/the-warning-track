@@ -190,7 +190,7 @@ const validateGameForm = function () {
     // 2. Validate league rules that team batting order is arranged guy-guy-girl or guy-guy-guy-girl, etc.
     let coedRule = game.league ? game.league.coedRule : null
     if (coedRule) {
-      invalidFields.legalBattingOrder = validateBattingOrder(game.ourBattingOrder, coedRule)
+      invalidFields.illegalBattingOrder = validateBattingOrder(game.ourBattingOrder, coedRule)
     }
 
     // 3. Validate no duplicates of same player playing 2 pos in same inning
