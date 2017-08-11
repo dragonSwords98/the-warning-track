@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   _id: null,
   ourTeam: null,
   opposingTeam: '',
-  diamond: '',
+  diamond: null,
   dateTime: moment().format('YYYY-MM-DD'),
   homeOrAway: 'Away', // or 'Home'
   // innings: 7, // DEFAULT: 7

@@ -316,5 +316,6 @@ export const GENERIC_OPPOSING_BATTER = {
   attempts: []
 }
 
-export const MINIMAL_BATTERS_COUNT = 8 // CR: should be a league rule, no?
+export const MINIMAL_BATTERS_COUNT = 7 // CR: should be a league rule, no?
 export const REALISTIC_MAX_BATTERS_COUNT = 30
+// export const STANDARD_COED_RULE = 'MMF' // CR: By default, we ignore coed, because what if the league is mens or womens?

@@ -3,8 +3,8 @@ import { client } from '../client'
 import moment from 'moment'
 import { push as pushLocation } from 'react-router-redux'
 
-import { objectToOption, populateScoresheet, populateStatusGrid, firstFindFirstApply } from '@track/utils'
-import { BENCH_STATUS } from '@track/utils/constants'
+import { objectToOption, populateScoresheet, populateStatusGrid, firstFindFirstApply, validateBattingOrder } from '@track/utils'
+import { BENCH_STATUS, MINIMAL_BATTERS_COUNT } from '@track/utils/constants'
 
 /**
  * Called when new leagues are available
@@ -92,12 +92,31 @@ export function autoFillFieldingLineup () {
     fieldingLineup = firstFindFirstApply(availableFielders, Object.assign([], fieldingLineup))
 
     dispatch({ type: 'create-game.fielder-all/fill', payload: { fieldingLineup: fieldingLineup } })
+    dispatch(validateGameForm())
+  }
+}
+
+export function clearFieldingLineup () {
+  return function (dispatch, getState) {
+    dispatch({ type: 'create-game.fielder-all/clear' })
+    dispatch({ type: 'create-game.fielder-all/close-clear-prompt' })
+    dispatch(validateGameForm())
   }
 }
 
 export function updateLineups (event, data) {
   return function (dispatch, getState) {
     dispatch({ type: 'create-game.fielding-lineup/change', payload: { inning: data['data-inning'], position: data['data-position'], value: data.value } })
+    
+    // CR: Validating all the time?
+    return dispatch(validateGameForm())
+  }
+}
+
+export function updateBattingOrder (newOrder) {
+  return function (dispatch, getState) {
+    dispatch({ type: 'create-game.batting-order/change', payload: { newOrder: newOrder } })
+    return dispatch(validateGameForm())
   }
 }
 
@@ -120,6 +139,9 @@ export function updateGameForm (event, data) {
     } else {
       dispatch({ type: 'create-game.form/update', payload: { type: 'games', field: data['data-create-id'], value: data.value } })
     }
+
+    // CR: Validating all the time?
+    return dispatch(validateGameForm())
   }
 }
 
@@ -140,6 +162,43 @@ const saveNewGameObject = function (state, game) {
     theirs: populateScoresheet(state.game.league.innings)
   }
   return game
+}
+
+const validateGameForm = function () {
+  return function (dispatch, getState) {
+    const game = getState().game
+
+    // Standard form validation
+    let invalidFields = {}
+    invalidFields.league = !game.league
+    invalidFields.ourTeam = !game.ourTeam
+    invalidFields.opposingTeam = !game.opposingTeam.length
+    invalidFields.diamond = !game.diamond
+    invalidFields.ourFieldingLineup = !game.ourFieldingLineup.reduce((p, o) => {
+      return p + Object.keys(o).reduce(function (previous, key) {
+          return previous + o[key];
+      }, '')
+    }, '').length
+    invalidFields.dateTime = !game.dateTime
+
+    // Additional validations
+    // 1. Validate league rules that there are legal number of players.
+    // Assumption all players that field must bat! So if not even to bat, then not enough to field
+    let legalMinimalRoster = game.league ? game.league.minimalRoster : MINIMAL_BATTERS_COUNT
+    invalidFields.illegalMinimalRoster = game.ourBattingOrder.length < legalMinimalRoster
+
+    // 2. Validate league rules that team batting order is arranged guy-guy-girl or guy-guy-guy-girl, etc.
+    let coedRule = game.league ? game.league.coedRule : null
+    console.warn('TODO: coed validation not in place')
+    // if (coedRule) {
+    //   invalidFields.legalBattingOrder = validateBattingOrder(game.ourBattingOrder, coedRule)
+    // }
+
+    // 3. Validate no duplicates of same player playing 2 pos in same inning
+    // 4. Validate opponent's details (to be added)
+
+    return dispatch({ type: 'create-game.form/validate', payload: { invalidFields } })
+  }
 }
 
 export function submitGameForm (event, data) {

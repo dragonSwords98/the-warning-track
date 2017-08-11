@@ -5,7 +5,10 @@ const INITIAL_STATE = {
   teams: [],
   diamonds: [],
   roster: [],
-  batters: []
+  batters: [],
+  promptClear: false,
+  invalidFields: {},
+  valid: false
 }
 
 export default function createGameReducers (state = INITIAL_STATE, action) {
@@ -19,5 +22,23 @@ export default function createGameReducers (state = INITIAL_STATE, action) {
     state = Object.assign({}, state)
     state[action.payload.type] = action.payload.options
   }
+
+  if (action.type === 'create-game.fielder-all/open-clear-prompt') {
+    state = Object.assign({}, state)
+    state.promptClear = true
+  }
+
+  if (action.type === 'create-game.fielder-all/close-clear-prompt') {
+    state = Object.assign({}, state)
+    state.promptClear = false
+  }
+
+  if (action.type === 'create-game.form/validate') {
+    state = Object.assign({}, state)
+    state.invalidFields = Object.assign({}, state.invalidFields, action.payload.invalidFields)
+    // Form is valid when there are no filtered invalid fields
+    state.valid = !Object.keys(state.invalidFields).filter(k => !!state.invalidFields[k]).length
+  }
+
   return state
 }
