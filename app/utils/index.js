@@ -86,24 +86,31 @@ export const firstFindFirstApply = function(availableFielders, copiedFieldingLin
 }
 
 export const validateBattingOrder = function (battingOrder, coedRule) {
-  // TODO: this way of checking order is incorrect and too strict. it is legal to have extra girls, it's just illegal to have 4 boys in a row!
-  // be sure to check front and back of batting order too
+  // CR: Hardcoded rules
+  let rule = null
+  if (coedRule === 'MMF') {
+    rule = 2
+  } else if (coedRule === 'MMMF') {
+    rule = 3
+  } else {
+    return true
+  }
 
-  // SOLUTION: stack 2 copies of the batting order, check for 3 boys in a row or 4 boys in a row to invalidate MMF or MMMF
-  // Automatically invalidate a roster that has ONLY F or ONLY M if there is a coed rule
-
-  const order = coedRule.split('').map(char => char === 'F' ? 1 : 0) // Males are false 0, females are true 1
-  let index = 0
-  console.log(battingOrder, order, coedRule.split(''))
-  for (let i = 0; i < battingOrder.length - 1; i++) {
-    if (battingOrder[i][1] !== order[index]) {
+  let batters = Object.assign([], battingOrder).concat(Object.assign([], battingOrder))
+  let ruleCheck = rule
+  for (let i = 0; i < batters.length - 1; i++) {
+    if (ruleCheck < 1 && !batters[i][1]) {
+      // Illegal male in order
       return false
-    } else if (index > order.length - 1) {
-      index = 0
+    } else if (ruleCheck >= 1 && batters[i][1]){
+      // Legal male in order
+      ruleCheck--
     } else {
-      index++
+      // Legal female in order
+      ruleCheck = rule
     }
   }
+  return true
 }
 
 // TODO: nonDupInInningFirstFindFirstApply, nonDupInInningLimitAcrossPositionFirstFindFirstApply, nonDupInInningLimitAcrossPositionFirstFindFirstApply
