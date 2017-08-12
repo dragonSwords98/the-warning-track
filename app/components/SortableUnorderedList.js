@@ -14,7 +14,7 @@ class SortableUnorderedList extends Component {
         {
           items.map(function (i) {
             return (
-              <List.Item key={'list-item-' + i[0]} data-id={i[0]}>
+              <List.Item key={'list-item-' + i[0]} data-id={i[0]} data-gender={i[1] ? 1 : 0}>
                 <List.Content>
                   <List.Header as="h4"><Label color={i[1] ? 'pink' : 'blue'}>{i[0]}</Label></List.Header>
                 </List.Content>

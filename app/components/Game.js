@@ -5,9 +5,10 @@ import { Divider } from 'semantic-ui-react'
 import OffenseTable from '@track/components/Game/OffenseTable'
 import FieldingLineup from '@track/components/Game/FieldingLineup'
 
-function Game ({ id, innings, currentInning, mercyRuns, noMercyInningBegin, positions, fielding, battingOrder, statusGrid, scoresheet, advanceRunner, onScoresheetChange, toggleInningLock, saveGame }) {
+function Game ({ id, innings, currentInning, mercyRuns, noMercyInningBegin, positions, fielding, battingOrder, statusGrid, scoresheet, advanceRunner, changeHitType, onScoresheetChange, toggleInningLock, saveGame }) {
   return (
     <div>
+      <Divider horizontal />
       <OffenseTable
         innings={innings}
         currentInning={currentInning}
@@ -17,6 +18,7 @@ function Game ({ id, innings, currentInning, mercyRuns, noMercyInningBegin, posi
         statusGrid={statusGrid}
         scoresheet={scoresheet}
         advanceRunner={advanceRunner}
+        changeHitType={changeHitType}
         onScoresheetChange={onScoresheetChange}
         toggleInningLock={toggleInningLock}
         saveGame={saveGame} />

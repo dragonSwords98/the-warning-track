@@ -1,7 +1,7 @@
 'use strict'
 import moment from 'moment'
 
-import { STATUS_ORDERING } from '@track/utils/constants'
+import { STATUS_ORDERING, GENERIC_OPPOSING_BATTER } from '@track/utils/constants'
 
 // CR: Consider deprecating
 import { populateScoresheet, populateStatusGrid, updateScoresheet } from '@track/utils'
@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   _id: null,
   ourTeam: null,
   opposingTeam: '',
-  diamond: '',
+  diamond: null,
   dateTime: moment().format('YYYY-MM-DD'),
   homeOrAway: 'Away', // or 'Home'
   // innings: 7, // DEFAULT: 7
@@ -25,10 +25,7 @@ const INITIAL_STATE = {
   currentFrame: 0, // 0 for top, 1 for bottom
   ourBattingOrder: [],
   ourFieldingLineup: [],
-  // homeBattingOrder: [],
-  // homeFieldingLineup: [],
-  // awayBattingOrder: [],
-  // awayFieldingLineup: [],
+  opposingBattingOrder: [],
   statusGrid: [], // ours batting order
   scoresheet: [], // ours vs theirs
   // nextHitterPoint: 0, // only ours
@@ -53,7 +50,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.game-container/destroy') {
     state = Object.assign({}, state, INITIAL_STATE)
   }
-  
+
   // if (action.type === 'route.game-container/start-game.initialize') {
   //   let { game } = action.payload
   //   state = Object.assign({}, INITIAL_STATE, state, game)
@@ -140,19 +137,19 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   //   }
   // }
 
-  if (action.type === 'game.inning/start') {
-    state = Object.assign({}, state)
-    // this action will enbolden important values like lineup for this inning, whose up to bat, which inning is it
-    // advance tally scores
-  }
+  // if (action.type === 'game.inning/start') {
+  //   state = Object.assign({}, state)
+  //   // this action will enbolden important values like lineup for this inning, whose up to bat, which inning is it
+  //   // advance tally scores
+  // }
 
-  if (action.type === 'game.save/success') {
-    state = Object.assign({}, state)
-  }
+  // if (action.type === 'game.save/success') {
+  //   state = Object.assign({}, state)
+  // }
 
-  if (action.type === 'game.save/error') {
-    state = Object.assign({}, state)
-  }
+  // if (action.type === 'game.save/error') {
+  //   state = Object.assign({}, state)
+  // }
 
   if (action.type === 'create-game/init') {
     state = Object.assign({}, state)
@@ -264,5 +261,59 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       state.currentInning = action.payload.inning
     }
   }
+
+  if (action.type === 'game.opponent-name/change') {
+    state = Object.assign({}, state)
+    state.opposingBattingOrder = Object.assign([], state.opposingBattingOrder)
+    state.opposingBattingOrder[action.payload.data['data-order']].name = action.payload.data.value
+  }
+
+  if (action.type === 'game.opponent-number/change') {
+    state = Object.assign({}, state)
+    state.opposingBattingOrder[action.payload.data['data-order']].number = parseInt(action.payload.data.value)
+  }
+
+  if (action.type === 'game.opponent/set-number-of-batters') {
+    state = Object.assign({}, state)
+    let lastBatter = state.opposingBattingOrder[state.opposingBattingOrder.length - 1]
+    if (action.payload.increment) {
+      state.opposingBattingOrder.push(Object.assign({}, GENERIC_OPPOSING_BATTER))
+    } else if (!lastBatter.name && !lastBatter.number) { // CR: Delete the last empty one if u find one?
+      state.opposingBattingOrder.pop()
+    }
+  }
+
+  if (action.type === 'game.opponent/set-batting-order') {
+    state = Object.assign({}, state)
+    state.opposingBattingOrder = action.payload.newOrder
+  }
+
+  if (action.type === 'game.opponent/set-batter-info') {
+    state = Object.assign({}, state)
+    state.opposingBattingOrder[action.payload.index] = Object.assign({}, state.opposingBattingOrder[action.payload.index], action.payload.batter)
+  }
+
+  /**
+    let opposingBattingOrder = [
+      { name: 'Anonymous Chan', number: 12,
+        hits: [
+          { type: 'single', depth: 4, lane: 'LLF'},
+          { type: 'single', depth: 5, lane: 'LF'}
+        ],
+        attempts: [
+          { type: 'grounder', depth: 2, lane: 'FR'}
+          { type: 'liner', depth: 5, lane: 'FL'}
+          { type: 'flier', depth: 4, lane: 'FL'}
+        ]
+      },
+      ...
+    ]
+    depths: 0 - 10
+    lanes: FB, FL, LLF, LF, CLF, CF, CRF, RF, RRF, FR
+
+    attempts are a scouting report warning that the batter attempted to hit a certain direction but did not end up attacking this zone with their actual hit/out
+  */
+
+
   return state
 }

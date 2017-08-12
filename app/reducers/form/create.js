@@ -1,6 +1,4 @@
 const INITIAL_STATE = {
-  // positions: [],
-  // teams: [],
   invalidFields: {},
   valid: false
 }
@@ -21,6 +19,8 @@ export default function createReducers (state = INITIAL_STATE, action) {
   }
   if (action.type === 'create-form.team/validate') {
     state = Object.assign({}, state)
+
+    // CR: Invalid comparison should be done in actions not reducers
     state.invalidFields.name = !action.payload.team.name.length || !action.payload.team.name.match(/^[a-z0-9]+$/i) // TODO: error msg?
     state.invalidFields.captain = !action.payload.team.captain.length // TODO: error msg?
     state.invalidFields.leagues = !action.payload.team.leagues.length // TODO: error msg?

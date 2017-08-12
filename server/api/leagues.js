@@ -98,7 +98,8 @@ populateLeaguesCollection = function () {
         noMercyInningBegin: 6,
         sliding: true,
         coedRule: 'MMMF',
-        color: 'orange'
+        color: 'orange',
+        minimalRoster: 7
     },
     {
         _id: ObjectId("31c92149873ad56fe0093592"),
@@ -110,7 +111,8 @@ populateLeaguesCollection = function () {
         noMercyInningBegin: 5,
         sliding: true,
         coedRule: 'MMF',
-        color: 'red'
+        color: 'red',
+        minimalRoster: 7
 
     },
     {
@@ -123,7 +125,8 @@ populateLeaguesCollection = function () {
         noMercyInningBegin: 6,
         sliding: true,
         coedRule: 'MMF',
-        color: 'olive'
+        color: 'olive',
+        minimalRoster: 7
     }];
 
     db.collection('leagues', function(err, collection) {

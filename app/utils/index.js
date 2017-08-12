@@ -11,6 +11,16 @@ export const objectToOption = function (data) {
   })
 }
 
+export const correctKeyOptionWithId = function (id, options) {
+  return options.map(o => {
+    return {
+      key: `${o.key}-${id}`,
+      value: o.value,
+      text: o.text
+    }
+  })
+}
+
 export const populateStatusGrid = function (activeRosterLength, innings) {
   let array = []
   let row = new Array(innings)
@@ -73,6 +83,39 @@ export const firstFindFirstApply = function(availableFielders, copiedFieldingLin
     })
   })
   return copiedFieldingLineup
+}
+
+/**
+ * @param battingOrder: array of batting order [[player, gender], [player, gender], ...]
+ * @param coedRule: rule for coed (currently only accepting 'MMF' or 'MMMF'), defaults to legal batting order
+ * @return: false for legal batting order, true for illegal batting order
+ */
+export const validateBattingOrder = function (battingOrder, coedRule) {
+  // CR: Hardcoded rules
+  let rule = null
+  if (coedRule === 'MMF') {
+    rule = 2
+  } else if (coedRule === 'MMMF') {
+    rule = 3
+  } else {
+    return false
+  }
+
+  let batters = Object.assign([], battingOrder).concat(Object.assign([], battingOrder))
+  let ruleCheck = rule
+  for (let i = 0; i < batters.length - 1; i++) {
+    if (ruleCheck < 1 && !batters[i][1]) {
+      // Illegal male in order
+      return true
+    } else if (ruleCheck >= 1 && !batters[i][1]){
+      // Legal male in order
+      ruleCheck--
+    } else {
+      // Legal female in order
+      ruleCheck = rule
+    }
+  }
+  return false
 }
 
 // TODO: nonDupInInningFirstFindFirstApply, nonDupInInningLimitAcrossPositionFirstFindFirstApply, nonDupInInningLimitAcrossPositionFirstFindFirstApply

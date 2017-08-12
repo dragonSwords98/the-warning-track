@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
 import moment from 'moment'
-import { Segment, Table, Header, Button } from 'semantic-ui-react'
+import { Message, Label, Icon, Confirm, Segment, Table, Header, Button } from 'semantic-ui-react'
 
 import LoadingOverlay from '@track/components/LoadingOverlay'
 import GenericCelledTable from '@track/components/GenericCelledTable'
@@ -21,6 +21,8 @@ import {
   updateAvailableBatters,
   updateLineups,
   autoFillFieldingLineup,
+  clearFieldingLineup,
+  updateBattingOrder,
   updateGameForm,
   submitGameForm
 } from '@track/actions/form/game'
@@ -42,6 +44,7 @@ class CreateGameContainer extends Component {
     this.props.destroy()
   }
 
+  // TODO: HIGHLY RECOMMEND WE THROW THIS OUT
   componentWillReceiveProps (nextProps) {
     if (nextProps.directory.leagues && !nextProps.createGame.leagues.length) {
       nextProps.updateAvailableLeagues(nextProps.directory.leagues)
@@ -56,6 +59,9 @@ class CreateGameContainer extends Component {
       nextProps.updateAvailableRoster(nextProps.directory.players)
     }
 
+    // TODO: Batting order does not properly update. To reproduce, load createGame, change team to Kattallage, don't change league.
+    // The Bat order is still 13, even though there's only 5 in the block
+    // You can then shuffle the batting order and it'll update state properly again
     if (nextProps.createGame.batters && document.getElementById('battingOrderList')) {
       const el = document.getElementById('battingOrderList')
       if (!this.props.sortable && el) {
@@ -65,7 +71,7 @@ class CreateGameContainer extends Component {
               onUpdate: evt => {
                 let newOrder = []
                 Array.prototype.forEach.call(evt.target.children, function (el, i) {
-                  newOrder.push(el.getAttribute('data-id'))
+                  newOrder.push([el.getAttribute('data-id'), parseInt(el.getAttribute('data-gender'))])
                 })
                 this.props.handleBattingOrder(newOrder)
               }
@@ -92,7 +98,9 @@ class CreateGameContainer extends Component {
       clearFielderRow,
       clearFielderInning,
       clearFielderAll,
-      autoFillFielders
+      autoFillFielders,
+      handlePromptClearCancel,
+      handlePromptClearConfirm
     } = this.props
     if (!game || !createGame ||
       !directory.players ||
@@ -110,7 +118,7 @@ class CreateGameContainer extends Component {
       header = [
         <Table.HeaderCell key={'header-innings-0'}>
             <Button circular icon='rocket' onClick={autoFillFielders} />
-            <Button circular icon='bomb' onClick={clearFielderAll} />
+            <Button circular icon='bomb' disabled={createGame.invalidFields.ourFieldingLineup} onClick={clearFielderAll} />
         </Table.HeaderCell>]
       footer = [<Table.HeaderCell key="footer-cell-0">Lock</Table.HeaderCell>]
 
@@ -151,7 +159,7 @@ class CreateGameContainer extends Component {
       max: moment(game.dateTime).add(1, 'years').format('YYYY-MM-DD')
     }
 
-    let isFormIncomplete = validateForm(game)
+    // let isFormIncomplete = validateForm(game)
     // TODO: Add a tally table
     // TODO: find a way to extract the final order of the roster batting lineup
     //       and restrict the ordering to MMF or MMMF if optioned
@@ -159,10 +167,13 @@ class CreateGameContainer extends Component {
 
     let CreateGameComponent = (<LoadingOverlay />)
     let BattingOrderComponent = (<LoadingOverlay />)
+    let BattingOrderRule = ''
 
     if (createGame.leagues && createGame.teams && createGame.diamonds) {
       CreateGameComponent = (
         <CreateGame
+          game={game}
+          invalidFields={createGame.invalidFields}
           submitCreateGameForm={submitCreateFormQuery}
           leagueOptions={createGame.leagues}
           teamsOptions={createGame.teams}
@@ -176,21 +187,40 @@ class CreateGameContainer extends Component {
       BattingOrderComponent = (<SortableUnorderedList id="battingOrderList" ref="battingOrderList" items={createGame.batters} onChange={handleBattingOrder} />)
     }
 
+    if (game.league) {
+      BattingOrderRule = <Label>Coed Rule: {game.league.coedRule}</Label>
+    }
+
+    // TODO: the GenericCelledTable events should trigger validate too!
+
     return (
       <div className="create-game-container">
         <Segment>
+          <Message color='red' hidden={!createGame.invalidFields.illegalMinimalRoster}>
+            WARNING: There are not enough players on the current roster to field a team
+          </Message>
           {CreateGameComponent}
         </Segment>
         <Segment>
           <Header as="h3">Fielding Lineup</Header>
           <GenericCelledTable header={header} body={body} footer={footer} />
+          <Confirm
+            open={createGame.promptClear}
+            onCancel={handlePromptClearCancel}
+            onConfirm={handlePromptClearConfirm}
+          />
         </Segment>
         <Segment>
-          <Header as="h3">Batting Order</Header>
+          <Header as="h3">Batting Order
+            <Icon
+            name={createGame.invalidFields.illegalBattingOrder ? 'exclamation triangle' : 'check circle' }
+            color={createGame.invalidFields.illegalBattingOrder ? 'red' : 'green' } />
+          </Header>
+          {BattingOrderRule}
           {BattingOrderComponent}
         </Segment>
         <Segment>
-          <Button type="submit" form="createGameForm" disabled={isFormIncomplete}>Submit</Button>
+          <Button type="submit" form="createGameForm" disabled={!createGame.valid}>Submit</Button>
         </Segment>
       </div>
     )
@@ -229,7 +259,7 @@ export default withRouter(connect(
         dispatch(updateLineups(event, data))
       },
       handleBattingOrder (newOrder) {
-        dispatch({ type: 'create-game.batting-order/change', payload: { newOrder: newOrder } })
+        dispatch(updateBattingOrder(newOrder))
       },
       clearFielderRow (event, data) {
         dispatch({ type: 'create-game.fielder-row/clear', payload: { position: data.data } })
@@ -239,7 +269,13 @@ export default withRouter(connect(
       },
       clearFielderAll (event, data) {
         // TODO: Prompt user before erasing all
-        dispatch({ type: 'create-game.fielder-all/clear' })
+        dispatch({ type: 'create-game.fielder-all/open-clear-prompt' })
+      },
+      handlePromptClearCancel (event, data) {
+        dispatch({ type: 'create-game.fielder-all/close-clear-prompt' })
+      },
+      handlePromptClearConfirm (event, data) {
+        dispatch(clearFieldingLineup())
       },
       autoFillFielders (event, data) {
         // TODO: Prompt user for strategy to auto-fill
