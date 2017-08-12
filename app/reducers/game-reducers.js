@@ -50,7 +50,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.game-container/destroy') {
     state = Object.assign({}, state, INITIAL_STATE)
   }
-  
+
   // if (action.type === 'route.game-container/start-game.initialize') {
   //   let { game } = action.payload
   //   state = Object.assign({}, INITIAL_STATE, state, game)
@@ -270,14 +270,15 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'game.opponent-number/change') {
     state = Object.assign({}, state)
-    state.opposingBattingOrder[action.payload.data['data-order']].number = action.payload.data.value
+    state.opposingBattingOrder[action.payload.data['data-order']].number = parseInt(action.payload.data.value)
   }
 
   if (action.type === 'game.opponent/set-number-of-batters') {
     state = Object.assign({}, state)
+    let lastBatter = state.opposingBattingOrder[state.opposingBattingOrder.length - 1]
     if (action.payload.increment) {
       state.opposingBattingOrder.push(Object.assign({}, GENERIC_OPPOSING_BATTER))
-    } else {
+    } else if (!lastBatter.name && !lastBatter.number) { // CR: Delete the last empty one if u find one?
       state.opposingBattingOrder.pop()
     }
   }
