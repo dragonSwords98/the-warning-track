@@ -25,7 +25,7 @@ class BattersBox extends Component {
     return (
       <div>
         <Button data-row={row} data-inning={inning} fluid color={status.color} onClick={advanceRunner.bind(this)} >{status.label}</Button>
-        <Button data-row={row} data-inning={inning} fluid color={hit.color} onClick={changeHitType.bind(this)} >{hit.label}</Button>
+        <Button data-row={row} data-inning={inning} fluid color={hit.color} disabled={hit.disabled} onClick={changeHitType.bind(this)} >{hit.label}</Button>
       </div>
     )
   }

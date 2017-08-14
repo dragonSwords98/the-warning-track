@@ -57,6 +57,7 @@ const saveGameObject = function (state, game) {
     currentFrame: game.currentFrame,
     scoresheet: game.scoresheet,
     statusGrid: game.statusGrid,
+    hitGrid: game.hitGrid,
     gameStatus: game.gameStatus
   }
 }

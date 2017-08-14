@@ -64,63 +64,72 @@ export const SINGLE_HIT = {
   name: 'SINGLE',
   label: 'Single',
   _id: 'Single',
-  color: 'olive'
+  color: 'olive',
+  disabled: true
 }
 
 export const DOUBLE_HIT = {
   name: 'DOUBLE',
   label: 'Double',
   _id: 'Double',
-  color: 'green'
+  color: 'green',
+  disabled: true
 }
 
 export const TRIPLE_HIT = {
   name: 'TRIPLE',
   label: 'Triple',
   _id: 'Triple',
-  color: 'teal'
+  color: 'teal',
+  disabled: true
 }
 
 export const HOME_RUN_HIT = {
   name: 'HOME RUN',
   label: 'HR',
   _id: 'HR',
-  color: 'blue'
+  color: 'blue',
+  disabled: true
 }
 
 export const GROUND_OUT = {
   name: 'GROUNDOUT',
   label: 'Ground',
   _id: 'Ground',
-  color: 'pink'
+  color: 'pink',
+  disabled: true
 }
 
 export const FLY_OUT = {
   name: 'FLYOUT',
   label: 'Fly',
   _id: 'Fly',
-  color: 'purple'
+  color: 'purple',
+  disabled: true
 }
 
 export const POP_OUT = {
   name: 'POPOUT',
   label: 'Pop',
   _id: 'Pop',
-  color: 'yellow'
+  color: 'yellow',
+  disabled: true
 }
 
 export const FOUL_OUT = {
   name: 'FOULOUT',
   label: 'Foul',
   _id: 'Foul',
-  color: 'orange'
+  color: 'orange',
+  disabled: true
 }
 
 export const STRIKE_OUT = {
   name: 'STRIKEOUT',
   label: 'K',
   _id: 'K',
-  color: 'red'
+  color: 'red',
+  disabled: true
 }
 
 export const HIT_ORDERING = [

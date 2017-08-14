@@ -5,7 +5,7 @@ import { Tab } from 'semantic-ui-react'
 
 
 import { objectToOption } from '@track/utils/constants'
-import { loadGame, saveGame } from '@track/actions/game-actions'
+import { loadGame, saveGame } from '@track/actions/game'
 import Game from '@track/components/Game'
 import OpponentOffenseTable from '@track/components/Game/OpponentOffenseTable'
 import LoadingOverlay from '@track/components/LoadingOverlay'
@@ -46,6 +46,7 @@ class GameContainer extends Component {
       fielding={game.ourFieldingLineup}
       battingOrder={game.ourBattingOrder}
       statusGrid={game.statusGrid}
+      hitGrid={game.hitGrid}
       scoresheet={game.scoresheet}
       advanceRunner={advanceBatterRunner}
       changeHitType={changeHitType}

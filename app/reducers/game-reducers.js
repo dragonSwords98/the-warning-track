@@ -1,10 +1,10 @@
 'use strict'
 import moment from 'moment'
 
-import { STATUS_ORDERING, GENERIC_OPPOSING_BATTER } from '@track/utils/constants'
+import { STATUS_ORDERING, HIT_ORDERING, GENERIC_OPPOSING_BATTER } from '@track/utils/constants'
 
 // CR: Consider deprecating
-import { populateScoresheet, populateStatusGrid, updateScoresheet } from '@track/utils'
+import { populateScoresheet, populateGrid, updateScoresheet } from '@track/utils'
 
 const INITIAL_STATE = {
   league: null,
@@ -27,6 +27,7 @@ const INITIAL_STATE = {
   ourFieldingLineup: [],
   opposingBattingOrder: [],
   statusGrid: [], // ours batting order
+  hitGrid: [], // ours hitting chart
   scoresheet: [], // ours vs theirs
   // nextHitterPoint: 0, // only ours
   gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
@@ -50,15 +51,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.game-container/destroy') {
     state = Object.assign({}, state, INITIAL_STATE)
   }
-
-  // if (action.type === 'route.game-container/start-game.initialize') {
-  //   let { game } = action.payload
-  //   state = Object.assign({}, INITIAL_STATE, state, game)
-  //   state.statusGrid = populateStatusGrid(state.league.innings, game.ourBattingOrder.length)
-  //   state.scoresheet = populateScoresheet(state.league.innings)
-  //   state.gameStatus = 1
-  // }
-
   if (action.type === 'route.game-container/load-game.success') {
     state = Object.assign({}, INITIAL_STATE, state, action.payload.game)
   }
@@ -66,17 +58,23 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state = Object.assign({}, state)
     state.league = action.payload.league
 
+    // TODO: validate a game before loading it
+
+    
+    // CR: consider deprecating, the API database currently does not accept statusGrid or hitGrid in addGame
+    // if (!state.statusGrid.length) {
+    //   state.statusGrid = populateGrid(state.league.innings, state.ourBattingOrder.length, Object.assign({}, STATUS_ORDERING[0]))
+    // }
+    // if (!state.hitGrid.length) {
+    //   state.hitGrid = populateGrid(state.league.innings, state.ourBattingOrder.length, Object.assign({}, HIT_ORDERING[0]))
+    // }
     // CR: consider deprecating
-    if (!state.statusGrid.length) {
-      state.statusGrid = populateStatusGrid(state.league.innings, state.ourBattingOrder.length)
-    }
-    // CR: consider deprecating
-    if (!state.scoresheet.ours || !state.scoresheet.theirs) {
-      state.scoresheet = {
-        ours: populateScoresheet(state.league.innings),
-        theirs: populateScoresheet(state.league.innings)
-      }
-    }
+    // if (!state.scoresheet.ours || !state.scoresheet.theirs) {
+    //   state.scoresheet = {
+    //     ours: populateScoresheet(state.league.innings),
+    //     theirs: populateScoresheet(state.league.innings)
+    //   }
+    // }
   }
 
   if (action.type === 'route.game-container/load-game.rejected') {
@@ -86,14 +84,28 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'game.advance-runner/advance') {
     state = Object.assign({}, state)
     const { row, inning } = action.payload.target.dataset
-    let statusIndex = STATUS_ORDERING.indexOf(state.statusGrid[inning - 1][row]) + 1
+    let statusIndex = STATUS_ORDERING.findIndex(status => status.name === state.statusGrid[inning - 1][row].name) + 1
     if (statusIndex > STATUS_ORDERING.length - 1) {
       statusIndex = 0
     }
-    state.statusGrid[inning - 1][row] = STATUS_ORDERING[statusIndex]
+    state.statusGrid[inning - 1][row] = Object.assign({}, STATUS_ORDERING[statusIndex])
+    // Enable if batter made a hit, otherwise disable
+    let hitCell = state.hitGrid[inning - 1][row]
+    hitCell.disabled = statusIndex < 3
 
     state.scoresheet.ours.runs[inning - 1] = updateScoresheet('HOME', state.statusGrid[inning - 1])
     state.scoresheet.ours.outs[inning - 1] = updateScoresheet('OUT', state.statusGrid[inning - 1])
+  }
+
+  if (action.type === 'game.hit/change-type') {
+    state = Object.assign({}, state)
+    const { row, inning } = action.payload.target.dataset
+    let hitIndex = HIT_ORDERING.findIndex(hit => hit.name === state.hitGrid[inning - 1][row].name) + 1
+    if (hitIndex > HIT_ORDERING.length - 1) {
+      hitIndex = 0
+    }
+    state.hitGrid[inning - 1][row] = Object.assign({}, HIT_ORDERING[hitIndex])
+    state.hitGrid[inning - 1][row].disabled = false
   }
 
   if (action.type === 'game.scoresheet/update') {

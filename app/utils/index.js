@@ -1,5 +1,4 @@
 'use strict'
-import { BENCH_STATUS } from './constants'
 
 export const objectToOption = function (data) {
   return data.map(d => {
@@ -21,10 +20,9 @@ export const correctKeyOptionWithId = function (id, options) {
   })
 }
 
-export const populateStatusGrid = function (activeRosterLength, innings) {
+export const populateGrid = function (activeRosterLength, innings, object) {
   let array = []
-  let row = new Array(innings)
-  row.fill(BENCH_STATUS)
+  let row = new Array(innings).fill().map(r => Object.assign({}, object))
   while (activeRosterLength--) array.push(row.slice())
   return array
 }
