@@ -4,6 +4,7 @@ import { client } from './client'
 import { MINIMAL_BATTERS_COUNT, GENERIC_OPPOSING_BATTER } from '@track/utils/constants'
 
 const loadGameObject = function (state, game) {
+  // TODO: Validate the game object
   game.ourBattingOrder = game.ourBattingOrder.map(batter => {
     return state.directory.players.find(p => p._id === batter)
   })
@@ -58,6 +59,7 @@ const saveGameObject = function (state, game) {
     scoresheet: game.scoresheet,
     statusGrid: game.statusGrid,
     hitGrid: game.hitGrid,
+    opposingBattingOrder: game.opposingBattingOrder,
     gameStatus: game.gameStatus
   }
 }

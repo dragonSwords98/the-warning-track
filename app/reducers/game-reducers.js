@@ -57,24 +57,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.game-container/load-league.success') {
     state = Object.assign({}, state)
     state.league = action.payload.league
-
-    // TODO: validate a game before loading it
-
-    
-    // CR: consider deprecating, the API database currently does not accept statusGrid or hitGrid in addGame
-    // if (!state.statusGrid.length) {
-    //   state.statusGrid = populateGrid(state.league.innings, state.ourBattingOrder.length, Object.assign({}, STATUS_ORDERING[0]))
-    // }
-    // if (!state.hitGrid.length) {
-    //   state.hitGrid = populateGrid(state.league.innings, state.ourBattingOrder.length, Object.assign({}, HIT_ORDERING[0]))
-    // }
-    // CR: consider deprecating
-    // if (!state.scoresheet.ours || !state.scoresheet.theirs) {
-    //   state.scoresheet = {
-    //     ours: populateScoresheet(state.league.innings),
-    //     theirs: populateScoresheet(state.league.innings)
-    //   }
-    // }
   }
 
   if (action.type === 'route.game-container/load-game.rejected') {
@@ -129,40 +111,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     // freeze this inning, unfreeze the next inning, set the next batter as at-bat
   }
 
-  // if (action.type === 'game.opponent-action/run') {
-  //   state = Object.assign({}, state)
-  //   if (action.payload.whose === 'theirs') {
-  //     state.scoresheet[state.currentInning].theirs++
-  //   }
-  //   if (action.payload.whose === 'ours') {
-  //     state.scoresheet[state.currentInning].ours++
-  //   }
-  // }
-
-  // if (action.type === 'game.opponent-action/out') {
-  //   state = Object.assign({}, state)
-  //   if (action.payload.whose === 'theirs') {
-  //     state.scoresheet[state.currentInning].theirOuts++
-  //   }
-  //   if (action.payload.whose === 'ours') {
-  //     state.scoresheet[state.currentInning].ourOuts++
-  //   }
-  // }
-
-  // if (action.type === 'game.inning/start') {
-  //   state = Object.assign({}, state)
-  //   // this action will enbolden important values like lineup for this inning, whose up to bat, which inning is it
-  //   // advance tally scores
-  // }
-
-  // if (action.type === 'game.save/success') {
-  //   state = Object.assign({}, state)
-  // }
-
-  // if (action.type === 'game.save/error') {
-  //   state = Object.assign({}, state)
-  // }
-
   if (action.type === 'create-game/init') {
     state = Object.assign({}, state)
     state.league = action.payload.league
@@ -179,13 +127,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
     // TODO: warn/prompt the user when they change league again bcuz they will lose all their work -_-
   }
-
-  // if (action.type === 'create-game.select-team/set') {
-  //   state = Object.assign({}, state)
-  //   state.ourTeam = action.payload.team
-  //   state.ourBattingOrder = Object.assign({}, action.payload.roster)
-  //   state.ourFieldingLineup = Object.assign({}, action.payload.roster) //TODO: should be by inning
-  // }
 
   if (action.type === 'create-game.select-diamond/set') {
     state = Object.assign({}, state)
@@ -304,27 +245,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state = Object.assign({}, state)
     state.opposingBattingOrder[action.payload.index] = Object.assign({}, state.opposingBattingOrder[action.payload.index], action.payload.batter)
   }
-
-  /**
-    let opposingBattingOrder = [
-      { name: 'Anonymous Chan', number: 12,
-        hits: [
-          { type: 'single', depth: 4, lane: 'LLF'},
-          { type: 'single', depth: 5, lane: 'LF'}
-        ],
-        attempts: [
-          { type: 'grounder', depth: 2, lane: 'FR'}
-          { type: 'liner', depth: 5, lane: 'FL'}
-          { type: 'flier', depth: 4, lane: 'FL'}
-        ]
-      },
-      ...
-    ]
-    depths: 0 - 10
-    lanes: FB, FL, LLF, LF, CLF, CF, CRF, RF, RRF, FR
-
-    attempts are a scouting report warning that the batter attempted to hit a certain direction but did not end up attacking this zone with their actual hit/out
-  */
 
 
   return state

@@ -10,16 +10,6 @@ export const objectToOption = function (data) {
   })
 }
 
-export const correctKeyOptionWithId = function (id, options) {
-  return options.map(o => {
-    return {
-      key: `${o.key}-${id}`,
-      value: o.value,
-      text: o.text
-    }
-  })
-}
-
 export const populateGrid = function (activeRosterLength, innings, object) {
   let array = []
   let row = new Array(innings).fill().map(r => Object.assign({}, object))
