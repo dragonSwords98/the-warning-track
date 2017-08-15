@@ -206,6 +206,295 @@ populateGamesCollection = function () {
           'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
         }
       ],
+      opposingBattingOrder: [
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        }
+      ],
       statusGrid: // our offense status
       [ 
         [ 
@@ -1140,6 +1429,295 @@ populateGamesCollection = function () {
           'LR': ObjectId("b44dc63a510519a3f2a077af"),
           'CF': ObjectId("b44dc63a510519a3f2a06592"),
           'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
+        }
+      ],
+      opposingBattingOrder: [
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
         }
       ],
       statusGrid: // our offense status

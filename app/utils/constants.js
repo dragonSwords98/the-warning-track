@@ -321,8 +321,13 @@ export const DEPTH_ORDERING = [
 export const GENERIC_OPPOSING_BATTER = {
   name: '',
   number: 0,
-  hits: [],
-  attempts: []
+  atBats: []
+}
+
+export const GENERIC_ATBAT = {
+  type: null,
+  depth: null,
+  lane: null
 }
 
 export const MINIMAL_BATTERS_COUNT = 7 // CR: should be a league rule, no?

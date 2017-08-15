@@ -4,7 +4,7 @@ import moment from 'moment'
 import { push as pushLocation } from 'react-router-redux'
 
 import { objectToOption, populateScoresheet, populateGrid, firstFindFirstApply, validateBattingOrder } from '@track/utils'
-import { BENCH_STATUS, SINGLE_HIT, MINIMAL_BATTERS_COUNT } from '@track/utils/constants'
+import { BENCH_STATUS, SINGLE_HIT, MINIMAL_BATTERS_COUNT, GENERIC_ATBAT } from '@track/utils/constants'
 
 /**
  * Called when new leagues are available
@@ -162,6 +162,13 @@ const saveNewGameObject = function (state, game) {
     ours: populateScoresheet(state.game.league.innings),
     theirs: populateScoresheet(state.game.league.innings)
   }
+  game.opposingBattingOrder = new Array(MINIMAL_BATTERS_COUNT).fill().map(o => {
+    return {
+      name: o.name,
+      number: o.number,
+      atBats: new Array(state.game.league.innings + 1).fill().map(b => Object.assign({}, GENERIC_ATBAT))
+    }
+  })
   return game
 }
 

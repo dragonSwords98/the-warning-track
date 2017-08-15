@@ -8,7 +8,7 @@ import LoadingOverlay from '@track/components/LoadingOverlay'
 class OpponentBattersBox extends Component {
   render () {
     let {
-      row, inning, disabled,
+      batter, row, inning, disabled,
       hitTypeOptions, depthOptions, laneOptions,
       onChangeHitType, onChangeDepth, onChangeLane
     } = this.props
@@ -19,14 +19,15 @@ class OpponentBattersBox extends Component {
 
     return (
       <div key={`opponent-box-${row}-${inning}`}>
-        <Dropdown key={`hit-drop-${row}-${inning}`} placeholder='Select Hit Type' data-row={row} data-inning={inning} fluid search selection options={hitTypeOptions} disabled={disabled} onChange={onChangeHitType.bind(this)} />
-        <Dropdown key={`depth-drop-${row}-${inning}`} placeholder='Select Depth' data-row={row} data-inning={inning} fluid search selection options={depthOptions} disabled={disabled} onChange={onChangeDepth.bind(this)} />
-        <Dropdown key={`lane-drop-${row}-${inning}`} placeholder='Select Lane' data-row={row} data-inning={inning} fluid search selection options={laneOptions} disabled={disabled} onChange={onChangeLane.bind(this)} />
+        <Dropdown key={`hit-drop-${row}-${inning}`} placeholder='Select Hit Type' data-order={row} data-inning={inning} fluid search selection options={hitTypeOptions} disabled={disabled} onChange={onChangeHitType.bind(this)} value={batter.type} />
+        <Dropdown key={`depth-drop-${row}-${inning}`} placeholder='Select Depth' data-order={row} data-inning={inning} fluid search selection options={depthOptions} disabled={disabled} onChange={onChangeDepth.bind(this)} value={batter.depth} />
+        <Dropdown key={`lane-drop-${row}-${inning}`} placeholder='Select Lane' data-order={row} data-inning={inning} fluid search selection options={laneOptions} disabled={disabled} onChange={onChangeLane.bind(this)} value={batter.lane} />
       </div>
     )
   }
 }
 OpponentBattersBox.propTypes = {
+  batter: PropTypes.object.isRequired,
   row: PropTypes.number.isRequired,
   inning: PropTypes.number.isRequired,
   disabled: PropTypes.bool.isRequired,

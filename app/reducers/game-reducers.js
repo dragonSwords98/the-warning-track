@@ -117,6 +117,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   }
 
   if (action.type === 'create-game.select-league/set') {
+    // TODO: warn/prompt the user when they change league again bcuz they will lose all their work -_-
     state = Object.assign({}, state)
     state.league = action.payload.league
     if (!action.payload.isOurTeamInThisLeague) {
@@ -124,8 +125,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     }
     let positions = populatePositions(action.payload.league.positions)
     state.ourFieldingLineup = new Array(action.payload.league.innings + 1).fill(positions)
-
-    // TODO: warn/prompt the user when they change league again bcuz they will lose all their work -_-
   }
 
   if (action.type === 'create-game.select-diamond/set') {
@@ -226,11 +225,28 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state.opposingBattingOrder[action.payload.data['data-order']].number = parseInt(action.payload.data.value)
   }
 
+  if (action.type === 'game.opponent-batter/change-hit-type') {
+    state.opposingBattingOrder[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].type = action.payload.data.value
+  }
+
+  if (action.type === 'game.opponent-batter/change-depth') {
+    state.opposingBattingOrder[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].depth = action.payload.data.value
+  }
+
+  if (action.type === 'game.opponent-batter/change-lane') {
+    state.opposingBattingOrder[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].lane = action.payload.data.value
+  }
+
   if (action.type === 'game.opponent/set-number-of-batters') {
     state = Object.assign({}, state)
     let lastBatter = state.opposingBattingOrder[state.opposingBattingOrder.length - 1]
     if (action.payload.increment) {
-      state.opposingBattingOrder.push(Object.assign({}, GENERIC_OPPOSING_BATTER))
+      let batterInfo = Object.assign({}, GENERIC_OPPOSING_BATTER)
+      batterInfo.allBats.map(bat => {
+        // CR: assume league is loaded
+        new Array(state.game.league.innings + 1).fill().map(b => Object.assign({}, GENERIC_ATBAT))
+      })
+      state.opposingBattingOrder.push(batterInfo) // TODO: INCORRECT
     } else if (!lastBatter.name && !lastBatter.number) { // CR: Delete the last empty one if u find one?
       state.opposingBattingOrder.pop()
     }
