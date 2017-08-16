@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
-import { fetchTeam } from '@track/actions/team-actions'
+import { fetchTeam } from '@track/actions/team'
 
 class TeamContainer extends Component {
   componentWillMount () {

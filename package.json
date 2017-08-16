@@ -4,7 +4,7 @@
   "description": "Looney Tunes Team Hub",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server/server",
+    "start": "node ./server",
     "watch": "webpack --watch --colors",
     "build": "cross-env NODE_ENV=production ./node_modules/.bin/webpack -p --colors",
     "clean": "rm -r dist/*",

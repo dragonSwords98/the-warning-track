@@ -1,7 +1,7 @@
 'use strict'
 
 import { client } from './client'
-import { updateMenuFilter } from '@track/actions/navigation-actions'
+import { updateMenuFilter } from '@track/actions/navigation'
 
 export function fetchAll () {
   return function (dispatch, getState) {

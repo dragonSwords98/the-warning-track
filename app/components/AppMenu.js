@@ -6,7 +6,7 @@ import { withRouter } from 'react-router'
 import { Menu, Header, Dropdown } from 'semantic-ui-react'
 import { push as pushLocation } from 'react-router-redux'
 
-import { initMenu, handleMenuItemAction, handleMenuSelectAction } from '@track/actions/navigation-actions'
+import { initMenu, handleMenuItemAction, handleMenuSelectAction } from '@track/actions/navigation'
 
 class AppMenu extends Component {
   componentWillMount () {

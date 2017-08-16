@@ -1,10 +1,55 @@
 'use strict'
 const os = require('os')
 const express = require('express')
+const bodyParser = require('body-parser')
 const portfinder = require('portfinder')
 const path = require('path')
 const serveStatic = require('serve-static')
-let app = express()
+
+const players = require('./api/players'),
+    teams   = require('./api/teams'),
+    games   = require('./api/games'),
+    diamonds   = require('./api/diamonds'),
+    leagues   = require('./api/leagues')
+
+
+let app = express();
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
+app.get('/players', players.findAll);
+app.get('/players/:id', players.findById);
+app.post('/players', players.addPlayer);
+app.put('/players/:id', players.updatePlayer);
+app.delete('/players/:id', players.deletePlayer);
+
+app.get('/teams', teams.findAll);
+app.get('/teams/:id', teams.findById);
+app.post('/teams', teams.addTeam);
+app.put('/teams/:id', teams.updateTeam);
+app.delete('/teams/:id', teams.deleteTeam);
+
+app.get('/games', games.findAll);
+app.get('/games/:id', games.findById);
+app.post('/games', games.addGame);
+app.put('/games/:id', games.updateGame);
+app.delete('/games/:id', games.deleteGame);
+
+app.get('/diamonds', diamonds.findAll);
+app.get('/diamonds/:id', diamonds.findById);
+app.post('/diamonds', diamonds.addDiamond);
+app.put('/diamonds/:id', diamonds.updateDiamond);
+app.delete('/diamonds/:id', diamonds.deleteDiamond);
+
+app.get('/leagues', leagues.findAll);
+app.get('/leagues/:id', leagues.findById);
+app.post('/leagues', leagues.addLeague);
+app.put('/leagues/:id', leagues.updateLeague);
+app.delete('/leagues/:id', leagues.deleteLeague);
 
 let addresses = getIPAddresses()
 app.use(require('morgan')('dev'))

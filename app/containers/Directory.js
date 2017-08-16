@@ -12,7 +12,7 @@ import CardGrid from '@track/components/CardGrid'
 import Segue from '@track/components/Segue'
 import { updateCreateTeamForm, submitCreateTeamForm } from '@track/actions/form/team'
 import { updateCreatePlayerForm, submitCreatePlayerForm } from '@track/actions/form/player'
-import { updateCreateForm, validateCreateForm } from '@track/actions/directory-actions'
+import { updateCreateForm, validateCreateForm } from '@track/actions/directory'
 import { objectToOption, mapLeaguesIntoTeams, mapTeamsIntoPlayers } from '@track/utils'
 
 class Directory extends Component {

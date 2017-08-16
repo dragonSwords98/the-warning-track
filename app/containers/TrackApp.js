@@ -9,7 +9,7 @@ import AppMenu from '@track/components/AppMenu'
 import Footer from '@track/components/Footer'
 import LoadingOverlay from '@track/components/LoadingOverlay'
 
-import { fetchAll } from '@track/actions/directory-actions'
+import { fetchAll } from '@track/actions/directory'
 
 class TrackApp extends Component {
   componentWillMount () {
