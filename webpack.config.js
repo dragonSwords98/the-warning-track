@@ -21,27 +21,27 @@ const BABEL_CONFIG = {
 }
 
 module.exports = {
- context: path.resolve(__dirname, 'app'),
- entry: {
-  track: "./"
- },
- output: {
-  path: buildPath,
-  pathinfo: true,
-  chunkFilename: '[name].js',
-  filename: '[name].js'
- },
- resolve: {
-   alias: {
-     '@track': path.resolve(__dirname, 'app')
-   }
- },
- module: {
-   loaders: [
+  context: path.resolve(__dirname, 'app'),
+  entry: {
+    track: "./"
+  },
+  output: {
+    path: buildPath,
+    pathinfo: true,
+    chunkFilename: '[name].js',
+    filename: '[name].js'
+  },
+  resolve: {
+    alias: {
+      '@track': path.resolve(__dirname, 'app')
+    }
+  },
+  module: {
+    loaders: [
       {
         test: /\.scss/,
         include: [
-         path.resolve(__dirname, 'app')
+          path.resolve(__dirname, 'app')
         ],
         loader: ExtractTextPlugin.extract({
           use: [
@@ -74,12 +74,12 @@ module.exports = {
         test: /\.(svg)$/,
         loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
       }
-   ]
- },
- plugins: [
+    ]
+  },
+  plugins: [
     new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery"
+      $: "jquery",
+      jQuery: "jquery"
     }),
     new CaseSensitivePathsWebpackPlugin({
       debug: false
@@ -97,5 +97,5 @@ module.exports = {
       minChunks: 2,
     }),
     new ExtractTextPlugin('styles.css')
- ]
+  ]
 }

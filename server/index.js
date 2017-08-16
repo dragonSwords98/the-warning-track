@@ -13,7 +13,35 @@ const players = require('./api/players'),
     leagues   = require('./api/leagues')
 
 
-let app = express();
+const app = express();
+const apiHeader = '' // '/api'
+
+// auth0
+const jwt = require('express-jwt')
+const jwksRsa = require('jwks-rsa')
+const jwtAuthz = require('express-jwt-authz')
+
+// Authentication middleware. When used, the
+// access token must exist and be verified against
+// the Auth0 JSON Web Key Set
+const checkJwt = jwt({
+  // Dynamically provide a signing key
+  // based on the kid in the header and 
+  // the singing keys provided by the JWKS endpoint.
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://warning-track.auth0.com/.well-known/jwks.json`
+  }),
+
+  // Validate the audience and the issuer.
+  audience: 'http://localhost:8000/',
+  issuer: `https://warning-track.auth0.com/`,
+  algorithms: ['RS256']
+})
+
+const checkScopes = jwtAuthz([ 'read:players', 'read:diamonds' ]);
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -21,17 +49,17 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.get('/players', players.findAll);
-app.get('/players/:id', players.findById);
-app.post('/players', players.addPlayer);
-app.put('/players/:id', players.updatePlayer);
-app.delete('/players/:id', players.deletePlayer);
+app.get(apiHeader + '/players', checkJwt, checkScopes, players.findAll);
+app.get(apiHeader + '/players/:id', checkJwt, checkScopes, players.findById);
+app.post(apiHeader + '/players', checkJwt, checkScopes, players.addPlayer);
+app.put(apiHeader + '/players/:id', checkJwt, checkScopes, players.updatePlayer);
+app.delete(apiHeader + '/players/:id', checkJwt, checkScopes, players.deletePlayer);
 
-app.get('/teams', teams.findAll);
-app.get('/teams/:id', teams.findById);
-app.post('/teams', teams.addTeam);
-app.put('/teams/:id', teams.updateTeam);
-app.delete('/teams/:id', teams.deleteTeam);
+app.get(apiHeader + '/teams', checkJwt, checkScopes, teams.findAll);
+app.get(apiHeader + '/teams/:id', checkJwt, checkScopes, teams.findById);
+app.post(apiHeader + '/teams', checkJwt, checkScopes, teams.addTeam);
+app.put(apiHeader + '/teams/:id', checkJwt, checkScopes, teams.updateTeam);
+app.delete(apiHeader + '/teams/:id', checkJwt, checkScopes, teams.deleteTeam);
 
 app.get('/games', games.findAll);
 app.get('/games/:id', games.findById);
@@ -50,36 +78,3 @@ app.get('/leagues/:id', leagues.findById);
 app.post('/leagues', leagues.addLeague);
 app.put('/leagues/:id', leagues.updateLeague);
 app.delete('/leagues/:id', leagues.deleteLeague);
-
-let addresses = getIPAddresses()
-app.use(require('morgan')('dev'))
-app.use(require('./webpack'))
-
-app.use('/', serveStatic(path.join(__dirname, '../public')))
-console.log(path.join(__dirname, '../public'))
-portfinder.getPort(function (err, port) {
-  if (err) {
-    console.error(err)
-    throw err
-  }
-  app.listen(port, '0.0.0.0', function () {
-    console.log('server available at:')
-    addresses.forEach(function (address) {
-      console.log('\thttp://' + address + ':' + String(port))
-    })
-  })
-})
-function getIPAddresses () {
-  let result = []
-  let ifaces = os.networkInterfaces()
-  Object.keys(ifaces).forEach(function (ifname) {
-    let alias = 0
-    ifaces[ifname].forEach(function (iface) {
-      if ('IPv4' !== iface.family || iface.internal !== false) {
-        return
-      }
-      result.push(iface.address)
-    })
-  })
-  return result
-}

@@ -27,6 +27,7 @@ class TrackClient {
   constructor (options) {
     this.$http = options.http
     this.CancelToken = options.CancelToken
+    this.apiHeader = '' // '/api'
   }
   /**
    * abstract get function that can attach common event properties.
@@ -48,7 +49,7 @@ class TrackClient {
           cancel('safely.cancelled')
         })
       }
-      wrapApiQuery(this.$http.get(url, opts)).then(resolve, reject)
+      wrapApiQuery(this.$http.get(this.apiHeader + url, opts)).then(resolve, reject)
     })
   }
   /**
@@ -72,7 +73,7 @@ class TrackClient {
           cancel('safely.cancelled')
         })
       }
-      wrapApiQuery(this.$http.post(url, body, opts)).then(resolve, reject)
+      wrapApiQuery(this.$http.post(this.apiHeader + url, body, opts)).then(resolve, reject)
     })
   }
   /**
@@ -92,7 +93,7 @@ class TrackClient {
           cancel('safely.cancelled')
         })
       }
-      wrapApiQuery(this.$http.options(url, body, opts)).then(resolve, reject)
+      wrapApiQuery(this.$http.options(this.apiHeader + url, body, opts)).then(resolve, reject)
     })
   }
   /**
@@ -116,7 +117,7 @@ class TrackClient {
           cancel('safely.cancelled')
         })
       }
-      wrapApiQuery(this.$http.put(url, body, opts)).then(resolve, reject)
+      wrapApiQuery(this.$http.put(this.apiHeader + url, body, opts)).then(resolve, reject)
     })
   }
   /**

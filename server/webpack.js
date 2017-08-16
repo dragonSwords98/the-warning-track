@@ -9,6 +9,7 @@ let router = module.exports = new express.Router({})
 let compiler = webpack(config)
 let middlewareOptions = {
   hot: true,
+  historyApiFallback: true,
   publicPath: '/',
   watchOptions: {
     poll: true

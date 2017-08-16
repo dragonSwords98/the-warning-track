@@ -9,7 +9,7 @@
     "build": "cross-env NODE_ENV=production ./node_modules/.bin/webpack -p --colors",
     "clean": "rm -r dist/*",
     "lint": "eslint app",
-    "test": "webpack-dev-server",
+    "test": "webpack-dev-server --history-api-fallback",
     "deploy": ""
   },
   "keywords": [
@@ -20,13 +20,17 @@
   "license": "MIT",
   "repository": "https://gitlab.com/dragonSwords98/the-warning-track",
   "dependencies": {
+    "auth0-js": "^8.8.0",
     "axios": "^0.16.1",
     "body-parser": "^1.17.2",
     "case-sensitive-paths-webpack-plugin": "^2.0.0",
     "d3": "^4.9.1",
     "express": "^4.15.3",
+    "express-jwt": "^5.3.0",
+    "express-jwt-authz": "^1.0.0",
     "font-awesome": "^4.7.0",
     "history": "^4.6.1",
+    "jwks-rsa": "^1.2.0",
     "moment": "^2.18.1",
     "mongodb": "^2.2.27",
     "numeral": "^2.0.6",
