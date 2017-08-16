@@ -1,10 +1,8 @@
 'use strict'
 import moment from 'moment'
 
-import { STATUS_ORDERING, HIT_ORDERING, GENERIC_OPPOSING_BATTER } from '@track/utils/constants'
-
-// CR: Consider deprecating
-import { populateScoresheet, populateGrid, updateScoresheet } from '@track/utils'
+import { STATUS_ORDERING, HIT_ORDERING, GENERIC_OPPOSING_BATTER, GENERIC_ATBAT } from '@track/utils/constants'
+import { populatePositions, populateScoresheet, populateGrid, updateScoresheet } from '@track/utils'
 
 const INITIAL_STATE = {
   league: null,
@@ -14,12 +12,6 @@ const INITIAL_STATE = {
   diamond: null,
   dateTime: moment().format('YYYY-MM-DD'),
   homeOrAway: 'Away', // or 'Home'
-  // innings: 7, // DEFAULT: 7
-  // positions: ['C', '1B', '2B', 'SS', '3B', 'LF', 'LR', 'CF', 'RF'],
-  // homeRunRule: true,
-  // mercyRuns: 7, // or 8 or 5
-  // noMercyInningBegin: 5, // or 6 or 7
-  // coedRule: 'MMF', // or 'MMMF'
   currentInning: 1, // to emphasis specific off/def lineups
   lockedInnings: [],
   currentFrame: 0, // 0 for top, 1 for bottom
@@ -29,20 +21,11 @@ const INITIAL_STATE = {
   statusGrid: [], // ours batting order
   hitGrid: [], // ours hitting chart
   scoresheet: [], // ours vs theirs
-  // nextHitterPoint: 0, // only ours
   gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
-}
-
-const populatePositions = function(positions) {
-  return positions.reduce((acc, curr, i) => {
-    acc[curr] = ''
-    return acc
-  }, {})
 }
 
 // Future features: Pinch runner, designated pinch runner, scouting reports on hits
 // Rotating co-ed roles
-
 export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.game-container/init') {
     state = Object.assign({}, state, INITIAL_STATE)
@@ -51,9 +34,11 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.game-container/destroy') {
     state = Object.assign({}, state, INITIAL_STATE)
   }
+
   if (action.type === 'route.game-container/load-game.success') {
     state = Object.assign({}, INITIAL_STATE, state, action.payload.game)
   }
+  
   if (action.type === 'route.game-container/load-league.success') {
     state = Object.assign({}, state)
     state.league = action.payload.league
@@ -106,11 +91,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     }
   }
 
-  if (action.type === 'game.advance-batter-runner/inning-over') {
-    state = Object.assign({}, state)
-    // freeze this inning, unfreeze the next inning, set the next batter as at-bat
-  }
-
   if (action.type === 'create-game/init') {
     state = Object.assign({}, state)
     state.league = action.payload.league
@@ -140,6 +120,13 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'create-game.form/update') {
     state = Object.assign({}, state)
     state[action.payload.field] = action.payload.value
+  }
+
+  if (action.type === 'create-game.form/populate-options') {
+    if (action.payload.type === 'batters') {
+      state = Object.assign({}, state)
+      state.ourBattingOrder = action.payload.options
+    }
   }
 
   if (action.type === 'create-game.batting-order/change') {
@@ -195,10 +182,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state.ourFieldingLineup = action.payload.fieldingLineup
   }
 
-  if (action.type === 'route.game-container/create-game.success') {
-    state = Object.assign({}, state, INITIAL_STATE)
-  }
-
   if (action.type === 'route.game-container/create-game.rejected') {
     console.error(action.payload)
   }
@@ -226,14 +209,20 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   }
 
   if (action.type === 'game.opponent-batter/change-hit-type') {
+    state = Object.assign({}, state)
+    state.opposingBattingOrder = Object.assign([], state.opposingBattingOrder)
     state.opposingBattingOrder[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].type = action.payload.data.value
   }
 
   if (action.type === 'game.opponent-batter/change-depth') {
+    state = Object.assign({}, state)
+    state.opposingBattingOrder = Object.assign([], state.opposingBattingOrder)
     state.opposingBattingOrder[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].depth = action.payload.data.value
   }
 
   if (action.type === 'game.opponent-batter/change-lane') {
+    state = Object.assign({}, state)
+    state.opposingBattingOrder = Object.assign([], state.opposingBattingOrder)
     state.opposingBattingOrder[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].lane = action.payload.data.value
   }
 
@@ -242,10 +231,8 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     let lastBatter = state.opposingBattingOrder[state.opposingBattingOrder.length - 1]
     if (action.payload.increment) {
       let batterInfo = Object.assign({}, GENERIC_OPPOSING_BATTER)
-      batterInfo.allBats.map(bat => {
-        // CR: assume league is loaded
-        new Array(state.game.league.innings + 1).fill().map(b => Object.assign({}, GENERIC_ATBAT))
-      })
+      // CR: Assuming league.innings exists
+      batterInfo.atBats = new Array(state.league.innings + 1).fill().map(b => Object.assign({}, GENERIC_ATBAT))
       state.opposingBattingOrder.push(batterInfo) // TODO: INCORRECT
     } else if (!lastBatter.name && !lastBatter.number) { // CR: Delete the last empty one if u find one?
       state.opposingBattingOrder.pop()

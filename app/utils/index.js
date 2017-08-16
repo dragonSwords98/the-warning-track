@@ -17,6 +17,13 @@ export const populateGrid = function (activeRosterLength, innings, object) {
   return array
 }
 
+export const populatePositions = function(positions) {
+  return positions.reduce((acc, curr, i) => {
+    acc[curr] = ''
+    return acc
+  }, {})
+}
+
 export const populateScoresheet = function (innings) {
   return {
     runs: new Array(innings).fill(0),
