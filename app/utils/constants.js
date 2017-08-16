@@ -64,63 +64,72 @@ export const SINGLE_HIT = {
   name: 'SINGLE',
   label: 'Single',
   _id: 'Single',
-  color: 'olive'
+  color: 'olive',
+  disabled: true
 }
 
 export const DOUBLE_HIT = {
   name: 'DOUBLE',
   label: 'Double',
   _id: 'Double',
-  color: 'green'
+  color: 'green',
+  disabled: true
 }
 
 export const TRIPLE_HIT = {
   name: 'TRIPLE',
   label: 'Triple',
   _id: 'Triple',
-  color: 'teal'
+  color: 'teal',
+  disabled: true
 }
 
 export const HOME_RUN_HIT = {
   name: 'HOME RUN',
   label: 'HR',
   _id: 'HR',
-  color: 'blue'
+  color: 'blue',
+  disabled: true
 }
 
 export const GROUND_OUT = {
   name: 'GROUNDOUT',
   label: 'Ground',
   _id: 'Ground',
-  color: 'pink'
+  color: 'pink',
+  disabled: true
 }
 
 export const FLY_OUT = {
   name: 'FLYOUT',
   label: 'Fly',
   _id: 'Fly',
-  color: 'purple'
+  color: 'purple',
+  disabled: true
 }
 
 export const POP_OUT = {
   name: 'POPOUT',
   label: 'Pop',
   _id: 'Pop',
-  color: 'yellow'
+  color: 'yellow',
+  disabled: true
 }
 
 export const FOUL_OUT = {
   name: 'FOULOUT',
   label: 'Foul',
   _id: 'Foul',
-  color: 'orange'
+  color: 'orange',
+  disabled: true
 }
 
 export const STRIKE_OUT = {
   name: 'STRIKEOUT',
   label: 'K',
   _id: 'K',
-  color: 'red'
+  color: 'red',
+  disabled: true
 }
 
 export const HIT_ORDERING = [
@@ -202,91 +211,91 @@ export const LANE_ORDERING = [
 /* DEPTHS */
 export const ZERO_DEPTH = {
   name: 'Zero',
-  _id: 0,
+  _id: 'Zero',
   min: -1,
   max: 0
 }
 
 export const DINKER_DEPTH = {
   name: 'Dinker',
-  _id: 1,
+  _id: 'Dinker',
   min: 1,
   max: 15
 }
 
 export const PITCHERS_DEPTH = {
   name: 'Pitcher Line',
-  _id: 2,
+  _id: 'Pitcher Line',
   min: 16,
   max: 25
 }
 
 export const RUNNERS_DEPTH = {
   name: 'Baserunner Line',
-  _id: 3,
+  _id: 'Baserunner Line',
   min: 26,
   max: 40
 }
 
 export const CROSSFIRE_DEPTH = {
   name: 'Crossfire',
-  _id: 4,
+  _id: 'Crossfire',
   min: 41,
   max: 70
 }
 
 export const SHALLOW_DEPTH = {
   name: 'Shallow',
-  _id: 5,
+  _id: 'Shallow',
   min: 71,
   max: 140
 }
 
 export const ONE_FIVE_ZERO_DEPTH = {
   name: '150',
-  _id: 6,
+  _id: '150',
   min: 141,
   max: 160
 }
 
 export const ONE_SEVEN_ZERO_DEPTH = {
   name: '170',
-  _id: 7,
+  _id: '170',
   min: 161,
   max: 180
 }
 
 export const AVERAGE_DEPTH = {
   name: 'Avg',
-  _id: 8,
+  _id: 'Avg',
   min: 181,
   max: 200
 }
 
 export const DEEP_DEPTH = {
   name: 'Deep',
-  _id: 9,
+  _id: 'Deep',
   min: 201,
   max: 230
 }
 
 export const WARNING_TRACK_DEPTH = {
   name: 'Track',
-  _id: 6,
+  _id: 'Track',
   min: 231,
   max: 260
 }
 
 export const HOMERUN_DEPTH = {
   name: 'HR',
-  _id: 6,
+  _id: 'HR',
   min: 261,
   max: 280
 }
 
 export const OVERPOWERED_DEPTH = {
   name: 'OP',
-  _id: 6,
+  _id: 'OP',
   min: 280,
   max: 500 // CR: Not humanly possible to go over 500 ft in a fair-game-situation
 }
@@ -312,8 +321,13 @@ export const DEPTH_ORDERING = [
 export const GENERIC_OPPOSING_BATTER = {
   name: '',
   number: 0,
-  hits: [],
-  attempts: []
+  atBats: []
+}
+
+export const GENERIC_ATBAT = {
+  type: null,
+  depth: null,
+  lane: null
 }
 
 export const MINIMAL_BATTERS_COUNT = 7 // CR: should be a league rule, no?

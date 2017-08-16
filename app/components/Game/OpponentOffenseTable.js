@@ -42,12 +42,13 @@ class OpponentOffenseTable extends Component {
         </Table.Cell>)
     })
 
-    const BattingRow = (r) => (
+    const BattingRow = (r, batter) => (
       <Table.Row key={'batter-' + r} >
         { BattingCells[r] }
         {
           new Array(innings).fill().map((e,j)=>(<Table.Cell key={r + 'inning-' + j}>
             <OpponentBattersBox
+              batter={batter.atBats[j]}
               row={r}
               inning={j} 
               disabled={currentInning - 1 !== j}
@@ -62,8 +63,8 @@ class OpponentOffenseTable extends Component {
       </Table.Row>
     )
     
-
-    let BattingTable = new Array(opposingBattingOrder.length).fill().map((e,i)=>BattingRow(i++))
+    opposingBattingOrder
+    let BattingTable = new Array(opposingBattingOrder.length).fill().map((e,i)=>BattingRow(i++, opposingBattingOrder[i - 1]))
 
     let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Completed</Header></Table.Cell>]
     for (let i = 1; i <= innings; i++) {

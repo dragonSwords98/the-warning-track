@@ -36,12 +36,45 @@ const validateForm = function (game) {
 }
 
 class CreateGameContainer extends Component {
+  constructor (...args) {
+    super(...args)
+    this.initiateBattingOrder = this.initiateBattingOrder.bind(this)
+  }
+
+  initiateBattingOrder () {
+    const el = document.getElementById('battingOrderList')
+    if (!this.props.sortable && el) {
+      this.setState((prevState, props) => {
+        return {
+          sortable: Sortable.create(el, {
+            onUpdate: evt => {
+              let newOrder = []
+              Array.prototype.forEach.call(evt.target.children, function (el, i) {
+                newOrder.push([el.getAttribute('data-id'), parseInt(el.getAttribute('data-gender'))])
+              })
+              this.props.handleBattingOrder(newOrder)
+            }
+          })
+        }
+      })
+      if (!this.props.game.ourBattingOrder.length) {
+        this.props.handleBattingOrder(this.props.createGame.batters)
+      }
+    }
+  }
+
   componentWillMount () {
     this.props.init()
   }
 
   componentWillUnmount () {
     this.props.destroy()
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.createGame.batters !== this.props.createGame.batters) {
+      this.initiateBattingOrder()
+    }
   }
 
   // TODO: HIGHLY RECOMMEND WE THROW THIS OUT
@@ -57,31 +90,6 @@ class CreateGameContainer extends Component {
     }
     if (nextProps.directory.players && !nextProps.createGame.roster.length) {
       nextProps.updateAvailableRoster(nextProps.directory.players)
-    }
-
-    // TODO: Batting order does not properly update. To reproduce, load createGame, change team to Kattallage, don't change league.
-    // The Bat order is still 13, even though there's only 5 in the block
-    // You can then shuffle the batting order and it'll update state properly again
-    if (nextProps.createGame.batters && document.getElementById('battingOrderList')) {
-      const el = document.getElementById('battingOrderList')
-      if (!this.props.sortable && el) {
-        this.setState((prevState, props) => {
-          return {
-            sortable: Sortable.create(el, {
-              onUpdate: evt => {
-                let newOrder = []
-                Array.prototype.forEach.call(evt.target.children, function (el, i) {
-                  newOrder.push([el.getAttribute('data-id'), parseInt(el.getAttribute('data-gender'))])
-                })
-                this.props.handleBattingOrder(newOrder)
-              }
-            })
-          }
-        })
-        if (!nextProps.game.ourBattingOrder.length) {
-          nextProps.handleBattingOrder(nextProps.createGame.batters)
-        }
-      }
     }
   }
 
@@ -111,7 +119,7 @@ class CreateGameContainer extends Component {
       return (<LoadingOverlay msg={'Loading Game Creator...'} />)
     }
 
-    let header = []
+    let header = [(<Table.HeaderCell key='header-innings-0'>Please select a league</Table.HeaderCell>)]
     let body = []
     let footer = []
     if (game.league) {
@@ -166,7 +174,7 @@ class CreateGameContainer extends Component {
     // TODO: fix submit button and its actions
 
     let CreateGameComponent = (<LoadingOverlay />)
-    let BattingOrderComponent = (<LoadingOverlay />)
+    let BattingOrderComponent = (<Segment>Please select a team</Segment>)
     let BattingOrderRule = ''
 
     if (createGame.leagues && createGame.teams && createGame.diamonds) {
@@ -183,7 +191,7 @@ class CreateGameContainer extends Component {
           handleFormChange={updateCreateFormQuery} />)
     }
 
-    if (createGame.batters) {
+    if (createGame.batters && game.ourTeam) {
       BattingOrderComponent = (<SortableUnorderedList id="battingOrderList" ref="battingOrderList" items={createGame.batters} onChange={handleBattingOrder} />)
     }
 

@@ -5,7 +5,7 @@ import { Button, Input, Checkbox, Table, Header } from 'semantic-ui-react'
 
 import BattersBox from '@track/components/Game/BattersBox'
 
-function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, battingOrder, statusGrid, scoresheet, advanceRunner, changeHitType, onScoresheetChange, toggleInningLock, saveGame }) {
+function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, battingOrder, statusGrid, hitGrid, scoresheet, advanceRunner, changeHitType, onScoresheetChange, toggleInningLock, saveGame }) {
   // Header Cells
   let headerCells = [
     <Table.HeaderCell key={'inning-header-cell'} width='two'>
@@ -17,22 +17,15 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
   }
 
   // Batter Cells
-  const generateBatterCells = function (r, statusGrid) {
-
-    // TODO: hit chart
-    let SINGLE_HIT = {
-      name: 'SINGLE',
-      label: 'Single',
-      color: 'olive'
-    }
+  const generateBatterCells = function (r, statusGrid, hitGrid) {
 
     let batterCells = []
     for (let i = 1; i <= innings; i++) {
       let box
       if (currentInning !== i) {
-        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={SINGLE_HIT} advanceRunner={advanceRunner} changeHitType={changeHitType} disabled />
+        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} advanceRunner={advanceRunner} changeHitType={changeHitType} disabled />
       } else {
-        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={SINGLE_HIT} advanceRunner={advanceRunner} changeHitType={changeHitType} />
+        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} advanceRunner={advanceRunner} changeHitType={changeHitType} />
       }
       batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">{box}</Table.Cell>)
     }
@@ -44,7 +37,7 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
     batterRows.push(
       <Table.Row key={'batter-row-' + r}>
         <Table.Cell width='two'><Header as="h4">{ battingOrder[r].name }</Header></Table.Cell>
-        { generateBatterCells(r, statusGrid) }
+        { generateBatterCells(r, statusGrid, hitGrid) }
       </Table.Row>
     )
   }

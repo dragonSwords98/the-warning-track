@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Header, Select, Input, Checkbox, Form } from 'semantic-ui-react'
 
-// TODO: game object should sync with form
-
 const CreateGame = ({ game, invalidFields, submitCreateGameForm, leagueOptions, teamsOptions, labelHomeOrAway, diamondOptions, dateRange, handleFormChange }) => (
   <Form id="createGameForm" onSubmit={submitCreateGameForm}>
     <Header as="h2">Create a Ball Game</Header>

@@ -206,8 +206,1128 @@ populateGamesCollection = function () {
           'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
         }
       ],
-      statusGrid: [], // ours batting order
-      scoresheet: [], // ours vs theirs
+      opposingBattingOrder: [
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        }
+      ],
+      statusGrid: // our offense status
+      [ 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ]
+      ],
+      hitGrid : // our hit status
+      [ 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ]
+      ],
+      scoresheet: // ours vs theirs
+      {
+        "ours" : {
+            "runs" : [ 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+            ],
+            "outs" : [ 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+            ]
+        },
+        "theirs" : {
+            "runs" : [ 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+            ],
+            "outs" : [ 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+            ]
+        }
+      },
       gameStatus: 0
     },
     {
@@ -311,8 +1431,1128 @@ populateGamesCollection = function () {
           'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
         }
       ],
-      statusGrid: [], // ours batting order
-      scoresheet: [], // ours vs theirs
+      opposingBattingOrder: [
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            },
+            {
+              type: null,
+              depth: null,
+              lane: null
+            }
+          ]
+        }
+      ],
+      statusGrid: // our offense status
+      [ 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ], 
+        [ 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }, 
+            {
+                "name" : "BENCH",
+                "label" : "Bench",
+                "color" : "grey"
+            }
+        ]
+      ],
+      hitGrid : // our hit status
+      [ 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ], 
+          [ 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }, 
+              {
+                  "name" : "SINGLE",
+                  "label" : "Single",
+                  "_id" : "Single",
+                  "color" : "olive",
+                  "disabled" : true
+              }
+          ]
+      ],
+      scoresheet: // ours vs theirs
+      {
+        "ours" : {
+            "runs" : [ 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+            ],
+            "outs" : [ 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+            ]
+        },
+        "theirs" : {
+            "runs" : [ 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+            ],
+            "outs" : [ 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0
+            ]
+        }
+      },
       gameStatus: 0
     }
   ]
