@@ -14,15 +14,18 @@ class FielderRow extends Component {
       return <LoadingOverlay />
     }
 
+    // CR: Big filtering logic should live in state? make an options tree?
     let inningsArray = Array.from({ length: innings }, (v, k) => ++k)
-    let cells = inningsArray.map(i =>
-      <FielderCell key={'fielder-cell-' + i}
-        value={lineup[i]}
+    let cells = inningsArray.map(i => {
+      return <FielderCell key={'fielder-cell-' + i}
+        value={lineup[i][position]}
         inning={i}
         position={position}
         lockedInning={lockedInnings.indexOf(i) > -1}
-        options={options}
-        onChange={onChange} />)
+        options={options.filter(o => o.value === lineup[i][position] || !Object.values(lineup[i]).includes(o.value))}
+        onChange={onChange} />
+    })
+
 
     return (
       <Table.Row>

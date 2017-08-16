@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   diamonds: [],
   roster: [],
   batters: [],
+  promptClear: false,
   invalidFields: {},
   valid: false
 }
@@ -20,6 +21,14 @@ export default function createGameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'create-game.form/populate-options') {
     state = Object.assign({}, state)
     state[action.payload.type] = action.payload.options
+  }
+  if (action.type === 'create-game.fielder-all/open-clear-prompt') {
+    state = Object.assign({}, state)
+    state.promptClear = true
+  }
+  if (action.type === 'create-game.fielder-all/close-clear-prompt') {
+    state = Object.assign({}, state)
+    state.promptClear = false
   }
   if (action.type === 'create-game.form/validate') {
     state = Object.assign({}, state)

@@ -97,7 +97,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   }
 
   if (action.type === 'create-game.select-league/set') {
-    // TODO: warn/prompt the user when they change league again bcuz they will lose all their work -_-
     state = Object.assign({}, state)
     state.league = action.payload.league
     if (!action.payload.isOurTeamInThisLeague) {
@@ -136,12 +135,15 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'create-game.fielding-lineup/change') {
     state = Object.assign({}, state)
+    // Design: Updates fielder for the current inning & position
     state.ourFieldingLineup[action.payload.inning] = Object.assign({}, state.ourFieldingLineup[action.payload.inning], {
       [action.payload.position]: action.payload.value
     })
 
+    // Design: Smart-updates fielder to the entire row for the same position every inning
+    // under two conditions. (1) There is no value already there; (2) The inning does not contain the fielder already
     state.ourFieldingLineup = state.ourFieldingLineup.map(i => {
-      if (!i[action.payload.position]) {
+      if (!i[action.payload.position] && !Object.values(i).includes(action.payload.value)) {
         i[action.payload.position] = action.payload.value
       }
       return i

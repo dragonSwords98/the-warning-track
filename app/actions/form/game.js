@@ -96,6 +96,21 @@ export function autoFillFieldingLineup () {
   }
 }
 
+export function clearFielderRow (data) {
+  return function (dispatch, getState) {
+    dispatch({ type: 'create-game.fielder-row/clear', payload: { position: data.data } })
+    dispatch(validateGameForm())
+  }
+}
+
+export function clearFielderInning (data) {
+  return function (dispatch, getState) {
+    dispatch({ type: 'create-game.fielder-inning/clear', payload: { inning: data.data } })
+    dispatch(validateGameForm())
+  }
+}
+
+
 export function clearFieldingLineup () {
   return function (dispatch, getState) {
     dispatch({ type: 'create-game.fielder-all/clear' })
@@ -129,6 +144,7 @@ export function updateGameForm (event, data) {
       dispatch({ type: 'create-game.select-league/set', payload: { league: currentLeague, isOurTeamInThisLeague: isOurTeamInThisLeague } })
       dispatch(updateAvailableTeams(Object.assign([], state.directory.teams), [currentLeague]))
       // TODO: In order to update roster by league id, you have to pass that into updateAvailableRoster
+      // TODO: Should prompt user before changing the league for a second time because they will lose their work!
     } else if (data['data-create-id'] === 'team') {
       dispatch({ type: 'create-game.form/update', payload: { type: 'games', field: 'ourTeam', value: data.value } })
       dispatch(updateAvailableRoster())
@@ -182,11 +198,14 @@ const validateGameForm = function () {
     invalidFields.ourTeam = !game.ourTeam
     invalidFields.opposingTeam = !game.opposingTeam.length
     invalidFields.diamond = !game.diamond
-    invalidFields.ourFieldingLineup = !game.ourFieldingLineup.reduce((p, o) => {
+    invalidFields.ourFieldingLineupIsEmpty = !game.ourFieldingLineup.reduce((p, o) => {
       return p + Object.keys(o).reduce(function (previous, key) {
           return previous + o[key];
       }, '')
     }, '').length
+    invalidFields.ourFieldingLineupIsNotFull = game.ourFieldingLineup.find(inning => {
+      return Object.values(inning).findIndex(v => !v) > -1
+    })
     invalidFields.dateTime = !game.dateTime
 
     // Additional validations

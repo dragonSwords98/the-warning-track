@@ -21,6 +21,8 @@ import {
   updateAvailableBatters,
   updateLineups,
   autoFillFieldingLineup,
+  clearFielderRow,
+  clearFielderInning,
   clearFieldingLineup,
   updateBattingOrder,
   updateGameForm,
@@ -126,7 +128,10 @@ class CreateGameContainer extends Component {
       header = [
         <Table.HeaderCell key={'header-innings-0'}>
             <Button circular icon='rocket' onClick={autoFillFielders} />
-            <Button circular icon='bomb' disabled={createGame.invalidFields.ourFieldingLineup} onClick={clearFielderAll} />
+            <Button circular icon='bomb' disabled={createGame.invalidFields.ourFieldingLineupIsEmpty} onClick={clearFielderAll} />
+            <Icon
+              circular color={createGame.invalidFields.ourFieldingLineupIsNotFull ? 'red' : 'green'}
+              name={createGame.invalidFields.ourFieldingLineupIsNotFull ? 'dont' : 'checkmark'} />
         </Table.HeaderCell>]
       footer = [<Table.HeaderCell key="footer-cell-0">Lock</Table.HeaderCell>]
 
@@ -142,7 +147,7 @@ class CreateGameContainer extends Component {
         let position = game.league.positions[p]
         body.push(
           <FielderRow key={'fielder-row-' + position}
-            lineup={game.ourFieldingLineup.map(l => l[position])}
+            lineup={game.ourFieldingLineup}
             innings={game.league.innings}
             lockedInnings={game.lockedInnings}
             position={position}
@@ -195,16 +200,18 @@ class CreateGameContainer extends Component {
       BattingOrderComponent = (<SortableUnorderedList id="battingOrderList" ref="battingOrderList" items={createGame.batters} onChange={handleBattingOrder} />)
     }
 
+    // CR: If you have a createGame.invalidFields.illegalMinimalRoster, why also have a leagueRosterConditional... this is a redundency
+    let leagueRosterConditional = true
     if (game.league) {
+      leagueRosterConditional = createGame.roster.length >= game.league.positions.length
       BattingOrderRule = <Label>Coed Rule: {game.league.coedRule}</Label>
     }
 
-    // TODO: the GenericCelledTable events should trigger validate too!
-
+    // TODO: the GenericCelledTable events should trigger validate too! if fieldingLineup continues an empty/null/undefined field, valid:false
     return (
       <div className="create-game-container">
         <Segment>
-          <Message color='red' hidden={!createGame.invalidFields.illegalMinimalRoster}>
+          <Message color='red' hidden={leagueRosterConditional && !createGame.invalidFields.illegalMinimalRoster}>
             WARNING: There are not enough players on the current roster to field a team
           </Message>
           {CreateGameComponent}
@@ -214,6 +221,7 @@ class CreateGameContainer extends Component {
           <GenericCelledTable header={header} body={body} footer={footer} />
           <Confirm
             open={createGame.promptClear}
+            content='Are you sure you want to clear your fielding lineup? This action is irreversible.'
             onCancel={handlePromptClearCancel}
             onConfirm={handlePromptClearConfirm}
           />
@@ -221,8 +229,8 @@ class CreateGameContainer extends Component {
         <Segment>
           <Header as="h3">Batting Order
             <Icon
-            name={createGame.invalidFields.illegalBattingOrder ? 'exclamation triangle' : 'check circle' }
-            color={createGame.invalidFields.illegalBattingOrder ? 'red' : 'green' } />
+              name={createGame.invalidFields.illegalBattingOrder ? 'exclamation triangle' : 'check circle' }
+              color={createGame.invalidFields.illegalBattingOrder ? 'red' : 'green' } />
           </Header>
           {BattingOrderRule}
           {BattingOrderComponent}
@@ -270,10 +278,10 @@ export default withRouter(connect(
         dispatch(updateBattingOrder(newOrder))
       },
       clearFielderRow (event, data) {
-        dispatch({ type: 'create-game.fielder-row/clear', payload: { position: data.data } })
+        dispatch(clearFielderRow(data))
       },
       clearFielderInning (event, data) {
-        dispatch({ type: 'create-game.fielder-inning/clear', payload: { inning: data.data } })
+        dispatch(clearFielderInning(data))
       },
       clearFielderAll (event, data) {
         // TODO: Prompt user before erasing all
