@@ -3,38 +3,37 @@ import { client } from '../client'
 import moment from 'moment'
 import { push as pushLocation } from 'react-router-redux'
 
-import { objectToOption, populateScoresheet, populateGrid, firstFindFirstApply, validateBattingOrder } from '@track/utils'
+import { objectToOption, populateScoresheet, populateGrid, firstUniqueFindFirstApply, validateBattingOrder } from '@track/utils'
 import { BENCH_STATUS, SINGLE_HIT, MINIMAL_BATTERS_COUNT, GENERIC_ATBAT } from '@track/utils/constants'
 
 /**
  * Called when new leagues are available
  */
-export function updateAvailableLeagues (availableLeagues = []) {
+export function updateAvailableLeagues (availableLeagues = [], chain = false) {
   return function (dispatch, getState) {
     const state = getState()
     availableLeagues = availableLeagues.length ? availableLeagues : Object.assign([], state.directory.leagues)
     dispatch({ type: 'create-game.form/populate-options', payload: { type: 'leagues', options: objectToOption(availableLeagues) } })
-    dispatch(updateAvailableTeams(Object.assign([], state.directory.teams), availableLeagues))
   }
 }
 
 /**
  * Called when new teams are available or the current league has been modified
  */
-export function updateAvailableTeams (availableTeams = [], availableLeagues = []) {
+export function updateAvailableTeams (availableTeams = [], availableLeagues = [], chain = false) {
   return function (dispatch, getState) {
     const state = getState()
     availableLeagues = availableLeagues.length ? availableLeagues : Object.assign([], state.directory.leagues)
     availableTeams = availableTeams.length ? availableTeams : Object.assign([], state.directory.teams)
+    
     if (state.game.league) {
-      availableTeams = availableTeams.filter(t => t.leagues.includes(state.game.league._id))
+      availableTeams = availableTeams.filter(t => t.leagues.includes(state.game.league._id) || t.leagues.findIndex(l => !l._id ? false: l._id === state.game.league._id) > 0)
     } else {
       // check if availableTeams have at least one league in leagueIds
       let leagueIds = availableLeagues.map(l => l._id)
       availableTeams = availableTeams.filter(t => t.leagues.filter(l => leagueIds.includes(l)))
     }
     dispatch({ type: 'create-game.form/populate-options', payload: { type: 'teams', options: objectToOption(availableTeams) } })
-    dispatch(updateAvailableRoster(Object.assign([], state.directory.players), availableTeams))
   }
 }
 
@@ -52,7 +51,7 @@ export function updateAvailableRoster (availablePlayers = [], availableTeams = [
     } else {
       // check if availablePlayers have at least one team in teamIds
       let teamIds = availableTeams.map(t => t._id)
-      availablePlayers = availablePlayers.filter(p => p.teams.filter(l => teamIds.includes(l)))
+      availablePlayers = availablePlayers.filter(p => p.teams.findIndex(l => teamIds.includes(l)) > 0)
     }
     dispatch({ type: 'create-game.form/populate-options', payload: { type: 'roster', options: objectToOption(availablePlayers) } })
     dispatch(updateAvailableBatters(availablePlayers))
@@ -88,8 +87,8 @@ export function autoFillFieldingLineup () {
     })
 
     // 2. Apply algorithm
-    // Default: Greedy first find first apply
-    fieldingLineup = firstFindFirstApply(availableFielders, Object.assign([], fieldingLineup))
+    // Default: Greedy first unique find first apply, otherwise empty
+    fieldingLineup = firstUniqueFindFirstApply(availableFielders, Object.assign([], fieldingLineup))
 
     dispatch({ type: 'create-game.fielder-all/fill', payload: { fieldingLineup: fieldingLineup } })
     dispatch(validateGameForm())
@@ -142,7 +141,7 @@ export function updateGameForm (event, data) {
       let currentLeague = state.directory.leagues.find(l => l._id === data.value)
       let isOurTeamInThisLeague = state.directory.teams.filter(t => t.leagues.includes(currentLeague)).includes(state.game.ourTeam)
       dispatch({ type: 'create-game.select-league/set', payload: { league: currentLeague, isOurTeamInThisLeague: isOurTeamInThisLeague } })
-      dispatch(updateAvailableTeams(Object.assign([], state.directory.teams), [currentLeague]))
+      dispatch(updateAvailableTeams(Object.assign([], state.directory.teams), [currentLeague], true))
       // TODO: In order to update roster by league id, you have to pass that into updateAvailableRoster
       // TODO: Should prompt user before changing the league for a second time because they will lose their work!
     } else if (data['data-create-id'] === 'team') {
@@ -198,14 +197,18 @@ const validateGameForm = function () {
     invalidFields.ourTeam = !game.ourTeam
     invalidFields.opposingTeam = !game.opposingTeam.length
     invalidFields.diamond = !game.diamond
-    invalidFields.ourFieldingLineupIsEmpty = !game.ourFieldingLineup.reduce((p, o) => {
-      return p + Object.keys(o).reduce(function (previous, key) {
-          return previous + o[key];
-      }, '')
-    }, '').length
-    invalidFields.ourFieldingLineupIsNotFull = game.ourFieldingLineup.find(inning => {
-      return Object.values(inning).findIndex(v => !v) > -1
-    })
+    if (game.ourFieldingLineup.length) {
+      invalidFields.ourFieldingLineupIsEmpty = !game.ourFieldingLineup.reduce((p, o) => {
+        return p + Object.keys(o).reduce(function (previous, key) {
+            return previous + o[key];
+        }, '')
+      }, '').length
+
+      invalidFields.ourFieldingLineupIsNotFull = game.ourFieldingLineup.find(inning => {
+        return Object.values(inning).findIndex(v => !v) > -1
+      })
+    }
+    
     invalidFields.dateTime = !game.dateTime
 
     // Additional validations
@@ -220,6 +223,7 @@ const validateGameForm = function () {
       invalidFields.illegalBattingOrder = validateBattingOrder(game.ourBattingOrder, coedRule)
     }
 
+    // TODO: Validate the roster is legal (no repeated players, etc. depending on how strict you wanna be)
     // 3. Validate no duplicates of same player playing 2 pos in same inning
     // 4. Validate opponent's details (to be added)
 

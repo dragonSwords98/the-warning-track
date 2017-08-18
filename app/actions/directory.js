@@ -2,6 +2,12 @@
 
 import { client } from './client'
 import { updateMenuFilter } from '@track/actions/navigation'
+import { 
+  updateAvailableLeagues,
+  updateAvailableTeams,
+  updateAvailableRoster,
+  updateAvailableBatters
+} from './form/game'
 
 export function fetchAll () {
   return function (dispatch, getState) {
@@ -10,14 +16,17 @@ export function fetchAll () {
     promise = client.getAllLeagues()
     promise.then((data) => {
       dispatch({ type: 'fetch-directory.leagues/received', payload: { leagues: data } })
+      dispatch(updateAvailableLeagues())
       return client.getAllTeams()
     }).then((data) => {
 
       dispatch({ type: 'fetch-directory.teams/received', payload: { teams: data } })
+      dispatch(updateAvailableTeams())
       return client.getAllPlayers()
     }).then((data) => {
 
       dispatch({ type: 'fetch-directory.players/received', payload: { players: data } })
+      dispatch(updateAvailableRoster())
       return client.getAllGames()
     }).then((data) => {
       dispatch({ type: 'fetch-directory.games/received', payload: { games: data } })

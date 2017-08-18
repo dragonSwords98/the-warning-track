@@ -18,7 +18,6 @@ import {
   updateAvailableLeagues,
   updateAvailableTeams,
   updateAvailableRoster,
-  updateAvailableBatters,
   updateLineups,
   autoFillFieldingLineup,
   clearFielderRow,
@@ -33,8 +32,6 @@ import { objectToOption } from '@track/utils'
 
 const validateForm = function (game) {
   return !(game.ourTeam && game.opposingTeam && (game.diamond !== '') && game.dateTime && game.league)
-  // && game.ourBattingOrder.length > 0
-    //  && game.ourFieldingLineup.length > 0) //TODO: ourFieldingLineup will not be empty, its children could be empty
 }
 
 class CreateGameContainer extends Component {
@@ -74,24 +71,9 @@ class CreateGameContainer extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    if (prevProps.createGame.batters !== this.props.createGame.batters) {
+    console.log(prevProps.createGame.batters, this.props.createGame.batters)
+    if (!prevProps.createGame.batters.length && this.props.createGame.batters.length) {
       this.initiateBattingOrder()
-    }
-  }
-
-  // TODO: HIGHLY RECOMMEND WE THROW THIS OUT
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.directory.leagues && !nextProps.createGame.leagues.length) {
-      nextProps.updateAvailableLeagues(nextProps.directory.leagues)
-    }
-    if (nextProps.directory.diamonds && !nextProps.createGame.diamonds.length) {
-      nextProps.populateOptions('diamonds', objectToOption(nextProps.directory.diamonds))
-    }
-    if (nextProps.directory.teams && !nextProps.createGame.teams.length) {
-      nextProps.updateAvailableTeams(nextProps.directory.teams)
-    }
-    if (nextProps.directory.players && !nextProps.createGame.roster.length) {
-      nextProps.updateAvailableRoster(nextProps.directory.players)
     }
   }
 
@@ -254,22 +236,12 @@ export default withRouter(connect(
     return {
       init () {
         dispatch(createGameFormWithDefaults())
-        dispatch({ type: 'create-game.form/init' })
       },
       populateOptions (type, options) {
         dispatch({ type: 'create-game.form/populate-options', payload: { type: type, options: options } })
       },
       toggleInningLock (event, data) {
         dispatch({ type: 'create-game.lock-inning/toggle', payload: { inning: data.data } })
-      },
-      updateAvailableLeagues (leagues) {
-        dispatch(updateAvailableLeagues(leagues))
-      },
-      updateAvailableTeams (teams) {
-        dispatch(updateAvailableTeams(teams))
-      },
-      updateAvailableRoster (roster) {
-        dispatch(updateAvailableRoster(roster))
       },
       handleRosterOptions (event, data) {
         dispatch(updateLineups(event, data))

@@ -90,8 +90,8 @@ populateDiamondsCollection = function () {
   const diamonds = [
     {
         _id: ObjectId("11c92149873ad56fe00935df"),
-        name: 'Glamorgan',
-        address: 'Kennedy & 401',
+        name: 'Glamorgan Park',
+        address: 'Kennedy Rd & Hwy 401',
         size: 'L',
         infield: 'dirt',
         lit: true,
@@ -99,8 +99,8 @@ populateDiamondsCollection = function () {
     },
     {
         _id: ObjectId("11c92149873ad56fe0093e1e"),
-        name: 'Goldhawk East',
-        address: 'McCowan & Steeles',
+        name: 'Goldhawk Park East',
+        address: 'McCowan Rd & Steeles Ave East',
         size: 'M',
         infield: 'dirt',
         lit: false,
@@ -109,7 +109,7 @@ populateDiamondsCollection = function () {
     {
         _id: ObjectId("11c92149873ad56fe0093592"),
         name: 'L\'Amoreaux North',
-        address: 'Kennedy & Finch',
+        address: 'Kennedy Rd & Finch Ave East',
         size: 'L',
         infield: 'dirt',
         lit: true,
@@ -118,10 +118,37 @@ populateDiamondsCollection = function () {
     {
         _id: ObjectId("11c92149873ad56fe00ababa"),
         name: 'Wigmore Park',
-        address: 'Victoria Park & Lawrence',
+        address: 'Victoria Park Rd & Lawrence Ave East',
         size: 'L',
         infield: 'dirt',
         lit: true,
+        outfieldFence: false
+    },
+    {
+        _id: ObjectId("11c92149873ad56fe00acbc7"),
+        name: 'Fenside Park',
+        address: 'York Mills Rd & Victoria Park Rd',
+        size: 'S',
+        infield: 'dirt',
+        lit: true,
+        outfieldFence: true
+    },
+    {
+        _id: ObjectId("11c92149873ad56fe00acbc7"),
+        name: 'Muirhead Park',
+        address: 'Sheppard Ave East & Victoria Park Rd',
+        size: 'M',
+        infield: 'dirt',
+        lit: true,
+        outfieldFence: false
+    },
+    {
+        _id: ObjectId("11c92149873ad56fe00acbc7"),
+        name: 'Warden Park',
+        address: 'McNicoll Ave & Warden Ave',
+        size: 'L',
+        infield: 'dirt',
+        lit: false,
         outfieldFence: false
     }];
 

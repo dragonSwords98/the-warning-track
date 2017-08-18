@@ -291,6 +291,26 @@ populatePlayersCollection = function () {
           ObjectId("4fe3f3865fa394d05880247c"), 
           ObjectId("4fe3f3465fb394d05a81117c")
       ]
+    },
+    {
+      "_id" : ObjectId("1b1d1ab741c5b61433559076"),
+      "name" : "Amy Fong",
+      "image" : "amy-fong.jpg",
+      "gender" : 1,
+      "birthyear" : "1991",
+      "jersey" : 3,
+      "throws" : "Right",
+      "hits" : "Right",
+      "positions" : [ 
+          "2B", 
+          "1B", 
+          "3B", 
+          "SS",
+          "C"
+      ],
+      "teams" : [ 
+          ObjectId("7fdcc1ea928be969807aa7b0")
+      ]
     }];
 
     db.collection('players', function(err, collection) {

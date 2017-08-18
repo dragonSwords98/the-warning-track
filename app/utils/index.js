@@ -67,14 +67,15 @@ export const mapTeamsIntoPlayers = function (players, teams) {
  * @param copiedFieldingLineup: the current shallow copy of fielding lineup with innings, will be modified and returned
  * @return: the new fielding lineup with algo applied 
  */
-export const firstFindFirstApply = function(availableFielders, copiedFieldingLineup) {
+export const firstUniqueFindFirstApply = function(availableFielders, copiedFieldingLineup) {
+  let fielded = []
   copiedFieldingLineup.forEach(inning => {
     Object.keys(inning).forEach(p => {
       let match = availableFielders.find(f => {
-        return f.positions.includes(p)
+        return f.positions.includes(p) && !fielded.includes(f)
       })
       if (match && !inning[p]) inning[p] = match.value
-
+      if (match) fielded.push(match)
     })
   })
   return copiedFieldingLineup
