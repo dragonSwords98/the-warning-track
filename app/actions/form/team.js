@@ -17,6 +17,7 @@ export function submitCreateTeamForm () {
     // OR 3. save the valid team
     let promise
     promise = client.addTeam(state.team)
+    dispatch({ type: 'create-form.team/submitted' })
     promise.then((data) => {
       dispatch({ type: 'create-form/destroy' })
       return dispatch({

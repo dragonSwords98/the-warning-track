@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
   invalidFields: {},
-  valid: false
+  valid: false,
+  submitted: false
 }
 
 export default function createReducers (state = INITIAL_STATE, action) {
@@ -30,5 +31,24 @@ export default function createReducers (state = INITIAL_STATE, action) {
     state.valid = !Object.keys(state.invalidFields).filter(k => !!state.invalidFields[k]).length
   }
 
+  if (action.type === 'create-form.player/submitted') {
+    state = Object.assign({}, state)
+    state.submitted = true
+  }
+
+  if (action.type === 'create-form.team/submitted') {
+    state = Object.assign({}, state)
+    state.submitted = true
+  }
+
+  if (action.type === 'directory.create-player/success') {
+    state = Object.assign({}, state)
+    state.submitted = false
+  }
+
+  if (action.type === 'directory.create-team/success') {
+    state = Object.assign({}, state)
+    state.submitted = false
+  }
   return state
 }

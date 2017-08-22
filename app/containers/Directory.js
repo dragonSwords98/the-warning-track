@@ -71,7 +71,9 @@ class Directory extends Component {
             leagueOptions={leagueOptions}
             formChangeHandler={updateCreateFormQuery}
             formSubmissionHandler={validateAndSubmitCreateFormQuery}
-            fieldErrors={create.invalidFields} />
+            fieldErrors={create.invalidFields}
+            valid={create.valid}
+            submitted={create.submitted} />
         )
       }
       exhibit = <CardGrid collection={mapLeaguesIntoTeams(Object.assign([], directory[type]), Object.assign([], directory.leagues))} filter={navigation.selectedOption} type={type} />
@@ -85,7 +87,9 @@ class Directory extends Component {
             teamOptions={teamOptions}
             formChangeHandler={updateCreateFormQuery}
             formSubmissionHandler={validateAndSubmitCreateFormQuery}
-            fieldErrors={create.invalidFields} />
+            fieldErrors={create.invalidFields}
+            valid={create.valid}
+            submitted={create.submitted} />
         )
       }
       exhibit = <CardGrid collection={mapTeamsIntoPlayers(Object.assign([], directory[type]), Object.assign([], directory.teams))} filter={navigation.selectedOption} type={type} />

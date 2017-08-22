@@ -17,6 +17,7 @@ export function submitCreatePlayerForm () {
     // OR 3. save the valid player
     let promise
     promise = client.addPlayer(state.player)
+    dispatch({ type: 'create-form.player/submitted' })
     promise.then((data) => {
       dispatch({ type: 'create-form/destroy' })
       return dispatch({
