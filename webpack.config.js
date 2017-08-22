@@ -22,8 +22,11 @@ const BABEL_CONFIG = {
 
 module.exports = {
  context: path.resolve(__dirname, 'app'),
+ // context: __dirname,
  entry: {
-  track: "./"
+  track: "./",
+  // track: "./app",
+  vendor: ['react', 'react-dom']
  },
  output: {
   path: buildPath,
@@ -37,6 +40,15 @@ module.exports = {
    }
  },
  module: {
+  // rules: [
+  //   {
+  //     test: /\.css$/,
+  //     use: [
+  //       'style-loader',
+  //       { loader: 'css-loader', options: { minimize: true } }
+  //     ]  
+  //   }
+  // ],
    loaders: [
       {
         test: /\.scss/,
@@ -77,6 +89,7 @@ module.exports = {
    ]
  },
  plugins: [
+    // new webpack.optimize.UglifyJsPlugin(),
     new webpack.ProvidePlugin({
         $: "jquery",
         jQuery: "jquery"
@@ -87,6 +100,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public/index.html')
     }),
+    // new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
       chunks: [
@@ -96,6 +110,10 @@ module.exports = {
       ],
       minChunks: 2,
     }),
+    // new webpack.ContextReplacementPlugin(
+    //   /moment[\/\\]locale/,
+    //   /(en-gb|en-us)\.js/
+    // ),
     new ExtractTextPlugin('styles.css')
  ]
 }
