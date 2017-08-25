@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Button, Input, Checkbox, Table, Header } from 'semantic-ui-react'
 
 import BattersBox from '@track/components/Game/BattersBox'
+import CircularSelect from '@track/components/Game/CircularSelect'
 
 function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, battingOrder, statusGrid, hitGrid, scoresheet, advanceRunner, changeHitType, onScoresheetChange, toggleInningLock, saveGame }) {
   // Header Cells
@@ -27,7 +28,13 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
       } else {
         box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} advanceRunner={advanceRunner} changeHitType={changeHitType} />
       }
-      batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">{box}</Table.Cell>)
+
+      let onSelection
+      let openSelection
+      let options = []
+      let circular = <CircularSelect key={`inning-cs-${r}-${i}}`} options={options} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} onChange={onSelection} />
+
+      batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">{box}{circular}</Table.Cell>)
     }
     return batterCells
   }
