@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import { Button, Checkbox, Form, Icon, Input, Dropdown } from 'semantic-ui-react'
+import { Segment, Message, Button, Checkbox, Form, Icon, Input, Dropdown } from 'semantic-ui-react'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import 'rc-tooltip/assets/bootstrap.css'
@@ -14,12 +14,13 @@ class CreatePlayer extends Component {
   // https://stackoverflow.com/questions/44062024/submit-form-using-button-in-parent-component-in-react
   render () {
     const { player, teamOptions, formChangeHandler, formSubmissionHandler, fieldErrors, handsArray, positionsArray, valid, submitted } = this.props
+    const content = Object.keys(fieldErrors).filter(k => !!fieldErrors[k]).map(e => e).join('<br/>') //TODO: in .map(e => e), translate the fieldError to a validation message
     return (
       <Segment>
         <Message
           warning
-          header='Form errors'
-          content='this is a sample error'
+          header='Invalid Player'
+          content={content}
           hidden={valid}
         />
         <Form id="createPlayerForm" onSubmit={formSubmissionHandler}>
@@ -28,7 +29,7 @@ class CreatePlayer extends Component {
             <Form.Input placeholder="First and Last Names ONLY (e.g. Anoymous Chan, Stranger Lee)" data-create-id="name" value={player.name} onChange={formChangeHandler} error={fieldErrors.name} />
           </Form.Field>
           <Form.Field>
-            <Checkbox toggle data-create-id="gender" onChange={formChangeHandler} />
+            <Checkbox toggle data-create-id="gender" onChange={formChangeHandler} value={player.gender} />
             <Icon name={player.gender ? 'venus' : 'mars'} />
           </Form.Field>
           <Form.Field>

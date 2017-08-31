@@ -1,14 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, Form, Dropdown, Input } from 'semantic-ui-react'
+import { Segment, Message, Button, Form, Dropdown, Input } from 'semantic-ui-react'
 
 function CreateTeam ({ team, captainOptions, playerOptions, leagueOptions, formChangeHandler, formSubmissionHandler, fieldErrors, valid, submitted }) {
+  const content = Object.keys(fieldErrors).filter(k => !!fieldErrors[k]).map(e => e).join('<br/>') //TODO: in .map(e => e), translate the fieldError to a validation message
   return (
     <Segment>
       <Message
         warning
-        header='Form errors'
-        content='this is a sample error'
+        header='Invalid Team'
+        content={content}
         hidden={valid}
       />
       <Form id="createTeamForm" onSubmit={formSubmissionHandler}>
