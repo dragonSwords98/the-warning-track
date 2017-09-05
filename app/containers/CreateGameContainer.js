@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
 import moment from 'moment'
-import { Message, Label, Icon, Confirm, Segment, Table, Header, Button } from 'semantic-ui-react'
+import { Message, Label, Icon, Confirm, Segment, Table, Header, Button, Statistic } from 'semantic-ui-react'
 
 import LoadingOverlay from '@track/components/LoadingOverlay'
 import GenericCelledTable from '@track/components/GenericCelledTable'
@@ -206,6 +206,7 @@ class CreateGameContainer extends Component {
             onCancel={handlePromptClearCancel}
             onConfirm={handlePromptClearConfirm}
           />
+          <Statistic.Group items={createGame.count} color='teal' size='mini'/>
         </Segment>
         <Segment>
           <Header as="h3">Batting Order
