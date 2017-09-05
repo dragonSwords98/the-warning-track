@@ -3,7 +3,7 @@ import { client } from '../client'
 import moment from 'moment'
 import { push as pushLocation } from 'react-router-redux'
 
-import { objectToOption, populateScoresheet, populateGrid, firstUniqueFindFirstApply, validateBattingOrder } from '@track/utils'
+import { objectToOption, populateScoresheet, populateGrid, countFielders, firstUniqueFindFirstApply, validateBattingOrder } from '@track/utils'
 import { BENCH_STATUS, SINGLE_HIT, MINIMAL_BATTERS_COUNT, GENERIC_ATBAT } from '@track/utils/constants'
 
 /**
@@ -63,7 +63,7 @@ export function updateAvailableRoster (availablePlayers = [], availableTeams = [
  */
 function updateAvailableBatters (availablePlayers) {
   return function (dispatch, getState) {
-    let battingList = availablePlayers.map(r => [r.name, r.gender])
+    let battingList = availablePlayers.map(r => [r.name, r.gender, r.jersey])
     dispatch({ type: 'create-game.form/populate-options', payload: { type: 'batters', options: battingList } })
   }
 }
@@ -78,10 +78,11 @@ export function autoFillFieldingLineup () {
   return function (dispatch, getState) {
     const state = getState()
     let fieldingLineup = Object.assign([], state.game.ourFieldingLineup)
+    const roster = state.createGame.roster
 
     // 1. Get roster positions
     // CR: Should never map backwards... from option back to object is taboo...
-    let availableFielders = state.createGame.roster.map(r => {
+    let availableFielders = roster.map(r => {
       let player = state.directory.players.find(p => p._id === r.key)
       return Object.assign({}, r, { positions: player.positions })
     })
@@ -91,6 +92,7 @@ export function autoFillFieldingLineup () {
     fieldingLineup = firstUniqueFindFirstApply(availableFielders, Object.assign([], fieldingLineup))
 
     dispatch({ type: 'create-game.fielder-all/fill', payload: { fieldingLineup: fieldingLineup } })
+    dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(roster, fieldingLineup) }})
     dispatch(validateGameForm())
   }
 }
@@ -98,6 +100,7 @@ export function autoFillFieldingLineup () {
 export function clearFielderRow (data) {
   return function (dispatch, getState) {
     dispatch({ type: 'create-game.fielder-row/clear', payload: { position: data.data } })
+    dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(state.game.roster, state.game.ourFieldingLineup) }})
     dispatch(validateGameForm())
   }
 }
@@ -105,6 +108,7 @@ export function clearFielderRow (data) {
 export function clearFielderInning (data) {
   return function (dispatch, getState) {
     dispatch({ type: 'create-game.fielder-inning/clear', payload: { inning: data.data } })
+    dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(state.game.roster, state.game.ourFieldingLineup) }})
     dispatch(validateGameForm())
   }
 }
@@ -114,6 +118,7 @@ export function clearFieldingLineup () {
   return function (dispatch, getState) {
     dispatch({ type: 'create-game.fielder-all/clear' })
     dispatch({ type: 'create-game.fielder-all/close-clear-prompt' })
+    dispatch({ type: 'create-game.fielder-count/clear' })
     dispatch(validateGameForm())
   }
 }

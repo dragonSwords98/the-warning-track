@@ -16,7 +16,7 @@ class SortableUnorderedList extends Component {
             return (
               <List.Item key={'list-item-' + i[0]} data-id={i[0]} data-gender={i[1] ? 1 : 0}>
                 <List.Content>
-                  <List.Header as="h4"><Label color={i[1] ? 'pink' : 'blue'}>{i[0]}</Label></List.Header>
+                  <List.Header as="h4"><Label color={i[1] ? 'pink' : 'blue'}>{i[0] + ' | ' + i[2]}</Label></List.Header>
                 </List.Content>
               </List.Item>
             )

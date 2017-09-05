@@ -62,6 +62,20 @@ export const mapTeamsIntoPlayers = function (players, teams) {
   return players
 }
 
+export const countFielders = function (roster, lineup) {
+  let playerIds = {}
+  roster.forEach(r => playerIds[r.key] = {
+    count: 0,
+    name: r.text
+  })
+  lineup.forEach(l => {
+    Object.values(l).forEach(id => {
+      playerIds[id].count++
+    })
+  })
+  return playerIds
+}
+
 /**
  * @param availableFielders: the roster and their potential positions
  * @param copiedFieldingLineup: the current shallow copy of fielding lineup with innings, will be modified and returned

@@ -16,8 +16,6 @@ class PlayerContainer extends Component {
   render () {
     const { player, playerId, playerName } = this.props
 
-    console.log(this.props)
-
     if (!player || !playerId || !playerName) {
       return (<LoadingOverlay msg={"No Such Player"} />)
     }

@@ -71,7 +71,6 @@ class CreateGameContainer extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    console.log(prevProps.createGame.batters, this.props.createGame.batters)
     if (!prevProps.createGame.batters.length && this.props.createGame.batters.length) {
       this.initiateBattingOrder()
     }

@@ -11,7 +11,6 @@ class CircularSelect extends Component {
     let { options, status, row, inning, openSelection, onSelection, disabled } = this.props
 
     options = STATUS_ORDERING
-    console.log(options)
 
     return (
       <div>
