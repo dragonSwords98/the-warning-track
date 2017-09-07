@@ -25,13 +25,10 @@ export function updateAvailableTeams (availableTeams = [], availableLeagues = []
     const state = getState()
     availableLeagues = availableLeagues.length ? availableLeagues : Object.assign([], state.directory.leagues)
     availableTeams = availableTeams.length ? availableTeams : Object.assign([], state.directory.teams)
-    
+    let leagueIds = []
     if (state.game.league) {
-      availableTeams = availableTeams.filter(t => t.leagues.includes(state.game.league._id) || t.leagues.findIndex(l => !l._id ? false: l._id === state.game.league._id) > 0)
-    } else {
-      // check if availableTeams have at least one league in leagueIds
-      let leagueIds = availableLeagues.map(l => l._id)
-      availableTeams = availableTeams.filter(t => t.leagues.filter(l => leagueIds.includes(l)))
+      // Use this state.game.league._id to find available teams
+      availableTeams = availableTeams.filter(t => t.leagues.findIndex(l => l._id ? state.game.league._id === l._id : state.game.league._id === l) > -1)
     }
     dispatch({ type: 'create-game.form/populate-options', payload: { type: 'teams', options: objectToOption(availableTeams) } })
   }
@@ -70,7 +67,17 @@ function updateAvailableBatters (availablePlayers) {
 
 export function createGameFormWithDefaults () {
   return function (dispatch, getState) {
+    const state = getState()
     dispatch({ type: 'route.game-container/init' })
+    if (!state.createGame.leagues.length) {
+      dispatch(updateAvailableLeagues())
+    }
+    if (!state.createGame.teams.length) {
+      dispatch(updateAvailableTeams())
+    }
+    if (!state.createGame.roster.length) {
+      dispatch(updateAvailableRoster())
+    }
   }
 }
 

@@ -206,7 +206,7 @@ class CreateGameContainer extends Component {
             onCancel={handlePromptClearCancel}
             onConfirm={handlePromptClearConfirm}
           />
-          <Statistic.Group items={createGame.count} color='teal' size='mini'/>
+          <Statistic.Group items={createGame.count} color='teal' size='mini' widths='eight'/>
         </Segment>
         <Segment>
           <Header as="h3">Batting Order
@@ -236,9 +236,6 @@ export default withRouter(connect(
     return {
       init () {
         dispatch(createGameFormWithDefaults())
-      },
-      populateOptions (type, options) {
-        dispatch({ type: 'create-game.form/populate-options', payload: { type: type, options: options } })
       },
       toggleInningLock (event, data) {
         dispatch({ type: 'create-game.lock-inning/toggle', payload: { inning: data.data } })
