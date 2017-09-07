@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Header, Select, Input, Checkbox, Form } from 'semantic-ui-react'
+import { Header, Select, Input, Dropdown, Checkbox, Form } from 'semantic-ui-react'
 
-const CreateGame = ({ game, invalidFields, submitCreateGameForm, leagueOptions, teamsOptions, labelHomeOrAway, diamondOptions, dateRange, handleFormChange }) => (
+//TODO: roster must be cleared when league/team is modified
+
+const CreateGame = ({ game, invalidFields, submitCreateGameForm, leagueOptions, teamsOptions, rosterOptions, labelHomeOrAway, diamondOptions, dateRange, handleFormChange }) => (
   <Form id="createGameForm" onSubmit={submitCreateGameForm}>
     <Header as="h2">Create a Ball Game</Header>
     <Form.Field>
@@ -14,6 +16,10 @@ const CreateGame = ({ game, invalidFields, submitCreateGameForm, leagueOptions, 
       <Form.Select placeholder="Select Your Team" data-create-id="team" options={teamsOptions} onChange={handleFormChange} error={invalidFields.ourTeam} />
       <label>{labelHomeOrAway}</label>
       <Checkbox fitted toggle data-create-id="homeOrAway" onChange={handleFormChange} />
+    </Form.Field>
+    <Form.Field>
+      <label>Attending Roster</label>
+      <Dropdown placeholder="Select Attending Players" data-create-id="ourActiveRoster" value={game.ourActiveRoster} fluid multiple search selection options={rosterOptions} onChange={handleFormChange} error={invalidFields.roster} />
     </Form.Field>
     <Form.Field>
       <label>Opposing Team</label>
@@ -32,6 +38,7 @@ CreateGame.propTypes = {
   submitCreateGameForm: PropTypes.func.isRequired,
   leagueOptions: PropTypes.array.isRequired,
   teamsOptions: PropTypes.array.isRequired,
+  rosterOptions: PropTypes.array.isRequired,
   labelHomeOrAway: PropTypes.string.isRequired,
   diamondOptions: PropTypes.array.isRequired,
   dateRange: PropTypes.object.isRequired,

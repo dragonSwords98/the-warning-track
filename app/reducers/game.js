@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   currentInning: 1, // to emphasis specific off/def lineups
   lockedInnings: [],
   currentFrame: 0, // 0 for top, 1 for bottom
+  ourActiveRoster: [],
   ourBattingOrder: [],
   ourFieldingLineup: [],
   opposingBattingOrder: [],
