@@ -12,7 +12,7 @@ export default function createReducers (state = INITIAL_STATE, action) {
   }
   if (action.type === 'create-form.player/validate') {
     state = Object.assign({}, state)
-    state.invalidFields.name =  !action.payload.player.name.length || !action.payload.player.name.match(/^[a-z0-9]+$/i) // TODO: error msg?
+    state.invalidFields.name =  !action.payload.player.name.length || !action.payload.player.name.match(/^[a-z]{2,30}[ ]?[a-z]{1,30}$/i) // TODO: error msg? multiple occurrences of a-z
 
     // Form is valid when there are no filtered invalid fields
     state.valid = !Object.keys(state.invalidFields).filter(k => !!state.invalidFields[k]).length
@@ -21,7 +21,7 @@ export default function createReducers (state = INITIAL_STATE, action) {
     state = Object.assign({}, state)
 
     // CR: Invalid comparison should be done in actions not reducers
-    state.invalidFields.name = !action.payload.team.name.length || !action.payload.team.name.match(/^[a-z0-9]+$/i) // TODO: error msg?
+    state.invalidFields.name = !action.payload.team.name.length || !action.payload.team.name.match(/^[a-z ]{2,30}$/i) // TODO: error msg?
     state.invalidFields.captain = !action.payload.team.captain.length // TODO: error msg?
     state.invalidFields.leagues = !action.payload.team.leagues.length // TODO: error msg?
     state.invalidFields.roster = !action.payload.team.roster.length // TODO: error msg?
