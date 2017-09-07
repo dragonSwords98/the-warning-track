@@ -62,6 +62,26 @@ export const mapTeamsIntoPlayers = function (players, teams) {
   return players
 }
 
+export const countFielders = function (roster, lineup) {
+  let playerIds = []
+  roster.forEach(r => playerIds.push({
+    id: r.key,
+    value: 0,
+    label: r.text
+  }))
+  lineup.forEach(l => {
+    Object.values(l).forEach(id => {
+      let fielder = playerIds.find(p => p.id === id)
+      if (fielder) {
+        fielder.value++
+      } else {
+        console.warn('Error: Should never happen. A fielder with id: ' + id + ' was never found.')
+      }
+    })
+  })
+  return playerIds
+}
+
 /**
  * @param availableFielders: the roster and their potential positions
  * @param copiedFieldingLineup: the current shallow copy of fielding lineup with innings, will be modified and returned

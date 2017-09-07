@@ -8,7 +8,8 @@ const INITIAL_STATE = {
   batters: [],
   promptClear: false,
   invalidFields: {},
-  valid: false
+  valid: false,
+  count: []
 }
 
 export default function createGameReducers (state = INITIAL_STATE, action) {
@@ -37,5 +38,19 @@ export default function createGameReducers (state = INITIAL_STATE, action) {
     // Form is valid when there are no filtered invalid fields
     state.valid = !Object.keys(state.invalidFields).filter(k => !!state.invalidFields[k]).length
   }
+  // if (action.type === 'create-game.fielding-lineup/change') {
+  // if (action.type === 'create-game.fielder-row/clear') {
+  // if (action.type === 'create-game.fielder-inning/clear') {
+  // if (action.type === 'create-game.fielder-all/clear') {
+  // if (action.type === 'create-game.fielder-all/fill') {
+  if (action.type === 'create-game.fielder-count/update') {
+    state = Object.assign({}, state)
+    state.count = action.payload.count
+  }
+  if (action.type === 'create-game.fielder-count/clear') {
+    state = Object.assign({}, state)
+    state.count = []
+  }
+
   return state
 }

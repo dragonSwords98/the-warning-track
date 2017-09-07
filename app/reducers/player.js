@@ -22,23 +22,25 @@ export default function playerReducers (state = INITIAL_STATE, action) {
   }
 
   if (action.type === 'fetch-player/received') {
-    state = Object.assign({}, state)
-    state.name = action.payload.player.name
-    state.jersey = action.payload.player.jersey
+    state = Object.assign({}, state, action.payload)
   }
 
   if (action.type === 'directory.create-player/update') {
     state = Object.assign({}, state)
-    if (action.payload.field === 'name') {
-      let fullName = action.payload.value.split(' ')
-      let lowerFirst = fullName[0][0].toLowerCase() + fullName[0].slice(1)
-      let lowerLast = ''
-      if (fullName[1]) {
-        lowerLast = fullName[1][0].toLowerCase() + fullName[1].slice(1)
+    if (!action.payload.value) {
+      state[action.payload.field] = INITIAL_STATE[action.payload.field]
+    } else {
+      if (action.payload.field === 'name') {
+        let fullName = action.payload.value.split(' ')
+        let lowerFirst = fullName[0][0].toLowerCase() + fullName[0].slice(1)
+        let lowerLast = ''
+        if (fullName[1]) {
+          lowerLast = fullName[1][0].toLowerCase() + fullName[1].slice(1)
+        }
+        state.image = `${lowerFirst}-${lowerLast}.jpg`
       }
-      state.image = `${lowerFirst}-${lowerLast}.jpg`
+      state[action.payload.field] = action.payload.value
     }
-    state[action.payload.field] = action.payload.value
   }
 
   if (action.type === 'directory.create-player/success') {

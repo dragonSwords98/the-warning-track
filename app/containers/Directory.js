@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import { Header, Button } from 'semantic-ui-react'
+import { Header, Segment, Button } from 'semantic-ui-react'
 import { push as pushLocation } from 'react-router-redux'
 
 import LoadingOverlay from '@track/components/LoadingOverlay'
@@ -57,11 +57,11 @@ class Directory extends Component {
       captainOptions = objectToOption(rosterOptions)
     }
 
-    let creation = (<div><Button primary onClick={goToCreateGame}>Create Game</Button></div>)
+    let creation = (<Segment compact color='green' textAlign='right'><Button onClick={goToCreateGame}>Create Game</Button></Segment>)
     let formComponent, filter
     let exhibit = (<div />)
     if (type === 'teams') {
-      creation = (<div><Button secondary onClick={toggleCreateForm}>Create Team</Button></div>)
+      creation = (<Segment compact color='green' textAlign='right'><Button onClick={toggleCreateForm}>Create Team</Button></Segment>)
       if (directory.showCreateForm) {
         formComponent = (
           <CreateTeam
@@ -71,13 +71,15 @@ class Directory extends Component {
             leagueOptions={leagueOptions}
             formChangeHandler={updateCreateFormQuery}
             formSubmissionHandler={validateAndSubmitCreateFormQuery}
-            fieldErrors={create.invalidFields} />
+            fieldErrors={create.invalidFields}
+            valid={create.valid}
+            submitted={create.submitted} />
         )
       }
       exhibit = <CardGrid collection={mapLeaguesIntoTeams(Object.assign([], directory[type]), Object.assign([], directory.leagues))} filter={navigation.selectedOption} type={type} />
     }
     if (type === 'players') {
-      creation = (<div><Button onClick={toggleCreateForm}>Create Player</Button></div>)
+      creation = (<Segment compact color='green' textAlign='right'><Button onClick={toggleCreateForm}>Create Player</Button></Segment>)
       if (directory.showCreateForm) {
         formComponent = (
           <CreatePlayer
@@ -85,7 +87,9 @@ class Directory extends Component {
             teamOptions={teamOptions}
             formChangeHandler={updateCreateFormQuery}
             formSubmissionHandler={validateAndSubmitCreateFormQuery}
-            fieldErrors={create.invalidFields} />
+            fieldErrors={create.invalidFields}
+            valid={create.valid}
+            submitted={create.submitted} />
         )
       }
       exhibit = <CardGrid collection={mapTeamsIntoPlayers(Object.assign([], directory[type]), Object.assign([], directory.teams))} filter={navigation.selectedOption} type={type} />
@@ -97,10 +101,12 @@ class Directory extends Component {
 
     return (
       <div>
-        <Header as="h3">{type.toUpperCase()}</Header>
+        <Header as="h3" textAlign='center' attached='top'>{type.toUpperCase()}</Header>
+        <Segment attached>
         { creation }
         { formComponent }
         { exhibit }
+        </Segment>
       </div>
     )
   }

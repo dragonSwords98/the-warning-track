@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
 import moment from 'moment'
-import { Message, Label, Icon, Confirm, Segment, Table, Header, Button } from 'semantic-ui-react'
+import { Message, Label, Icon, Confirm, Segment, Table, Header, Button, Statistic } from 'semantic-ui-react'
 
 import LoadingOverlay from '@track/components/LoadingOverlay'
 import GenericCelledTable from '@track/components/GenericCelledTable'
@@ -71,7 +71,6 @@ class CreateGameContainer extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    console.log(prevProps.createGame.batters, this.props.createGame.batters)
     if (!prevProps.createGame.batters.length && this.props.createGame.batters.length) {
       this.initiateBattingOrder()
     }
@@ -207,6 +206,7 @@ class CreateGameContainer extends Component {
             onCancel={handlePromptClearCancel}
             onConfirm={handlePromptClearConfirm}
           />
+          <Statistic.Group items={createGame.count} color='teal' size='mini' widths='eight'/>
         </Segment>
         <Segment>
           <Header as="h3">Batting Order
@@ -236,9 +236,6 @@ export default withRouter(connect(
     return {
       init () {
         dispatch(createGameFormWithDefaults())
-      },
-      populateOptions (type, options) {
-        dispatch({ type: 'create-game.form/populate-options', payload: { type: type, options: options } })
       },
       toggleInningLock (event, data) {
         dispatch({ type: 'create-game.lock-inning/toggle', payload: { inning: data.data } })
