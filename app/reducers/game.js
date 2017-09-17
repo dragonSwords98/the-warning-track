@@ -20,6 +20,7 @@ const INITIAL_STATE = {
   ourFieldingLineup: [],
   opposingBattingOrder: [],
   statusGrid: [], // ours batting order
+  radialActive: false,
   hitGrid: [], // ours hitting chart
   scoresheet: [], // ours vs theirs
   gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
@@ -47,6 +48,24 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'route.game-container/load-game.rejected') {
     state = Object.assign({}, state, INITIAL_STATE)
+  }
+
+  /* Radial Selection for Offense Table -> Batter Box */
+
+  if (action.type === 'game.radial-select/toggle') {
+    state = Object.assign({}, state)
+    if (!state.radialActive) state.radialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+    else if (state.radialActive[0] === action.payload.data["data-inning"] && state.radialActive[0] === action.payload.data["data-row"]) {
+      state.radialActive = false // TODO: doesn't close
+    } else {
+      state.radialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+    }
+  }
+
+  if (action.type === 'game.radial-select/select') {
+    state = Object.assign({}, state)
+    console.warn('TODO: game.advance-runner/advance')
+    state.radialActive = false
   }
 
   if (action.type === 'game.advance-runner/advance') {

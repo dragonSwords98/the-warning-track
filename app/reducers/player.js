@@ -37,7 +37,7 @@ export default function playerReducers (state = INITIAL_STATE, action) {
         if (fullName[1]) {
           lowerLast = fullName[1][0].toLowerCase() + fullName[1].slice(1)
         }
-        state.image = `${lowerFirst}-${lowerLast}.jpg`
+        state.image = lowerLast.length > 0 ? `${lowerFirst}-${lowerLast}.jpg` : `${lowerFirst}.jpg`
       }
       state[action.payload.field] = action.payload.value
     }

@@ -8,29 +8,43 @@ import { objectToOption } from '@track/utils'
 
 class CircularSelect extends Component {
   render () {
-    let { options, status, row, inning, openSelection, onSelection, disabled } = this.props
+    let { options, status, row, inning, isOpen, onToggle, onSelect, disabled } = this.props
+    let groupClass = isOpen ? 'open circle' : 'circle'
+    options = STATUS_ORDERING // TODO: move to state
 
-    options = STATUS_ORDERING
-
+    for(var i = 0, l = options.length; i < l; i++) {
+      options[i].style = {}
+      options[i].style.left = (40 - 50*Math.cos(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
+      options[i].style.top = (40 + 40*Math.sin(-0.5 * Math.PI - 2*(1/l)*i*Math.PI)).toFixed(4) + "%";
+    }
+    
     return (
-      <div>
-        <div>
+      <div className="circular-menu">
+        <div className={groupClass}>
           {
             options.map(o => {
               return (
                 <Button
+                  style={o.style}
                   key={'cs' + o.name}
-                  data-row={row}
-                  data-inning={inning}
                   circular
                   color={o.color}
                   icon={o.icon}
-                  onClick={onSelection}
-                  disabled={disabled} />)
+                  data-label={o.name}
+                  onClick={onSelect}
+                  disabled={disabled}>
+                  {o.label}
+                </Button>)
             })
           }
         </div>
-        <Button circular icon={status.icon ? status.icon : 'bars'} onClick={openSelection}/>
+        <Button
+          className="menu-button"
+          data-row={row}
+          data-inning={inning}
+          circular
+          icon={status.icon ? status.icon : 'bars'}
+          onClick={onToggle} />
       </div>
     )
   }

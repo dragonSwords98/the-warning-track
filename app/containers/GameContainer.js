@@ -20,7 +20,7 @@ class GameContainer extends Component {
   render () {
     const { game, opponent, saveGame, advanceBatterRunner, changeHitType,
       onScoresheetChange, toggleInningLock, onChangeOpposingBattersCount,
-      onChangeOpponentName, onChangeOpponentNumber,
+      onRadialSelect, toggleRadialSelect, onChangeOpponentName, onChangeOpponentNumber,
       onChangeHitType, onChangeDepth, onChangeLane
     } = this.props
 
@@ -49,6 +49,9 @@ class GameContainer extends Component {
       hitGrid={game.hitGrid}
       scoresheet={game.scoresheet}
       advanceRunner={advanceBatterRunner}
+      onRadialSelect={onRadialSelect}
+      toggleRadialSelect={toggleRadialSelect}
+      radialActive={game.radialActive}
       changeHitType={changeHitType}
       onScoresheetChange={onScoresheetChange}
       toggleInningLock={toggleInningLock}
@@ -104,6 +107,12 @@ export default withRouter(connect(
       },
       onScoresheetChange (event, data) {
         dispatch({ type: 'game.scoresheet/update', payload: { target: event.target, data: data } })
+      },
+      onRadialSelect (event, data) {
+        dispatch({ type: 'gameradial-select/select', payload: { target: event.target, data: data } })
+      },
+      toggleRadialSelect (event, data) {
+        dispatch({ type: 'game.radial-select/toggle', payload: { target: event.target, data: data } })
       },
       toggleInningLock (event, data) {
         dispatch({ type: 'game.lock-inning/toggle', payload: { inning: data.data } })
