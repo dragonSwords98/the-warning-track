@@ -1,35 +1,25 @@
-/* BatterBox */
-
-/*
-td.batter-cell {
-  padding: 0.2em !important;
-  .ui.button {
-    border-radius: 0.2em;
-  }
-}
-*/
-
 /* CircularSelect */
 
 .circular-menu {
-  width: 250px;
-  height: 250px;
-  margin: 0 auto;
+  width: 60px;
+  height: 40px;
+  margin: 10px auto 0;
   position: relative;
+  text-align: center;
 }
 
 .circle {
-  width: 250px;
-  height: 250px;
+  width: 60px;
+  height: 40px;
   opacity: 0;
   
   -webkit-transform: scale(0);
   -moz-transform: scale(0);
   transform: scale(0);
 
-  -webkit-transition: all 0.175s ease-out;
-  -moz-transition: all 0.175s ease-out;
-  transition: all 0.175s ease-out;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
 }
 
 .open.circle {
@@ -42,22 +32,19 @@ td.batter-cell {
 
 .circle button {
   text-decoration: none;
-  color: white;
   display: block;
-  height: 50px;
-  width: 90px;
   line-height: 40px;
   margin-left: -20px;
   margin-top: -20px;
   position: absolute;
   text-align: center;
-
+  z-index: 1;
 }
 
 .circle button:hover {
   color: #eef;
+  z-index: 2;
 }
-
 
 .menu-button {
   position: absolute;
@@ -68,8 +55,6 @@ td.batter-cell {
   color: #444;
   border-radius: 50%;
   display: block;
-  height: 40px;
-  width: 40px;
   line-height: 40px;
   padding: 10px;
   background: #dde;

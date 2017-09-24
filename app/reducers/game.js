@@ -63,22 +63,18 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   }
 
   if (action.type === 'game.radial-select/select') {
-    state = Object.assign({}, state)
-    console.warn('TODO: game.advance-runner/advance')
-    state.radialActive = false
-  }
+    let inning = action.payload.data['data-inning']
+    let row = action.payload.data['data-row']
+    let label = action.payload.data['data-label']
 
-  if (action.type === 'game.advance-runner/advance') {
     state = Object.assign({}, state)
-    const { row, inning } = action.payload.target.dataset
-    let statusIndex = STATUS_ORDERING.findIndex(status => status.name === state.statusGrid[inning - 1][row].name) + 1
-    if (statusIndex > STATUS_ORDERING.length - 1) {
-      statusIndex = 0
-    }
+
+    console.warn('TODO: game.advance-runner/advance', action.payload)
+
+    let statusIndex = STATUS_ORDERING.findIndex(status => status.name === label)
     state.statusGrid[inning - 1][row] = Object.assign({}, STATUS_ORDERING[statusIndex])
-    // Enable if batter made a hit, otherwise disable
-    let hitCell = state.hitGrid[inning - 1][row]
-    hitCell.disabled = statusIndex < 3
+
+    state.radialActive = false
 
     state.scoresheet.ours.runs[inning - 1] = updateScoresheet('HOME', state.statusGrid[inning - 1])
     state.scoresheet.ours.outs[inning - 1] = updateScoresheet('OUT', state.statusGrid[inning - 1])

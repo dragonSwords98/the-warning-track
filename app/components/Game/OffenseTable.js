@@ -48,19 +48,33 @@ function OffenseTable ({
 
       let options = []
       let isOpen = radialActive[0] === i && radialActive[1] === r
-      let circular = <CircularSelect
-                        key={`inning-cs-${r}-${i}}`}
+      let location = <CircularSelect
+                        key={`location-inning-cs-${r}-${i}}`}
+                        layer={0}
                         options={options}
                         row={r}
                         inning={i}
                         status={statusGrid[i - 1][r]}
-                        hit={hitGrid[i - 1][r]}
                         isOpen={isOpen}
                         onToggle={toggleRadialSelect}
                         onSelect={onRadialSelect} />
+      let hitReport = ''
+      // let hitReport = <CircularSelect
+      //                   key={`hit-inning-cs-${r}-${i}}`}
+      //                   layer={1}
+      //                   options={options}
+      //                   row={r}
+      //                   inning={i}
+      //                   status={hitGrid[i - 1][r]}
+      //                   isOpen={isOpen}
+      //                   onToggle={toggleRadialSelect}
+      //                   onSelect={onRadialSelect} />
 
       // batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">{box}</Table.Cell>)
-      batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">{circular}</Table.Cell>)
+      batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">
+        {location}
+        {hitReport}
+      </Table.Cell>)
     }
     return batterCells
   }

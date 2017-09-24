@@ -10,16 +10,16 @@ export const BENCH_STATUS = {
   label: 'Bench',
   color: 'grey'
 }
-export const IN_THE_HOLE_STATUS = {
-  name: 'IN_THE_HOLE',
-  label: 'Hole',
-  color: 'yellow'
-}
-export const ON_DECK_STATUS = {
-  name: 'ON_DECK',
-  label: 'Deck',
-  color: 'orange'
-}
+// export const IN_THE_HOLE_STATUS = {
+//   name: 'IN_THE_HOLE',
+//   label: 'Hole',
+//   color: 'yellow'
+// }
+// export const ON_DECK_STATUS = {
+//   name: 'ON_DECK',
+//   label: 'Deck',
+//   color: 'orange'
+// }
 export const AT_BAT_STATUS = {
   name: 'AT_BAT',
   label: 'Bat',
@@ -27,17 +27,17 @@ export const AT_BAT_STATUS = {
 }
 export const FIRST_STATUS = {
   name: 'FIRST',
-  label: 'First',
+  label: '1st',
   color: 'olive'
 }
 export const SECOND_STATUS = {
   name: 'SECOND',
-  label: 'Second',
+  label: '2nd',
   color: 'green'
 }
 export const THIRD_STATUS = {
   name: 'THIRD',
-  label: 'Third',
+  label: '3rd',
   color: 'teal'
 }
 export const HOME_STATUS = {
@@ -47,15 +47,15 @@ export const HOME_STATUS = {
 }
 
 export const STATUS_ORDERING = [
-  BENCH_STATUS,
-  IN_THE_HOLE_STATUS,
-  ON_DECK_STATUS,
-  AT_BAT_STATUS,
-  FIRST_STATUS,
-  SECOND_STATUS,
-  THIRD_STATUS,
+  // IN_THE_HOLE_STATUS,
+  // ON_DECK_STATUS,
+  OUT_STATUS,
   HOME_STATUS,
-  OUT_STATUS
+  THIRD_STATUS,
+  SECOND_STATUS,
+  FIRST_STATUS,
+  AT_BAT_STATUS,
+  BENCH_STATUS
 ]
 
 /* HITTING TYPES */
