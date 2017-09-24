@@ -31,7 +31,8 @@ class CircularSelect extends Component {
         data-inning={inning}
         circular
         color={status.color}
-        onClick={onToggle}>
+        onClick={onToggle}
+        disabled={disabled}>
         {status.label}
       </Button>
     )
@@ -48,6 +49,7 @@ class CircularSelect extends Component {
                 circular
                 color={o.color}
                 icon={o.icon}
+                data-layer={layer.name}
                 data-row={row}
                 data-inning={inning}
                 data-label={o.name}

@@ -66,18 +66,24 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     let inning = action.payload.data['data-inning']
     let row = action.payload.data['data-row']
     let label = action.payload.data['data-label']
+    let layer = action.payload.data['data-layer']
 
     state = Object.assign({}, state)
 
-    console.warn('TODO: game.advance-runner/advance', action.payload)
+    console.warn('game.radial-select/select', action.payload)
 
-    let statusIndex = STATUS_ORDERING.findIndex(status => status.name === label)
-    state.statusGrid[inning - 1][row] = Object.assign({}, STATUS_ORDERING[statusIndex])
+    if (layer === 'status') {
+      let statusIndex = STATUS_ORDERING.findIndex(status => status.name === label)
+      state.statusGrid[inning - 1][row] = Object.assign({}, STATUS_ORDERING[statusIndex])
 
+      state.scoresheet.ours.runs[inning - 1] = updateScoresheet('HOME', state.statusGrid[inning - 1])
+      state.scoresheet.ours.outs[inning - 1] = updateScoresheet('OUT', state.statusGrid[inning - 1])
+    }
+    if (layer === 'hit') {
+      let hitIndex = HIT_ORDERING.findIndex(hit => hit.name === label)
+      state.hitGrid[inning - 1][row] = Object.assign({}, HIT_ORDERING[hitIndex])
+    }
     state.radialActive = false
-
-    state.scoresheet.ours.runs[inning - 1] = updateScoresheet('HOME', state.statusGrid[inning - 1])
-    state.scoresheet.ours.outs[inning - 1] = updateScoresheet('OUT', state.statusGrid[inning - 1])
   }
 
   if (action.type === 'game.hit/change-type') {

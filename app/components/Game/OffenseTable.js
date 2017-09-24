@@ -40,12 +40,12 @@ function OffenseTable ({
 
     let batterCells = []
     for (let i = 1; i <= innings; i++) {
-      let box
-      if (currentInning !== i) {
-        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} advanceRunner={advanceRunner} changeHitType={changeHitType} disabled />
-      } else {
-        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} advanceRunner={advanceRunner} changeHitType={changeHitType} />
-      }
+      // let box
+      // if (currentInning !== i) {
+      //   box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} advanceRunner={advanceRunner} changeHitType={changeHitType} disabled />
+      // } else {
+      //   box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} advanceRunner={advanceRunner} changeHitType={changeHitType} />
+      // }
 
       let options = []
       let isOpen = radialActive[0] === i && radialActive[1] === r
@@ -54,6 +54,7 @@ function OffenseTable ({
       const layer = [
         {
           layer: 1,
+          name: 'status',
           dist: 80,
           deg: 240,
           adjust: 2.2,
@@ -63,10 +64,11 @@ function OffenseTable ({
         },
         {
           layer: 2,
-          dist: 25,
-          deg: 200,
-          adjust: 2.2,
-          fraction: 11/20,
+          name: 'hit',
+          dist: 60,
+          deg: 270,
+          adjust: 2.4,
+          fraction: 2/5,
           border: "solid #eceff1 3px",
           ordering: HIT_ORDERING
         }
@@ -81,7 +83,8 @@ function OffenseTable ({
                         status={statusGrid[i - 1][r]}
                         isOpen={isOpen}
                         onToggle={toggleRadialSelect}
-                        onSelect={onRadialSelect} />
+                        onSelect={onRadialSelect}
+                        disabled={currentInning !== i} />
       // let hitReport = ''
 
       // TODO: onSelect should not trigger a change to status each time, should be differentiated
@@ -94,7 +97,8 @@ function OffenseTable ({
                         status={hitGrid[i - 1][r]}
                         isOpen={isOpen}
                         onToggle={toggleRadialSelect}
-                        onSelect={onRadialSelect} />
+                        onSelect={onRadialSelect}
+                        disabled={currentInning !== i} />
 
       // batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">{box}</Table.Cell>)
       batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">
