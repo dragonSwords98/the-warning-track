@@ -70,8 +70,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
     state = Object.assign({}, state)
 
-    console.warn('game.radial-select/select', action.payload)
-
     if (layer === 'status') {
       let statusIndex = STATUS_ORDERING.findIndex(status => status.name === label)
       state.statusGrid[inning - 1][row] = Object.assign({}, STATUS_ORDERING[statusIndex])

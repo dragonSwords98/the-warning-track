@@ -3,9 +3,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Button, Input, Checkbox, Table, Header } from 'semantic-ui-react'
 
-import BattersBox from '@track/components/Game/BattersBox'
 import CircularSelect from '@track/components/Game/CircularSelect'
-import { STATUS_ORDERING, HIT_ORDERING } from '@track/utils/constants'
+import { STATUS_ORDERING, HIT_ORDERING, CIRCULAR_SELECT_LAYERS } from '@track/utils/constants'
 
 function OffenseTable ({
     innings,
@@ -40,39 +39,11 @@ function OffenseTable ({
 
     let batterCells = []
     for (let i = 1; i <= innings; i++) {
-      // let box
-      // if (currentInning !== i) {
-      //   box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} advanceRunner={advanceRunner} changeHitType={changeHitType} disabled />
-      // } else {
-      //   box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} advanceRunner={advanceRunner} changeHitType={changeHitType} />
-      // }
 
       let options = []
       let isOpen = radialActive[0] === i && radialActive[1] === r
 
-      // TODO: put in constants, layer 2 is still not perfectly away from layer 1 and other future parent elements
-      const layer = [
-        {
-          layer: 1,
-          name: 'status',
-          dist: 80,
-          deg: 240,
-          adjust: 2.2,
-          fraction: 11/20,
-          border: "solid #263238 3px",
-          ordering: STATUS_ORDERING
-        },
-        {
-          layer: 2,
-          name: 'hit',
-          dist: 60,
-          deg: 270,
-          adjust: 2.4,
-          fraction: 2/5,
-          border: "solid #eceff1 3px",
-          ordering: HIT_ORDERING
-        }
-      ]
+      const layer = CIRCULAR_SELECT_LAYERS
 
       let location = <CircularSelect
                         key={`location-inning-cs-${r}-${i}}`}
@@ -85,9 +56,7 @@ function OffenseTable ({
                         onToggle={toggleRadialSelect}
                         onSelect={onRadialSelect}
                         disabled={currentInning !== i} />
-      // let hitReport = ''
 
-      // TODO: onSelect should not trigger a change to status each time, should be differentiated
       let hitReport = <CircularSelect
                         key={`hit-inning-cs-${r}-${i}}`}
                         layer={layer[1]}
@@ -100,7 +69,6 @@ function OffenseTable ({
                         onSelect={onRadialSelect}
                         disabled={currentInning !== i} />
 
-      // batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">{box}</Table.Cell>)
       batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">
         {location}
         {hitReport}

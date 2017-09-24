@@ -38,14 +38,20 @@ export function submitCreatePlayerForm () {
 
 export function updateCreatePlayerForm (event, data) {
   return function (dispatch, getState) {
+    console.log('updateCreatePlayerForm', event, data)
     let field, value
-    if (!data) {
+    if (!data && event.target.files) {
+      field = event.target.attributes['data-create-id'].value
+      value = handleImageSelect(event)
+    } else if (!data) {
       value = event
       field = 'jersey'
     } else if (!data.value) {
       // GENDER
       value = data.checked ? 1 : 0
       field = data['data-create-id']
+    } else if (data['data-create-id'] === 'image') {
+      
     } else {
       value = data.value
       field = data['data-create-id']
@@ -57,5 +63,20 @@ export function updateCreatePlayerForm (event, data) {
 
     // 2. Is the form valid?
     return dispatch({ type: 'create-form.player/validate', payload: { player: state.player } })
+  }
+}
+
+const handleImageSelect = function (event) {
+  var files = event.target.files;
+
+  for (var i = 0, f; f = files[i]; i++) {
+    // Only process image files.
+    // Block large files (in btyes)
+    if (f.size > 100000 || !f.type.match('image.*')) {
+      return null
+    }
+
+    // TODO: need to make into a uploadable data blob? NEED VALIDATION for null/bad image case
+    return f
   }
 }
