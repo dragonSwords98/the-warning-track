@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button } from 'semantic-ui-react'
 
-import { STATUS_ORDERING, HIT_ORDERING } from '@track/utils/constants'
 import { objectToOption } from '@track/utils'
 
 class CircularSelect extends Component {
@@ -11,8 +10,7 @@ class CircularSelect extends Component {
     let { layer, options, status, row, inning, isOpen, onToggle, onSelect, disabled } = this.props
     let groupClass = isOpen ? 'open circle' : 'circle'
     let circularOptions = ''
-    options = STATUS_ORDERING // TODO: move to state
-    let layerCss = ["solid #263238 3px", "solid #eceff1 3px"]
+    options = layer.ordering // TODO: move to state
 
 
     if (isOpen) {
@@ -20,9 +18,9 @@ class CircularSelect extends Component {
         options[i].style = {}
         // options[i].style.left = "calc(" + (80 - 240*Math.cos(-0.5 * Math.PI - 2*(1/l)*(-i+2.9)*51/100*Math.PI)).toFixed(4) + "% - 40px)"
         // options[i].style.top = "calc(" + (80 + 240*Math.sin(-0.5 * Math.PI - 2*(1/l)*(-i+2.9)*51/100*Math.PI)).toFixed(4) + "% - 40px)"
-        options[i].style.left = "calc(" + (layer+1)*(80 - 240*Math.cos(-0.5 * Math.PI - 2*(1/l)*(-i+2.2)*11/20*Math.PI)).toFixed(4) + "% - 40px)"
-        options[i].style.top = "calc(" + (layer+1)*(80 + 240*Math.sin(-0.5 * Math.PI - 2*(1/l)*(-i+2.2)*11/20*Math.PI)).toFixed(4) + "% - 40px)"
-        options[i].style.border = layerCss[layer]
+        options[i].style.left = "calc(" + (layer.layer)*(layer.dist - layer.deg*Math.cos(-0.5 * Math.PI - 2*(1/l)*(-i+layer.adjust)*layer.fraction*Math.PI)).toFixed(4) + "% - 40px)"
+        options[i].style.top = "calc(" + (layer.layer)*(layer.dist + layer.deg*Math.sin(-0.5 * Math.PI - 2*(1/l)*(-i+layer.adjust)*layer.fraction*Math.PI)).toFixed(4) + "% - 40px)"
+        options[i].style.border = layer.border
       }
     }
 
@@ -66,7 +64,7 @@ class CircularSelect extends Component {
   }
 }
 CircularSelect.propTypes = {
-  layer: PropTypes.number.isRequired,
+  layer: PropTypes.object.isRequired,
   options: PropTypes.array.isRequired,
   status: PropTypes.object.isRequired,
   row: PropTypes.number.isRequired,
