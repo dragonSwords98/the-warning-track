@@ -1,35 +1,31 @@
 'use strict'
 import { client } from '../client'
+
 import { processImageToThumbnail } from '@track/utils'
 
-export const uploadImage = function (image) {
+export const uploadImage = function (type='player') {
   return function (dispatch, getState) {
     const state = getState()
+    let image = state[type].image
+    let imageData = state[type].imageData
     let promise
-    
-    // TODO: this object and its uri should not be knowledgeable by actions, should all be in track-client.js
-    let options = {
-      method: 'POST',
-      uri: 'localhost:8000/images', // TODO: haha, yeah, this is a problem
-      formData: {
-        name: state.image.name,
-        file: {
-          value: fs.createReadStream(__dirname + '/' + state.image.filename),
-          options: {
-            filename: state.image.filename,
-            contentType: state.image.type
-          }
-        }
-      },
-      headers: {
-        'content-type': 'multipart/form-data' // default: 'application/x-www-form-urlencoded'
-      }
+
+    if (!image || !imageData) {
+      return
+    }
+
+    // TODO: should follow proper conventions for content-type
+    // 'content-type': 'multipart/form-data' // default: 'application/x-www-form-urlencoded' or 'application/json'
+    let query = {
+      name: image.name,
+      contentType: image.type,
+      value: imageData
     }
 
     // 4. save the player's image
     // i. save the image, id it to this player, ensure the mongodb document matches this and return success, fail in all otherwises
     // ii. return a successful upload
-    promise = client.uploadImage(options)
+    promise = client.uploadImage(query)
     dispatch({ type: 'upload.image/submitted' })
     promise.then((data) => {
       return dispatch({

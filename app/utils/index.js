@@ -143,7 +143,6 @@ export const processImageToThumbnail = function (f) {
 
     // Closure to capture the file information.
     reader.onload = (function(file) {
-      console.log('reader.onload', file)
       return function(e) {
         // Render thumbnail
         return dispatch({ type: 'image.upload/read', payload: { result: e.target.result } })

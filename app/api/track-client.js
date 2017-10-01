@@ -1,6 +1,5 @@
 'use strict'
 import Promise from 'bluebird'
-import rp from 'request-promise'
 
 /*
 let the app configure this plz.
@@ -352,8 +351,8 @@ class TrackClient {
   }
 
   /** Request Promise, uses bluebird, but not axios **/
-  uploadImage (options) {
-    return rp(options).then((data) => {
+  uploadImage (query) {
+    return this.post('/images', query).then((data) => {
       return Promise.resolve(data)
     }).catch((error) => {
       return Promise.reject(error)

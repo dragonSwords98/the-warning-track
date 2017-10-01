@@ -1,5 +1,6 @@
 'use strict'
 const mongo = require('mongodb')
+const fs = require('fs')
 
 const Server = mongo.Server,
     Db = mongo.Db,
@@ -8,38 +9,35 @@ const Server = mongo.Server,
 var server = new Server('localhost', 27017, {auto_reconnect: true});
 var db = new Db('trackdb', server);
 
+const IMAGE_REPO_DIR = 'D://Bryan//proj//the-warning-track//public//images//'
+
 
 // add, replaces existing
 exports.uploadImage = function (req, res) {
   var image = req.body
 
-  console.log('lets save an image', image)
+  if (image.value.length > 1000000) {
+    res.send({error:'image file size is too large', size: image.value.length});
+  }
 
-  // Save image to file
+  // TODO: Verify the file matches an entry in the mongodb document before saving to file
 
-  // Add record to DB
-  // db.collection(image.collection, function(err, collection) {
-  //   collection.update({'_id':new BSON.ObjectID(id)}, {image: image}, {safe:true}, function(err, result) {
-  //     if (err) {
-  //       console.log('Error updating ' + image.collection + ': ' + err);
-  //       res.send({'error':'An error has occurred'});
-  //     } else {
-  //       console.log('' + result + ' document(s) updated');
-  //       res.send(image);
-  //     }
-  //   });
-  // });
+  // TODO: do not overwrite a file, if you're overwriting a file, then replace it with the player's id to guarantee successful saving
+
+  var imageData = image.value.replace(/^data:image\/[a-z]+;base64,/, "")
+  fs.writeFile(IMAGE_REPO_DIR + image.name, imageData, 'base64', function(err) { if (err) console.log(err) })
+
+  res.send(image);
 }
 
 // delete, doesn't care if not found - still successful
 exports.deleteImage = function (req, res) {
   var image = req.body
 
-  console.log('lets delete an image', image)
+  fs.unlink(IMAGE_REPO_DIR + image.name, function (err) { if (err) console.log(err) });
+  res.send(image)
 
-  // Delete image from file
-
-  // Delete record from db
+  // TODO: Delete image name reference from db, if exists
   // db.collection(image.collection, function(err, collection) {
   //   collection.update({'_id':new BSON.ObjectID(id)}, {image: null}, {safe:true}, function(err, result) {
   //     if (err) {

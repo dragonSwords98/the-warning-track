@@ -1,7 +1,7 @@
 'use strict'
 
 const INITIAL_STATE = {
-  name: '',
+  name: '', // must be unique (or images will overwrite one another)
   image: null,
   imageData: null,
   gender: 0,

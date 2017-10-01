@@ -1,6 +1,6 @@
 'use strict'
 import { client } from '../client'
-import { handleImageSelect } from './image'
+import { uploadImage, handleImageSelect } from './image'
 
 export function submitCreatePlayerForm () {
   return function (dispatch, getState) {
@@ -11,21 +11,23 @@ export function submitCreatePlayerForm () {
 
     // 2. Is the form valid?
     if (!state.create.valid) {
-      // 3. Show the user why its not valid TODO: Implement??
+      // Show the user why its not valid TODO: Implement??
       return dispatch({ type: 'directory.create-player/invalid', payload: { player: state.create.invalidFields } })
     }
 
-    // OR 3. save the valid player
+    // 3. save the valid player
     let promise
-    promise = client.addPlayer(state.player)
+    let newPlayer = preparePlayerForm(Object.assign({}, state.player))
+    promise = client.addPlayer(newPlayer)
     dispatch({ type: 'create-form.player/submitted' })
+    
     promise.then((data) => {
       dispatch({ type: 'create-form/destroy' })
       return dispatch({
         type: 'directory.create-player/success',
         payload: {
           _id: data._id,
-          newPlayer: state.player
+          newPlayer: newPlayer
         }
       }) // move new player to player directory, clear the player form
     }).catch((error) => {
@@ -41,8 +43,10 @@ export function updateCreatePlayerForm (event, data) {
   return function (dispatch, getState) {
     const state = getState()
     let field, value
-    if (!data && event.target.files) {
-      return dispatch(handleImageSelect(event.target.files, 'player')) // no need to validate
+    if (!data && event.target) {
+      if (event.target.files) {
+        return dispatch(handleImageSelect(event.target.files, 'player')) // no need to validate
+      }
     } else if (!data) {
       value = event
       field = 'jersey'
@@ -63,4 +67,10 @@ export function updateCreatePlayerForm (event, data) {
     // 2. Is the form valid?
     return dispatch({ type: 'create-form.player/validate', payload: { player: state.player } })
   }
+}
+
+function preparePlayerForm (player) {
+  player.image = player.image.name
+  player.imageData = undefined
+  return player
 }
