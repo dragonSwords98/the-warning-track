@@ -10,16 +10,16 @@ export const BENCH_STATUS = {
   label: 'Bench',
   color: 'grey'
 }
-export const IN_THE_HOLE_STATUS = {
-  name: 'IN_THE_HOLE',
-  label: 'Hole',
-  color: 'yellow'
-}
-export const ON_DECK_STATUS = {
-  name: 'ON_DECK',
-  label: 'Deck',
-  color: 'orange'
-}
+// export const IN_THE_HOLE_STATUS = {
+//   name: 'IN_THE_HOLE',
+//   label: 'Hole',
+//   color: 'yellow'
+// }
+// export const ON_DECK_STATUS = {
+//   name: 'ON_DECK',
+//   label: 'Deck',
+//   color: 'orange'
+// }
 export const AT_BAT_STATUS = {
   name: 'AT_BAT',
   label: 'Bat',
@@ -27,17 +27,17 @@ export const AT_BAT_STATUS = {
 }
 export const FIRST_STATUS = {
   name: 'FIRST',
-  label: 'First',
+  label: '1st',
   color: 'olive'
 }
 export const SECOND_STATUS = {
   name: 'SECOND',
-  label: 'Second',
+  label: '2nd',
   color: 'green'
 }
 export const THIRD_STATUS = {
   name: 'THIRD',
-  label: 'Third',
+  label: '3rd',
   color: 'teal'
 }
 export const HOME_STATUS = {
@@ -47,15 +47,15 @@ export const HOME_STATUS = {
 }
 
 export const STATUS_ORDERING = [
-  BENCH_STATUS,
-  IN_THE_HOLE_STATUS,
-  ON_DECK_STATUS,
-  AT_BAT_STATUS,
-  FIRST_STATUS,
-  SECOND_STATUS,
-  THIRD_STATUS,
+  // IN_THE_HOLE_STATUS,
+  // ON_DECK_STATUS,
+  OUT_STATUS,
   HOME_STATUS,
-  OUT_STATUS
+  THIRD_STATUS,
+  SECOND_STATUS,
+  FIRST_STATUS,
+  AT_BAT_STATUS,
+  BENCH_STATUS
 ]
 
 /* HITTING TYPES */
@@ -315,6 +315,51 @@ export const DEPTH_ORDERING = [
   HOMERUN_DEPTH,
   OVERPOWERED_DEPTH
 ]
+
+/* Circular Select Layers for Offense Table */
+export const CIRCULAR_SELECT_LAYERS = [
+  {
+    layer: 1,
+    name: 'status',
+    dist: 80,
+    deg: 240,
+    adjust: 2.2,
+    fraction: 11/20,
+    border: "solid #263238 3px",
+    ordering: STATUS_ORDERING
+  },
+  {
+    layer: 2,
+    name: 'hit',
+    dist: 60,
+    deg: 270,
+    adjust: 2.4,
+    fraction: 2/5,
+    border: "solid #eceff1 3px",
+    ordering: HIT_ORDERING
+  }
+]
+
+/* Form Defaults */
+export const ALL_HANDS = [
+  { key: 'Right', value: 'Right', text: 'Right' },
+  { key: 'Left', value: 'Left', text: 'Left' },
+  { key: 'Switch', value: 'Switch', text: 'Switch' }
+]
+export const ALL_POSITIONS = [
+  { key: 'P', value: 'P', text: 'P' },
+  { key: 'C', value: 'C', text: 'C' },
+  { key: '1B', value: '1B', text: '1B' },
+  { key: '2B', value: '2B', text: '2B' },
+  { key: 'SS', value: 'SS', text: 'SS' },
+  { key: '3B', value: '3B', text: '3B' },
+  { key: 'LF', value: 'LF', text: 'LF' },
+  { key: 'LR', value: 'LR', text: 'LR' },
+  { key: 'CF', value: 'CF', text: 'CF' },
+  { key: 'RR', value: 'RR', text: 'RR' },
+  { key: 'RF', value: 'RF', text: 'RF' }
+]
+
 
 /* MISC. */
 

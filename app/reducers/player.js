@@ -1,8 +1,9 @@
 'use strict'
 
 const INITIAL_STATE = {
-  name: '',
-  image: 'anonymous-chan.jpg',
+  name: '', // must be unique (or images will overwrite one another)
+  image: null,
+  imageData: null,
   gender: 0,
   birthyear: 1990,
   jersey: 50,
@@ -25,6 +26,16 @@ export default function playerReducers (state = INITIAL_STATE, action) {
     state = Object.assign({}, state, action.payload)
   }
 
+  if (action.type === 'create-form.player/image-selected') {
+    state = Object.assign({}, state)
+    state.image = action.payload.file
+  }
+
+  if (action.type === 'image.upload/read') {
+    state = Object.assign({}, state)
+    state.imageData = action.payload.result
+  }
+
   if (action.type === 'directory.create-player/update') {
     state = Object.assign({}, state)
     if (!action.payload.value) {
@@ -37,7 +48,7 @@ export default function playerReducers (state = INITIAL_STATE, action) {
         if (fullName[1]) {
           lowerLast = fullName[1][0].toLowerCase() + fullName[1].slice(1)
         }
-        state.image = `${lowerFirst}-${lowerLast}.jpg`
+        state.image = lowerLast.length > 0 ? `${lowerFirst}-${lowerLast}.jpg` : `${lowerFirst}.jpg`
       }
       state[action.payload.field] = action.payload.value
     }

@@ -135,3 +135,21 @@ export const validateBattingOrder = function (battingOrder, coedRule) {
 }
 
 // TODO: nonDupInInningFirstFindFirstApply, nonDupInInningLimitAcrossPositionFirstFindFirstApply, nonDupInInningLimitAcrossPositionFirstFindFirstApply
+
+export const processImageToThumbnail = function (f) {
+  return function (dispatch, getState) {
+    // assume file is image and one file
+    const reader = new FileReader();
+
+    // Closure to capture the file information.
+    reader.onload = (function(file) {
+      return function(e) {
+        // Render thumbnail
+        return dispatch({ type: 'image.upload/read', payload: { result: e.target.result } })
+      };
+    })(f);
+
+    // Read in the image file as a data URL.
+    reader.readAsDataURL(f);
+  }
+}

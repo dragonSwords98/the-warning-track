@@ -12,6 +12,7 @@ import CardGrid from '@track/components/CardGrid'
 import Segue from '@track/components/Segue'
 import { updateCreateTeamForm, submitCreateTeamForm } from '@track/actions/form/team'
 import { updateCreatePlayerForm, submitCreatePlayerForm } from '@track/actions/form/player'
+import { uploadImage } from '@track/actions/form/image'
 import { updateCreateForm, validateCreateForm } from '@track/actions/directory'
 import { objectToOption, mapLeaguesIntoTeams, mapTeamsIntoPlayers } from '@track/utils'
 
@@ -133,8 +134,8 @@ export default withRouter(connect(
       },
       validateAndSubmitCreateFormQuery (event, data) {
         event.preventDefault()
-        if (event.target.id === 'createTeamForm') dispatch(submitCreateTeamForm())
-        if (event.target.id === 'createPlayerForm') dispatch(submitCreatePlayerForm())
+        if (event.target.id === 'createTeamForm') dispatch(submitCreateTeamForm()); dispatch(uploadImage('team'))
+        if (event.target.id === 'createPlayerForm') dispatch(submitCreatePlayerForm()); dispatch(uploadImage('player'))
       },
       goToCreateGame () {
         dispatch(pushLocation('/games/create'))

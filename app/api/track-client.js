@@ -349,5 +349,14 @@ class TrackClient {
       return Promise.reject(error)
     })
   }
+
+  /** Request Promise, uses bluebird, but not axios **/
+  uploadImage (query) {
+    return this.post('/images', query).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
 }
 export default TrackClient

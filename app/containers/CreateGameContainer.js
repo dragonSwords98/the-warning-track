@@ -173,6 +173,7 @@ class CreateGameContainer extends Component {
           teamsOptions={createGame.teams}
           labelHomeOrAway={game.homeOrAway}
           diamondOptions={createGame.diamonds}
+          rosterOptions={createGame.roster}
           dateRange={dateRange}
           handleFormChange={updateCreateFormQuery} />)
     }

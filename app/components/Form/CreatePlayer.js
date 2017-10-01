@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import { Segment, Message, Button, Checkbox, Form, Icon, Input, Dropdown } from 'semantic-ui-react'
+import { Segment, Message, Button, Checkbox, Form, Icon, Input, Dropdown, Image } from 'semantic-ui-react'
+import { ALL_POSITIONS, ALL_HANDS } from '@track/utils/constants'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import 'rc-tooltip/assets/bootstrap.css'
@@ -13,8 +14,14 @@ const SliderTooltip = createSliderWithTooltip(Slider)
 class CreatePlayer extends Component {
   // https://stackoverflow.com/questions/44062024/submit-form-using-button-in-parent-component-in-react
   render () {
-    const { player, teamOptions, formChangeHandler, formSubmissionHandler, fieldErrors, handsArray, positionsArray, valid, submitted } = this.props
+    const { player, teamOptions, formChangeHandler, formSubmissionHandler, fieldErrors, valid, submitted } = this.props
     const content = Object.keys(fieldErrors).filter(k => !!fieldErrors[k]).map(e => e).join('<br/>') //TODO: in .map(e => e), translate the fieldError to a validation message
+
+    let selectedImage = ''
+    if (player.image && player.imageData) {
+      selectedImage = <Image src={player.imageData} title={player.image.name} size='small' shape='rounded' />
+    }
+
     return (
       <Segment>
         <Message
@@ -42,19 +49,24 @@ class CreatePlayer extends Component {
           </Form.Field>
           <Form.Field>
             <label>Bats</label>
-            <Dropdown placeholder="Hits" data-create-id="hits" fluid selection options={handsArray} value={player.hits} onChange={formChangeHandler} />
+            <Dropdown placeholder="Hits" data-create-id="hits" fluid selection options={ALL_HANDS} value={player.hits} onChange={formChangeHandler} />
           </Form.Field>
           <Form.Field>
             <label>Throws</label>
-            <Dropdown placeholder="Throwing Hand" data-create-id="throws" fluid selection options={handsArray} value={player.throws} onChange={formChangeHandler} />
+            <Dropdown placeholder="Throwing Hand" data-create-id="throws" fluid selection options={ALL_HANDS} value={player.throws} onChange={formChangeHandler} />
           </Form.Field>
           <Form.Field>
             <label>Positions</label>
-            <Dropdown data-create-id="positions" placeholder="Select Positions" fluid multiple search selection options={positionsArray} value={player.positions} onChange={formChangeHandler} />
+            <Dropdown data-create-id="positions" placeholder="Select Positions" fluid multiple search selection options={ALL_POSITIONS} value={player.positions} onChange={formChangeHandler} />
           </Form.Field>
           <Form.Field>
             <label>Teams</label>
             <Dropdown data-create-id="teams" placeholder="Select Teams" fluid multiple search selection options={teamOptions} value={player.teams}  onChange={formChangeHandler} />
+          </Form.Field>
+          <Form.Field>
+            {selectedImage}
+            <label>Portrait [Ideal image dimension: (n x n)]</label>
+            <input data-create-id="image" type="file" accept='image/*' onChange={formChangeHandler} />
           </Form.Field>
           <Form.Field>
             <Button type="submit">Submit</Button>
@@ -75,25 +87,5 @@ CreatePlayer.propTypes = {
   formChangeHandler: PropTypes.func.isRequired,
   formSubmissionHandler: PropTypes.func.isRequired,
   fieldErrors: PropTypes.object.isRequired
-}
-CreatePlayer.defaultProps = {
-  handsArray: [
-    { key: 'Right', value: 'Right', text: 'Right' },
-    { key: 'Left', value: 'Left', text: 'Left' },
-    { key: 'Switch', value: 'Switch', text: 'Switch' }
-  ],
-  positionsArray: [
-    { key: 'P', value: 'P', text: 'P' },
-    { key: 'C', value: 'C', text: 'C' },
-    { key: '1B', value: '1B', text: '1B' },
-    { key: '2B', value: '2B', text: '2B' },
-    { key: 'SS', value: 'SS', text: 'SS' },
-    { key: '3B', value: '3B', text: '3B' },
-    { key: 'LF', value: 'LF', text: 'LF' },
-    { key: 'LR', value: 'LR', text: 'LR' },
-    { key: 'CF', value: 'CF', text: 'CF' },
-    { key: 'RR', value: 'RR', text: 'RR' },
-    { key: 'RF', value: 'RF', text: 'RF' }
-  ]
 }
 export default CreatePlayer

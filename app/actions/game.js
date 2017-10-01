@@ -6,11 +6,15 @@ import { MINIMAL_BATTERS_COUNT, GENERIC_OPPOSING_BATTER } from '@track/utils/con
 const loadGameObject = function (state, game) {
   // TODO: Validate the game object
   game.ourBattingOrder = game.ourBattingOrder.map(batter => {
-    return state.directory.players.find(p => p._id === batter)
+    let match = state.directory.players.find(p => p._id === batter)
+    if (!match) console.warn('Cannot find batter: ' + batter)
+    return match
   })
   game.ourFieldingLineup = game.ourFieldingLineup.map(inning => {
     let map = Object.keys(inning).map(k => {
-      return state.directory.players.find(p => p._id === inning[k])
+      let match = state.directory.players.find(p => p._id === inning[k])
+      if (!match) console.warn('Cannot find fielder: ' + batter)
+      return match
     })
     return map
   })

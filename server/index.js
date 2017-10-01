@@ -10,16 +10,16 @@ const players = require('./api/players'),
     teams   = require('./api/teams'),
     games   = require('./api/games'),
     diamonds   = require('./api/diamonds'),
-    leagues   = require('./api/leagues')
-
+    leagues   = require('./api/leagues'),
+    images = require('./api/images')
 
 let app = express();
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '50mb'}))
 
 app.get('/players', players.findAll);
 app.get('/players/:id', players.findById);
@@ -50,6 +50,9 @@ app.get('/leagues/:id', leagues.findById);
 app.post('/leagues', leagues.addLeague);
 app.put('/leagues/:id', leagues.updateLeague);
 app.delete('/leagues/:id', leagues.deleteLeague);
+
+app.post('/images', images.uploadImage);
+app.delete('/images/delete', images.deleteImage);
 
 let addresses = getIPAddresses()
 app.use(require('morgan')('dev'))

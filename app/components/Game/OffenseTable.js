@@ -3,10 +3,27 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Button, Input, Checkbox, Table, Header } from 'semantic-ui-react'
 
-import BattersBox from '@track/components/Game/BattersBox'
 import CircularSelect from '@track/components/Game/CircularSelect'
+import { STATUS_ORDERING, HIT_ORDERING, CIRCULAR_SELECT_LAYERS } from '@track/utils/constants'
 
-function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, battingOrder, statusGrid, hitGrid, scoresheet, advanceRunner, changeHitType, onScoresheetChange, toggleInningLock, saveGame }) {
+function OffenseTable ({
+    innings,
+    currentInning,
+    mercyRuns,
+    noMercyInningBegin,
+    battingOrder,
+    statusGrid,
+    hitGrid,
+    scoresheet,
+    toggleRadialSelect,
+    onRadialSelect,
+    radialActive,
+    advanceRunner,
+    changeHitType,
+    onScoresheetChange,
+    toggleInningLock,
+    saveGame
+  }) {
   // Header Cells
   let headerCells = [
     <Table.HeaderCell key={'inning-header-cell'} width='two'>
@@ -18,23 +35,44 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
   }
 
   // Batter Cells
-  const generateBatterCells = function (r, statusGrid, hitGrid) {
+  const generateBatterCells = function (r, statusGrid, hitGrid, radialActive) {
 
     let batterCells = []
     for (let i = 1; i <= innings; i++) {
-      let box
-      if (currentInning !== i) {
-        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} advanceRunner={advanceRunner} changeHitType={changeHitType} disabled />
-      } else {
-        box = <BattersBox key={`inning-bat-box-${r}-${i}}`} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} advanceRunner={advanceRunner} changeHitType={changeHitType} />
-      }
 
-      let onSelection
-      let openSelection
       let options = []
-      let circular = <CircularSelect key={`inning-cs-${r}-${i}}`} options={options} row={r} inning={i} status={statusGrid[i - 1][r]} hit={hitGrid[i - 1][r]} onChange={onSelection} />
+      let isOpen = radialActive[0] === i && radialActive[1] === r
 
-      batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">{box}{circular}</Table.Cell>)
+      const layer = CIRCULAR_SELECT_LAYERS
+
+      let location = <CircularSelect
+                        key={`location-inning-cs-${r}-${i}}`}
+                        layer={layer[0]}
+                        options={options}
+                        row={r}
+                        inning={i}
+                        status={statusGrid[i - 1][r]}
+                        isOpen={isOpen}
+                        onToggle={toggleRadialSelect}
+                        onSelect={onRadialSelect}
+                        disabled={currentInning !== i} />
+
+      let hitReport = <CircularSelect
+                        key={`hit-inning-cs-${r}-${i}}`}
+                        layer={layer[1]}
+                        options={options}
+                        row={r}
+                        inning={i}
+                        status={hitGrid[i - 1][r]}
+                        isOpen={isOpen}
+                        onToggle={toggleRadialSelect}
+                        onSelect={onRadialSelect}
+                        disabled={currentInning !== i} />
+
+      batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">
+        {location}
+        {hitReport}
+      </Table.Cell>)
     }
     return batterCells
   }
@@ -44,7 +82,7 @@ function OffenseTable ({ innings, currentInning, mercyRuns, noMercyInningBegin, 
     batterRows.push(
       <Table.Row key={'batter-row-' + r}>
         <Table.Cell width='two'><Header as="h4">{ battingOrder[r].name }</Header></Table.Cell>
-        { generateBatterCells(r, statusGrid, hitGrid) }
+        { generateBatterCells(r, statusGrid, hitGrid, radialActive) }
       </Table.Row>
     )
   }
@@ -127,8 +165,12 @@ OffenseTable.propTypes = {
   noMercyInningBegin: PropTypes.number.isRequired,
   battingOrder: PropTypes.array.isRequired,
   statusGrid: PropTypes.array.isRequired,
+  hitGrid: PropTypes.array.isRequired,
   scoresheet: PropTypes.object.isRequired,
+  toggleRadialSelect: PropTypes.func.isRequired,
+  onRadialSelect: PropTypes.func.isRequired,
   advanceRunner: PropTypes.func.isRequired,
+  changeHitType: PropTypes.func.isRequired,
   onScoresheetChange: PropTypes.func.isRequired,
   toggleInningLock: PropTypes.func.isRequired,
   saveGame: PropTypes.func.isRequired

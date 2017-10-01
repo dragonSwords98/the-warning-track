@@ -15,10 +15,12 @@ const INITIAL_STATE = {
   currentInning: 1, // to emphasis specific off/def lineups
   lockedInnings: [],
   currentFrame: 0, // 0 for top, 1 for bottom
+  ourActiveRoster: [],
   ourBattingOrder: [],
   ourFieldingLineup: [],
   opposingBattingOrder: [],
   statusGrid: [], // ours batting order
+  radialActive: false,
   hitGrid: [], // ours hitting chart
   scoresheet: [], // ours vs theirs
   gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
@@ -48,20 +50,38 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state = Object.assign({}, state, INITIAL_STATE)
   }
 
-  if (action.type === 'game.advance-runner/advance') {
-    state = Object.assign({}, state)
-    const { row, inning } = action.payload.target.dataset
-    let statusIndex = STATUS_ORDERING.findIndex(status => status.name === state.statusGrid[inning - 1][row].name) + 1
-    if (statusIndex > STATUS_ORDERING.length - 1) {
-      statusIndex = 0
-    }
-    state.statusGrid[inning - 1][row] = Object.assign({}, STATUS_ORDERING[statusIndex])
-    // Enable if batter made a hit, otherwise disable
-    let hitCell = state.hitGrid[inning - 1][row]
-    hitCell.disabled = statusIndex < 3
+  /* Radial Selection for Offense Table -> Batter Box */
 
-    state.scoresheet.ours.runs[inning - 1] = updateScoresheet('HOME', state.statusGrid[inning - 1])
-    state.scoresheet.ours.outs[inning - 1] = updateScoresheet('OUT', state.statusGrid[inning - 1])
+  if (action.type === 'game.radial-select/toggle') {
+    state = Object.assign({}, state)
+    if (!state.radialActive) state.radialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+    else if (state.radialActive[0] === action.payload.data["data-inning"] && state.radialActive[0] === action.payload.data["data-row"]) {
+      state.radialActive = false // TODO: doesn't close
+    } else {
+      state.radialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+    }
+  }
+
+  if (action.type === 'game.radial-select/select') {
+    let inning = action.payload.data['data-inning']
+    let row = action.payload.data['data-row']
+    let label = action.payload.data['data-label']
+    let layer = action.payload.data['data-layer']
+
+    state = Object.assign({}, state)
+
+    if (layer === 'status') {
+      let statusIndex = STATUS_ORDERING.findIndex(status => status.name === label)
+      state.statusGrid[inning - 1][row] = Object.assign({}, STATUS_ORDERING[statusIndex])
+
+      state.scoresheet.ours.runs[inning - 1] = updateScoresheet('HOME', state.statusGrid[inning - 1])
+      state.scoresheet.ours.outs[inning - 1] = updateScoresheet('OUT', state.statusGrid[inning - 1])
+    }
+    if (layer === 'hit') {
+      let hitIndex = HIT_ORDERING.findIndex(hit => hit.name === label)
+      state.hitGrid[inning - 1][row] = Object.assign({}, HIT_ORDERING[hitIndex])
+    }
+    state.radialActive = false
   }
 
   if (action.type === 'game.hit/change-type') {
