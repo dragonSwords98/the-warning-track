@@ -1,5 +1,6 @@
 'use strict'
 import Promise from 'bluebird'
+import rp from 'request-promise'
 
 /*
 let the app configure this plz.
@@ -344,6 +345,15 @@ class TrackClient {
 
   deleteDiamondById (diamondId) {
     return this.delete('/diamonds/' + diamondId).then((data) => {
+      return Promise.resolve(data)
+    }).catch((error) => {
+      return Promise.reject(error)
+    })
+  }
+
+  /** Request Promise, uses bluebird, but not axios **/
+  uploadImage (options) {
+    return rp(options).then((data) => {
       return Promise.resolve(data)
     }).catch((error) => {
       return Promise.reject(error)

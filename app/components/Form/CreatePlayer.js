@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import { Segment, Message, Button, Checkbox, Form, Icon, Input, Dropdown } from 'semantic-ui-react'
+import { Segment, Message, Button, Checkbox, Form, Icon, Input, Dropdown, Image } from 'semantic-ui-react'
 import { ALL_POSITIONS, ALL_HANDS } from '@track/utils/constants'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
@@ -16,6 +16,12 @@ class CreatePlayer extends Component {
   render () {
     const { player, teamOptions, formChangeHandler, formSubmissionHandler, fieldErrors, valid, submitted } = this.props
     const content = Object.keys(fieldErrors).filter(k => !!fieldErrors[k]).map(e => e).join('<br/>') //TODO: in .map(e => e), translate the fieldError to a validation message
+
+    let selectedImage = ''
+    if (player.image && player.imageData) {
+      selectedImage = <Image src={player.imageData} title={player.image.name} size='small' shape='rounded' />
+    }
+
     return (
       <Segment>
         <Message
@@ -58,6 +64,7 @@ class CreatePlayer extends Component {
             <Dropdown data-create-id="teams" placeholder="Select Teams" fluid multiple search selection options={teamOptions} value={player.teams}  onChange={formChangeHandler} />
           </Form.Field>
           <Form.Field>
+            {selectedImage}
             <label>Portrait [Ideal image dimension: (n x n)]</label>
             <input data-create-id="image" type="file" accept='image/*' onChange={formChangeHandler} />
           </Form.Field>

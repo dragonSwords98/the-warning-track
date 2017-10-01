@@ -7,7 +7,6 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CaseSensitivePathsWebpackPlugin = require('case-sensitive-paths-webpack-plugin')
-// const config = module.exports = {}
 
 const relativeBuildPath = (process.env.BUILD_PATH || 'dist')
 const buildPath = path.resolve(__dirname, relativeBuildPath)
@@ -21,6 +20,12 @@ const BABEL_CONFIG = {
 }
 
 module.exports = {
+ node: {
+  console: true,
+  fs: 'empty',
+  net: 'empty',
+  tls: 'empty'
+ },
  context: path.resolve(__dirname, 'app'),
  // context: __dirname,
  entry: {

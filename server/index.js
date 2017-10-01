@@ -10,8 +10,8 @@ const players = require('./api/players'),
     teams   = require('./api/teams'),
     games   = require('./api/games'),
     diamonds   = require('./api/diamonds'),
-    leagues   = require('./api/leagues')
-
+    leagues   = require('./api/leagues'),
+    images = require('./api/images')
 
 let app = express();
 
@@ -50,6 +50,9 @@ app.get('/leagues/:id', leagues.findById);
 app.post('/leagues', leagues.addLeague);
 app.put('/leagues/:id', leagues.updateLeague);
 app.delete('/leagues/:id', leagues.deleteLeague);
+
+app.post('/images', images.uploadImage);
+app.delete('/images/delete', images.deleteImage);
 
 let addresses = getIPAddresses()
 app.use(require('morgan')('dev'))

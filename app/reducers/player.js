@@ -2,7 +2,8 @@
 
 const INITIAL_STATE = {
   name: '',
-  image: 'anonymous-chan.jpg',
+  image: null,
+  imageData: null,
   gender: 0,
   birthyear: 1990,
   jersey: 50,
@@ -23,6 +24,16 @@ export default function playerReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'fetch-player/received') {
     state = Object.assign({}, state, action.payload)
+  }
+
+  if (action.type === 'create-form.player/image-selected') {
+    state = Object.assign({}, state)
+    state.image = action.payload.file
+  }
+
+  if (action.type === 'image.upload/read') {
+    state = Object.assign({}, state)
+    state.imageData = action.payload.result
   }
 
   if (action.type === 'directory.create-player/update') {

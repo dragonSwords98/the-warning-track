@@ -1,5 +1,6 @@
 'use strict'
 import { client } from '../client'
+import { handleImageSelect } from './image'
 
 export function submitCreatePlayerForm () {
   return function (dispatch, getState) {
@@ -38,11 +39,10 @@ export function submitCreatePlayerForm () {
 
 export function updateCreatePlayerForm (event, data) {
   return function (dispatch, getState) {
-    console.log('updateCreatePlayerForm', event, data)
+    const state = getState()
     let field, value
     if (!data && event.target.files) {
-      field = event.target.attributes['data-create-id'].value
-      value = handleImageSelect(event)
+      return dispatch(handleImageSelect(event.target.files, 'player')) // no need to validate
     } else if (!data) {
       value = event
       field = 'jersey'
@@ -59,24 +59,8 @@ export function updateCreatePlayerForm (event, data) {
 
     // 1. Update the form
     dispatch({ type: 'directory.create-player/update', payload: { field: field, value: value } })
-    const state = getState()
 
     // 2. Is the form valid?
     return dispatch({ type: 'create-form.player/validate', payload: { player: state.player } })
-  }
-}
-
-const handleImageSelect = function (event) {
-  var files = event.target.files;
-
-  for (var i = 0, f; f = files[i]; i++) {
-    // Only process image files.
-    // Block large files (in btyes)
-    if (f.size > 100000 || !f.type.match('image.*')) {
-      return null
-    }
-
-    // TODO: need to make into a uploadable data blob? NEED VALIDATION for null/bad image case
-    return f
   }
 }
