@@ -229,6 +229,10 @@ const accumulatePlayerSeasonStatsAfterGame = function (game, player, PlayerSeaso
   PlayerSeasonStats.offense.3B += game.hitGrid.reduce((acc, inning) => inning[batIndex].name === 'TRIPLE_HIT' ? acc++ : acc, 0)
   PlayerSeasonStats.offense.HR += game.hitGrid.reduce((acc, inning) => inning[batIndex].name === 'HOME_RUN_HIT' ? acc++ : acc, 0)
 
+  // TODO: counting this will determine performance based hitting vs popups that were not punished    
+    // LD: 0, // line drives
+    // GD: 0, // grounders
+
   // RBI: 0,
   // BB: 0,
 
