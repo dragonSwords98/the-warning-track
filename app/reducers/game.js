@@ -4,6 +4,8 @@ import moment from 'moment'
 import { STATUS_ORDERING, HIT_ORDERING, GENERIC_OPPOSING_BATTER, GENERIC_ATBAT } from '@track/utils/constants'
 import { populatePositions, populateScoresheet, populateGrid, updateScoresheet } from '@track/utils'
 
+// The roster and batting order is virtually immutable after set as it will mess up the stats
+// TODO: Must accommodate for substitutions
 const INITIAL_STATE = {
   league: null,
   _id: null,

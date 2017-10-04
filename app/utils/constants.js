@@ -60,6 +60,14 @@ export const STATUS_ORDERING = [
 
 /* HITTING TYPES */
 
+export const WALK = {
+  name: 'WALK',
+  label: 'Walk',
+  _id: 'Walk',
+  color: 'white',
+  disabled: true
+}
+
 export const SINGLE_HIT = {
   name: 'SINGLE',
   label: 'Single',
@@ -133,6 +141,7 @@ export const STRIKE_OUT = {
 }
 
 export const HIT_ORDERING = [
+  WALK,
   SINGLE_HIT,
   DOUBLE_HIT,
   TRIPLE_HIT,
