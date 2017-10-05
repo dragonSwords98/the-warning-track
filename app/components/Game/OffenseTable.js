@@ -22,13 +22,17 @@ function OffenseTable ({
     changeHitType,
     onScoresheetChange,
     toggleInningLock,
-    saveGame
+    saveGame,
+    restartGame,
+    submitGame
   }) {
   // Header Cells
   let headerCells = [
     <Table.HeaderCell key={'inning-header-cell'} width='two'>
       { 'Batting ' }
-      <Button circular icon='save' onClick={saveGame} />
+      <Button circular icon='save' color='green' onClick={saveGame} />
+      <Button circular icon='erase' color='yellow' onClick={restartGame} />
+      <Button circular icon='send' color='red' onClick={submitGame} />
     </Table.HeaderCell>]
   for (let i = 1; i <= innings; i++) {
     headerCells.push(<Table.HeaderCell key={'inning-header-cell-' + i}>{i}</Table.HeaderCell>)
@@ -173,6 +177,8 @@ OffenseTable.propTypes = {
   changeHitType: PropTypes.func.isRequired,
   onScoresheetChange: PropTypes.func.isRequired,
   toggleInningLock: PropTypes.func.isRequired,
-  saveGame: PropTypes.func.isRequired
+  saveGame: PropTypes.func.isRequired,
+  restartGame: PropTypes.func.isRequired,
+  submitGame: PropTypes.func.isRequired
 }
 export default OffenseTable

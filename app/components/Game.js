@@ -5,10 +5,31 @@ import { Divider } from 'semantic-ui-react'
 import OffenseTable from '@track/components/Game/OffenseTable'
 import FieldingLineup from '@track/components/Game/FieldingLineup'
 
-function Game ({ id, innings, currentInning, mercyRuns, noMercyInningBegin, positions, fielding, battingOrder, statusGrid, hitGrid, scoresheet, advanceRunner, onRadialSelect, toggleRadialSelect, radialActive, changeHitType, onScoresheetChange, toggleInningLock, saveGame }) {
+function Game ({
+  id,
+  innings,
+  currentInning,
+  mercyRuns,
+  noMercyInningBegin,
+  positions,
+  fielding,
+  battingOrder,
+  statusGrid,
+  hitGrid,
+  scoresheet,
+  advanceRunner,
+  onRadialSelect,
+  toggleRadialSelect,
+  radialActive,
+  changeHitType,
+  onScoresheetChange,
+  toggleInningLock,
+  saveGame,
+  restartGame,
+  submitGame
+}) {
   return (
     <div>
-      <Divider horizontal />
       <OffenseTable
         innings={innings}
         currentInning={currentInning}
@@ -25,12 +46,12 @@ function Game ({ id, innings, currentInning, mercyRuns, noMercyInningBegin, posi
         changeHitType={changeHitType}
         onScoresheetChange={onScoresheetChange}
         toggleInningLock={toggleInningLock}
-        saveGame={saveGame} />
-      <Divider horizontal />
-     
+        saveGame={saveGame}
+        restartGame={restartGame}
+        submitGame={submitGame} />
+      <FieldingLineup positions={positions} fielding={fielding} currentInning={currentInning} />
     </div>
   )
-  // <FieldingLineup positions={positions} fielding={fielding} currentInning={currentInning} />
 }
 Game.propTypes = {
   id: PropTypes.string.isRequired,
@@ -46,6 +67,8 @@ Game.propTypes = {
   scoresheet: PropTypes.object.isRequired,
   onScoresheetChange: PropTypes.func.isRequired,
   advanceRunner: PropTypes.func.isRequired,
-  saveGame: PropTypes.func.isRequired
+  saveGame: PropTypes.func.isRequired,
+  restartGame: PropTypes.func.isRequired,
+  submitGame: PropTypes.func.isRequired
 }
 export default Game

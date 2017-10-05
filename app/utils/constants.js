@@ -64,7 +64,7 @@ export const WALK = {
   name: 'WALK',
   label: 'Walk',
   _id: 'Walk',
-  color: 'white',
+  color: 'black',
   disabled: true
 }
 

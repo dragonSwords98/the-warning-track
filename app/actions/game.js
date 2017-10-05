@@ -79,3 +79,41 @@ export function saveGame () {
     })
   }
 }
+
+export function confirmGameModal () {
+  return function (dispatch, getState) {
+    const state = getState()
+    if (!state.game.prompt) {
+      return
+    }
+    if (state.game.prompt.type === 'restart') {
+      dispatch({ type: 'game/prompt-confirmed' })
+      return dispatch(restartGame())
+    }
+    if (state.game.prompt.type === 'submit') {
+      dispatch({ type: 'game/prompt-confirmed' })
+      return dispatch(submitGame())
+    }
+  }
+}
+
+const restartGame = function () {
+  return function (dispatch, getState) {
+    dispatch({ type: 'game/restart' })
+    // CR: Do not save this game instance, so users can still refresh. only when they hit save-triggering actions in UI will it save permanently
+  }
+}
+
+const submitGame = function () {
+  return function (dispatch, getState) {
+    const state = getState()
+    let game = saveGameObject(state, Object.assign({}, state.game))
+    let promise = client.submitGame(game)
+    return promise.then((data) => {
+      dispatch({ type: 'game.submit/success' })
+      return dispatch(pushLocation('/games'))
+    }).catch((error) => {
+      return dispatch({ type: 'game.submit/error', payload: error })
+    })
+  }
+}

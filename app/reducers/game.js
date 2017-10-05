@@ -25,7 +25,8 @@ const INITIAL_STATE = {
   radialActive: false,
   hitGrid: [], // ours hitting chart
   scoresheet: [], // ours vs theirs
-  gameStatus: 0 // =pre-game, 1 = in-game, 2 = post-game
+  prompt: null,
+  status: 0 // =pre-game/in-game, 1 = post-game
 }
 
 // Future features: Pinch runner, designated pinch runner, scouting reports on hits
@@ -273,9 +274,44 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state.opposingBattingOrder[action.payload.index] = Object.assign({}, state.opposingBattingOrder[action.payload.index], action.payload.batter)
   }
 
-  if (action.type === 'game/complete') {
+  if (action.type === 'game/prompt-restart') {
+    state = Object.assign({}, state)
+    state.prompt = {
+      type: 'restart',
+      message: 'Are you sure you wish to restart the game? This will irreversibly clear the entire game sheet.'
+    }
+  }
+
+  if (action.type === 'game/prompt-submit') {
+    state = Object.assign({}, state)
+    state.prompt = {
+      type: 'submit',
+      message: 'Are you sure you wish to end and submit the game? This will end the game, stats will be recorded. ' + 
+               'This is irreversible. The game will no longer be available for updates and changes.'
+    }
+  }
+
+  if (action.type === 'game/prompt-cancelled') {
+    state = Object.assign({}, state)
+    state.prompt = null
+  }
+
+  if (action.type === 'game/prompt-confirmed') {
+    state = Object.assign({}, state)
+    state.prompt = null
+  }
+
+  if (action.type === 'game.submit/success') {
     state = Object.assign({}, state)
     state.status = 1
+  }
+
+  if (action.type === 'game.submit/error') {
+    state = Object.assign({}, state)
+    state.prompt = {
+      type: 'error',
+      message: action.payload
+    }
   }
 
   return state
