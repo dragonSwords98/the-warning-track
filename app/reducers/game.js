@@ -273,6 +273,10 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state.opposingBattingOrder[action.payload.index] = Object.assign({}, state.opposingBattingOrder[action.payload.index], action.payload.batter)
   }
 
+  if (action.type === 'game/complete') {
+    state = Object.assign({}, state)
+    state.status = 1
+  }
 
   return state
 }

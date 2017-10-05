@@ -55,7 +55,7 @@ export function loadGame (gameId) {
 
 const saveGameObject = function (state, game) {
   // ** Do not manipulate state **
-  // Only scoresheet, statusGrid, and gameStatus would change
+  // Only scoresheet, statusGrid, and status would change
   return {
     currentInning: game.currentInning,
     currentFrame: game.currentFrame,
@@ -63,7 +63,7 @@ const saveGameObject = function (state, game) {
     statusGrid: game.statusGrid,
     hitGrid: game.hitGrid,
     opposingBattingOrder: game.opposingBattingOrder,
-    gameStatus: game.gameStatus
+    status: game.status
   }
 }
 
