@@ -7,6 +7,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CaseSensitivePathsWebpackPlugin = require('case-sensitive-paths-webpack-plugin')
+const BabiliPlugin = require('babili-webpack-plugin')
 
 const relativeBuildPath = (process.env.BUILD_PATH || 'dist')
 const buildPath = path.resolve(__dirname, relativeBuildPath)
@@ -31,7 +32,27 @@ module.exports = {
  entry: {
   track: "./",
   // track: "./app",
-  vendor: ['react', 'react-dom']
+  vendor: [
+    // 'd3',
+    // 'font-awesome',
+    'history',
+    // 'numeral',
+    // 'prop-types',
+    // 'rc-slider',
+    // 'rc-tooltip',
+    'react',
+    'react-dom',
+    'react-redux',
+    'react-router-dom',
+    'react-router-redux',
+    'react-sortable-hoc',
+    'redux',
+    'redux-logger',
+    'redux-thunk',
+    // 'semantic-ui-css',
+    // 'semantic-ui-react',
+    // 'sortablejs'
+  ]
  },
  output: {
   path: buildPath,
@@ -45,15 +66,6 @@ module.exports = {
    }
  },
  module: {
-  // rules: [
-  //   {
-  //     test: /\.css$/,
-  //     use: [
-  //       'style-loader',
-  //       { loader: 'css-loader', options: { minimize: true } }
-  //     ]  
-  //   }
-  // ],
    loaders: [
       {
         test: /\.scss/,
@@ -61,14 +73,13 @@ module.exports = {
          path.resolve(__dirname, 'app')
         ],
         loader: ExtractTextPlugin.extract({
-          use: [
-            'css-loader',
-            'sass-loader'
-          ]
+          fallback: 'style-loader',
+          //resolve-url-loader may be chained before sass-loader if necessary
+          use: ['css-loader', 'sass-loader']
         })
       }, {
         test: /\.css$/,
-        loader: ['style-loader', 'css-loader']
+        loader: ['style-loader', { loader: 'css-loader', options: { minimize: true }}]
       }, {
          test: /\.js$/,
          include: [
@@ -94,7 +105,7 @@ module.exports = {
    ]
  },
  plugins: [
-    // new webpack.optimize.UglifyJsPlugin(),
+    new BabiliPlugin(),
     new webpack.ProvidePlugin({
         $: "jquery",
         jQuery: "jquery"
@@ -105,20 +116,25 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public/index.html')
     }),
-    // new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
-      chunks: [
-        'track',
-        'track-app',
-        'track-store'
-      ],
-      minChunks: 2,
-    }),
-    // new webpack.ContextReplacementPlugin(
-    //   /moment[\/\\]locale/,
-    //   /(en-gb|en-us)\.js/
-    // ),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   chunks: ['vendor'],
+    //   minChunks: 2
+    // }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'common',
+    //   chunks: [
+    //     // 'track',
+    //     // 'track-app',
+    //     // 'track-store'
+    //     'vendor'
+    //   ],
+    //   minChunks: 2,
+    // }),
+    new webpack.ContextReplacementPlugin(
+      /moment[\/\\]locale/,
+      /(en-gb|en-us)\.js/
+    ),
     new ExtractTextPlugin('styles.css')
  ]
 }
