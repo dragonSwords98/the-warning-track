@@ -105,7 +105,7 @@ module.exports = {
    ]
  },
  plugins: [
-    new BabiliPlugin(),
+    // new BabiliPlugin(),
     new webpack.ProvidePlugin({
         $: "jquery",
         jQuery: "jquery"

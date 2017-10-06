@@ -5,7 +5,10 @@ const INITIAL_STATE = {
   teams: [],
   diamonds: [],
   roster: [],
+  active: [],
+  reserve: [],
   batters: [],
+  reserveBatters: [],
   promptClear: false,
   invalidFields: {},
   valid: false,
@@ -22,6 +25,30 @@ export default function createGameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'create-game.form/populate-options') {
     state = Object.assign({}, state)
     state[action.payload.type] = action.payload.options
+    if (action.payload.type === 'roster') {
+      state.active = action.payload.options
+    }
+  }
+  if (action.type === 'create-game.form/evaluate-active-roster') {
+    // roster, active, reserve
+    state = Object.assign({}, state)
+    state.active = state.roster.filter(r => action.payload.selectedPlayers.includes(r.value)) // continues latest active roster
+    state.reserve = state.roster.filter(r => !state.active.includes(r))
+
+    // batters
+    let allBatters = state.batters.concat(state.reserveBatters)
+    state.batters = []
+    state.reserveBatters = []
+
+    allBatters.forEach(b => {
+      if (state.active.map(a => a.value).includes(b[3])) {
+        state.batters.push(b)
+      } else {
+        state.reserveBatters.push(b)
+      }
+    })
+    // CR: better to sort by league's Coed Rule, if applicable
+    state.batters.sort((a, b) => a[1] > b[1] ? -1 : 1)
   }
   if (action.type === 'create-game.fielder-all/open-clear-prompt') {
     state = Object.assign({}, state)

@@ -7,6 +7,17 @@ import { objectToOption, populateScoresheet, populateGrid, countFielders, firstU
 import { BENCH_STATUS, SINGLE_HIT, MINIMAL_BATTERS_COUNT, GENERIC_ATBAT } from '@track/utils/constants'
 
 /**
+ * Called when new diamonds are available
+ */
+export function updateAvailableDiamonds () {
+  return function (dispatch, getState) {
+    const state = getState()
+    let availableDiamonds = Object.assign([], state.directory.diamonds)
+    dispatch({ type: 'create-game.form/populate-options', payload: { type: 'diamonds', options: objectToOption(availableDiamonds) } })
+  }
+}
+
+/**
  * Called when new leagues are available
  */
 export function updateAvailableLeagues (availableLeagues = [], chain = false) {
@@ -60,7 +71,7 @@ export function updateAvailableRoster (availablePlayers = [], availableTeams = [
  */
 function updateAvailableBatters (availablePlayers) {
   return function (dispatch, getState) {
-    let battingList = availablePlayers.map(r => [r.name, r.gender, r.jersey])
+    let battingList = availablePlayers.map(r => [r.name, r.gender, r.jersey, r._id])
     dispatch({ type: 'create-game.form/populate-options', payload: { type: 'batters', options: battingList } })
   }
 }
@@ -85,7 +96,7 @@ export function autoFillFieldingLineup () {
   return function (dispatch, getState) {
     const state = getState()
     let fieldingLineup = Object.assign([], state.game.ourFieldingLineup)
-    const roster = state.createGame.roster
+    const roster = state.createGame.active
 
     // 1. Get roster positions
     // CR: Should never map backwards... from option back to object is taboo...
@@ -106,16 +117,18 @@ export function autoFillFieldingLineup () {
 
 export function clearFielderRow (data) {
   return function (dispatch, getState) {
+    const state = getState()
     dispatch({ type: 'create-game.fielder-row/clear', payload: { position: data.data } })
-    dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(state.game.roster, state.game.ourFieldingLineup) }})
+    dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(state.createGame.active, state.game.ourFieldingLineup) }})
     dispatch(validateGameForm())
   }
 }
 
 export function clearFielderInning (data) {
   return function (dispatch, getState) {
+    const state = getState()
     dispatch({ type: 'create-game.fielder-inning/clear', payload: { inning: data.data } })
-    dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(state.game.roster, state.game.ourFieldingLineup) }})
+    dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(state.createGame.active, state.game.ourFieldingLineup) }})
     dispatch(validateGameForm())
   }
 }
@@ -163,7 +176,11 @@ export function updateGameForm (event, data) {
       dispatch({ type: 'create-game.select-diamond/set', payload: { diamond: state.directory.diamonds.find(d => d._id === data.value) } })
     } else if (data['data-create-id'] === 'homeOrAway') {
       dispatch({ type: 'create-game.home-or-away/set', payload: { isHome: data.checked } })
+    } else if (data['data-create-id'] === 'ourActiveRoster') {
+      // 1. Update Active/Reserve Rosters, 2. Update Active/Reserve Batters, 3. Cleanup ourFieldingLineup
+      dispatch({ type: 'create-game.form/evaluate-active-roster', payload: { selectedPlayers: data.value } })
     } else {
+      console.warn('please investigate what this case covers')
       dispatch({ type: 'create-game.form/update', payload: { type: 'games', field: data['data-create-id'], value: data.value } })
     }
 

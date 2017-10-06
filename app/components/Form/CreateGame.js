@@ -4,7 +4,7 @@ import { Header, Select, Input, Dropdown, Checkbox, Form } from 'semantic-ui-rea
 
 //TODO: roster must be cleared when league/team is modified
 
-const CreateGame = ({ game, invalidFields, submitCreateGameForm, leagueOptions, teamsOptions, rosterOptions, labelHomeOrAway, diamondOptions, dateRange, handleFormChange }) => (
+const CreateGame = ({ game, activeRoster, invalidFields, submitCreateGameForm, leagueOptions, teamsOptions, rosterOptions, labelHomeOrAway, diamondOptions, dateRange, handleFormChange }) => (
   <Form id="createGameForm" onSubmit={submitCreateGameForm}>
     <Header as="h2">Create a Ball Game</Header>
     <Form.Field>
@@ -19,7 +19,7 @@ const CreateGame = ({ game, invalidFields, submitCreateGameForm, leagueOptions, 
     </Form.Field>
     <Form.Field>
       <label>Attending Roster</label>
-      <Dropdown placeholder="Select Attending Players" data-create-id="ourActiveRoster" value={game.ourActiveRoster} fluid multiple search selection options={rosterOptions} onChange={handleFormChange} error={invalidFields.roster} />
+      <Dropdown placeholder="Select Attending Players" data-create-id="ourActiveRoster" value={activeRoster} fluid multiple search selection options={rosterOptions} onChange={handleFormChange} error={invalidFields.roster} />
     </Form.Field>
     <Form.Field>
       <label>Opposing Team</label>

@@ -17,7 +17,6 @@ const INITIAL_STATE = {
   currentInning: 1, // to emphasis specific off/def lineups
   lockedInnings: [],
   currentFrame: 0, // 0 for top, 1 for bottom
-  ourActiveRoster: [],
   ourBattingOrder: [],
   ourFieldingLineup: [],
   opposingBattingOrder: [],
@@ -171,6 +170,20 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       }
       return i
     })
+  }
+
+  if (action.type === 'create-game.form/evaluate-active-roster') {
+    state = Object.assign({}, state)
+    state.ourFieldingLineup.forEach(inning => {
+      console.log(inning)
+      Object.keys(inning).forEach(pos => {
+        if (inning[pos] && !action.payload.selectedPlayers.includes(inning[pos])) {
+          console.warn('found missing ' + inning[pos])
+          inning[pos] = ''
+        }
+      })
+    })
+    console.warn('evaluate-active-roster', state.ourFieldingLineup)
   }
 
   if (action.type === 'create-game.lock-inning/toggle') {

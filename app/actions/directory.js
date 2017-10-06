@@ -6,7 +6,8 @@ import {
   updateAvailableLeagues,
   updateAvailableTeams,
   updateAvailableRoster,
-  updateAvailableBatters
+  updateAvailableBatters,
+  updateAvailableDiamonds
 } from './form/game'
 
 export function fetchAll () {
@@ -33,6 +34,7 @@ export function fetchAll () {
       return client.getAllDiamonds()
     }).then((data) => {
       dispatch({ type: 'fetch-directory.diamonds/received', payload: { diamonds: data } })
+      dispatch(updateAvailableDiamonds())
       return
     }).then(() => {
       dispatch(updateMenuFilter())

@@ -132,7 +132,7 @@ class CreateGameContainer extends Component {
             innings={game.league.innings}
             lockedInnings={game.lockedInnings}
             position={position}
-            options={createGame.roster}
+            options={createGame.active}
             onChange={handleRosterOptions}
             clearFielderRow={clearFielderRow} />
         )
@@ -163,10 +163,11 @@ class CreateGameContainer extends Component {
     let BattingOrderComponent = (<Segment>Please select a team</Segment>)
     let BattingOrderRule = ''
 
-    if (createGame.leagues && createGame.teams && createGame.diamonds) {
+    if (createGame.leagues && createGame.teams && createGame.diamonds && createGame.roster) {
       CreateGameComponent = (
         <CreateGame
           game={game}
+          activeRoster={createGame.active.map(p => p.value)}
           invalidFields={createGame.invalidFields}
           submitCreateGameForm={submitCreateFormQuery}
           leagueOptions={createGame.leagues}
@@ -185,7 +186,7 @@ class CreateGameContainer extends Component {
     // CR: If you have a createGame.invalidFields.illegalMinimalRoster, why also have a leagueRosterConditional... this is a redundency
     let leagueRosterConditional = true
     if (game.league) {
-      leagueRosterConditional = createGame.roster.length >= game.league.positions.length
+      leagueRosterConditional = createGame.active.length >= game.league.positions.length
       BattingOrderRule = <Label>Coed Rule: {game.league.coedRule}</Label>
     }
 

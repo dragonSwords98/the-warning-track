@@ -64,6 +64,8 @@ export const mapTeamsIntoPlayers = function (players, teams) {
 
 export const countFielders = function (roster, lineup) {
   let playerIds = []
+  console.log('countFielders', roster, lineup)
+  if (!roster.length || !lineup.length) return []
   roster.forEach(r => playerIds.push({
     id: r.key,
     value: 0,
@@ -74,7 +76,7 @@ export const countFielders = function (roster, lineup) {
       let fielder = playerIds.find(p => p.id === id)
       if (fielder) {
         fielder.value++
-      } else {
+      } else if (id) {
         console.warn('Error: Should never happen. A fielder with id: ' + id + ' was never found.')
       }
     })
