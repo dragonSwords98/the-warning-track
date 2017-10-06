@@ -4,7 +4,6 @@ export const objectToOption = function (data, short=false) {
   return data.map(d => {
     if (short) {
       let full = d.name.split(' ')
-      console.log(d.name, full)
       d.name = full[0] + (full.length > 1 ? ' ' + full[1][0] : '')
     }
     return {
