@@ -96,11 +96,11 @@ export function autoFillFieldingLineup () {
   return function (dispatch, getState) {
     const state = getState()
     let fieldingLineup = Object.assign([], state.game.ourFieldingLineup)
-    const roster = state.createGame.active
+    const active = state.createGame.active
 
     // 1. Get roster positions
     // CR: Should never map backwards... from option back to object is taboo...
-    let availableFielders = roster.map(r => {
+    let availableFielders = active.map(r => {
       let player = state.directory.players.find(p => p._id === r.key)
       return Object.assign({}, r, { positions: player.positions })
     })

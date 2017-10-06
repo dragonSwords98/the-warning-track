@@ -90,17 +90,20 @@ export const countFielders = function (roster, lineup) {
  * @return: the new fielding lineup with algo applied 
  */
 export const firstUniqueFindFirstApply = function(availableFielders, copiedFieldingLineup) {
-  let fielded = []
+  // if position is empty this inning
+  // and there's a player not already in this inning
+  // that can play this position, then insert
   copiedFieldingLineup.forEach(inning => {
     Object.keys(inning).forEach(p => {
-
-      // TODO: assess situation where the grid is half filled and it is still legal to field this player, but they are unavailable.
-
-      let match = availableFielders.find(f => {
-        return f.positions.includes(p) && !fielded.includes(f) // if there's a player that can play this position and has not been fielded
-      })
-      if (match && !Object.values(inning).includes(match) && !inning[p]) inning[p] = match.value // if we have a match and this cell is empty, this inning doesn't have this player, fill it
-      if (match) fielded.push(match) // if we have a match, they're fielded
+      if (!inning[p]) {
+        let currentInningLineup = Object.values(inning)
+        let match = availableFielders.find(f => {
+          return f.positions.includes(p) && !currentInningLineup.includes(f.value)
+        })
+        if (match) {
+          inning[p] = match.value
+        }
+      }
     })
   })
   return copiedFieldingLineup
