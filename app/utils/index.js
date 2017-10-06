@@ -93,11 +93,14 @@ export const firstUniqueFindFirstApply = function(availableFielders, copiedField
   let fielded = []
   copiedFieldingLineup.forEach(inning => {
     Object.keys(inning).forEach(p => {
+
+      // TODO: assess situation where the grid is half filled and it is still legal to field this player, but they are unavailable.
+
       let match = availableFielders.find(f => {
-        return f.positions.includes(p) && !fielded.includes(f)
+        return f.positions.includes(p) && !fielded.includes(f) // if there's a player that can play this position and has not been fielded
       })
-      if (match && !inning[p]) inning[p] = match.value
-      if (match) fielded.push(match)
+      if (match && !Object.values(inning).includes(match) && !inning[p]) inning[p] = match.value // if we have a match and this cell is empty, this inning doesn't have this player, fill it
+      if (match) fielded.push(match) // if we have a match, they're fielded
     })
   })
   return copiedFieldingLineup

@@ -183,7 +183,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
         }
       })
     })
-    console.warn('evaluate-active-roster', state.ourFieldingLineup)
   }
 
   if (action.type === 'create-game.lock-inning/toggle') {

@@ -9,7 +9,7 @@ class FielderCell extends Component {
   render () {
     const { value, inning, position, lockedInning, options, onChange } = this.props
 
-    if (!inning || !position || !options) {
+    if (inning === null || !position || !options) {
       return <LoadingOverlay />
     }
 

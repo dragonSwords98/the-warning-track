@@ -107,19 +107,19 @@ class CreateGameContainer extends Component {
     let footer = []
     if (game.league) {
       header = [
-        <Table.HeaderCell key={'header-innings-0'}>
+        <Table.HeaderCell key={'header-innings-title'}>
             <Button circular icon='rocket' onClick={autoFillFielders} />
             <Button circular icon='bomb' disabled={createGame.invalidFields.ourFieldingLineupIsEmpty} onClick={clearFielderAll} />
             <Icon
               circular color={createGame.invalidFields.ourFieldingLineupIsNotFull ? 'red' : 'green'}
               name={createGame.invalidFields.ourFieldingLineupIsNotFull ? 'dont' : 'checkmark'} />
         </Table.HeaderCell>]
-      footer = [<Table.HeaderCell key="footer-cell-0">Lock</Table.HeaderCell>]
+      footer = [<Table.HeaderCell key="footer-cell-title">Lock</Table.HeaderCell>]
 
-      for (let i = 1; i <= game.league.innings; i++) {
+      for (let i = 0; i <= game.league.innings - 1; i++) {
         header.push(
           <Table.HeaderCell key={'header-innings' + i}>
-            { i + ' ' }
+            { (i+1) + ' ' }
             <Button data={i} circular icon='erase' onClick={clearFielderInning} />
           </Table.HeaderCell>)
       }
@@ -138,7 +138,7 @@ class CreateGameContainer extends Component {
         )
       }
 
-      for (let i = 1; i <= game.league.innings; i++) {
+      for (let i = 0; i <= game.league.innings - 1; i++) {
         let icon = game.lockedInnings.indexOf(i) > -1 ? 'lock' : 'unlock'
         footer.push(
           <Table.HeaderCell key={'footer-cell-' + i}>

@@ -15,7 +15,7 @@ class FielderRow extends Component {
     }
 
     // CR: Big filtering logic should live in state? make an options tree?
-    let inningsArray = Array.from({ length: innings }, (v, k) => ++k)
+    let inningsArray = Array.from({ length: innings }, (v, k) => k++)
     let cells = inningsArray.map(i => {
       return <FielderCell key={'fielder-cell-' + i}
         value={lineup[i][position]}
