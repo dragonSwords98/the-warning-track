@@ -210,7 +210,7 @@ const saveNewGameObject = function (state, game) {
     return {
       name: 'Anonymous Chan',
       number: i++,
-      atBats: new Array(state.game.league.innings + 1).fill().map(b => Object.assign({}, GENERIC_ATBAT))
+      atBats: new Array(state.game.league.innings).fill().map(b => Object.assign({}, GENERIC_ATBAT))
     }
   })
   return game

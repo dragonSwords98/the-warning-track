@@ -125,7 +125,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       state.ourTeam = null
     }
     let positions = populatePositions(action.payload.league.positions)
-    state.ourFieldingLineup = new Array(action.payload.league.innings + 1).fill(positions)
+    state.ourFieldingLineup = new Array(action.payload.league.innings).fill(positions)
   }
 
   if (action.type === 'create-game.select-diamond/set') {
@@ -212,7 +212,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'create-game.fielder-all/clear') {
     state = Object.assign({}, state)
     let positions = populatePositions(state.league.positions)
-    state.ourFieldingLineup = new Array(state.league.innings + 1).fill(positions)
+    state.ourFieldingLineup = new Array(state.league.innings).fill(positions)
   }
 
   if (action.type === 'create-game.fielder-all/fill') {
@@ -270,7 +270,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     if (action.payload.increment) {
       let batterInfo = Object.assign({}, GENERIC_OPPOSING_BATTER)
       // CR: Assuming league.innings exists
-      batterInfo.atBats = new Array(state.league.innings + 1).fill().map(b => Object.assign({}, GENERIC_ATBAT))
+      batterInfo.atBats = new Array(state.league.innings).fill().map(b => Object.assign({}, GENERIC_ATBAT))
       state.opposingBattingOrder.push(batterInfo) // TODO: INCORRECT
     } else if (!lastBatter.name && !lastBatter.number) { // CR: Delete the last empty one if u find one?
       state.opposingBattingOrder.pop()
