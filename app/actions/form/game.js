@@ -61,7 +61,7 @@ export function updateAvailableRoster (availablePlayers = [], availableTeams = [
       let teamIds = availableTeams.map(t => t._id)
       availablePlayers = availablePlayers.filter(p => p.teams.findIndex(l => teamIds.includes(l)) > 0)
     }
-    dispatch({ type: 'create-game.form/populate-options', payload: { type: 'roster', options: objectToOption(availablePlayers) } })
+    dispatch({ type: 'create-game.form/populate-options', payload: { type: 'roster', options: objectToOption(availablePlayers, true) } })
     dispatch(updateAvailableBatters(availablePlayers))
   }
 }
