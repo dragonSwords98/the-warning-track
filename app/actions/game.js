@@ -20,6 +20,8 @@ const loadGameObject = function (state, game) {
   })
   game.ourTeam = state.directory.teams.find(t => t._id === game.ourTeam)
   game.homeOrAway = game.homeOrAway ? 'Home' : 'Away'
+  game.baseRadialActive = [-1, -1]
+  game.hitRadialActive = [-1, -1]
   return game
 }
 

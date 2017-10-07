@@ -18,7 +18,7 @@ class GameContainer extends Component {
     this.props.destroy()
   }
   render () {
-    const { game, opponent, saveGame, restartGame, submitGame, advanceBatterRunner, changeHitType,
+    const { game, opponent, saveGame, restartGame, submitGame,
       onScoresheetChange, toggleInningLock, onChangeOpposingBattersCount,
       onRadialSelect, toggleRadialSelect, onChangeOpponentName, onChangeOpponentNumber,
       onChangeHitType, onChangeDepth, onChangeLane, onCancelGameConfirm, onGameConfirm
@@ -48,11 +48,10 @@ class GameContainer extends Component {
       statusGrid={game.statusGrid}
       hitGrid={game.hitGrid}
       scoresheet={game.scoresheet}
-      advanceRunner={advanceBatterRunner}
       onRadialSelect={onRadialSelect}
       toggleRadialSelect={toggleRadialSelect}
-      radialActive={game.radialActive}
-      changeHitType={changeHitType}
+      hitRadialActive={game.hitRadialActive}
+      baseRadialActive={game.baseRadialActive}
       onScoresheetChange={onScoresheetChange}
       toggleInningLock={toggleInningLock}
       saveGame={saveGame}
@@ -163,12 +162,6 @@ export default withRouter(connect(
       loadGame (gameId) {
         dispatch(loadGame(gameId))
         dispatch({ type: 'game.opponent/init' })
-      },
-      changeHitType (event, data) {
-        dispatch({ type: 'game.hit/change-type', payload: { target: event.target, data: data } })
-      },
-      advanceBatterRunner (event, data) {
-        dispatch({ type: 'game.advance-runner/advance', payload: { target: event.target, data: data } })
       },
       onScoresheetChange (event, data) {
         dispatch({ type: 'game.scoresheet/update', payload: { target: event.target, data: data } })

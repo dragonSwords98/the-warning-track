@@ -5,21 +5,17 @@ import { Button } from 'semantic-ui-react'
 
 import { objectToOption } from '@track/utils'
 
-class CircularSelect extends Component {
-  render () {
-    let { layer, options, status, row, inning, isOpen, onToggle, onSelect, disabled } = this.props
+function CircularSelect ({ layer, status, row, inning, isOpen, onToggle, onSelect, disabled }) {
     let groupClass = isOpen ? 'open circle' : 'circle'
-    let circularOptions = ''
-    options = layer.ordering // TODO: move to state
-
+    let options = layer.ordering // TODO: move to state
 
     if (isOpen) {
       for(var i = 0, l = options.length; i < l; i++) {
         options[i].style = {}
         // options[i].style.left = "calc(" + (80 - 240*Math.cos(-0.5 * Math.PI - 2*(1/l)*(-i+2.9)*51/100*Math.PI)).toFixed(4) + "% - 40px)"
         // options[i].style.top = "calc(" + (80 + 240*Math.sin(-0.5 * Math.PI - 2*(1/l)*(-i+2.9)*51/100*Math.PI)).toFixed(4) + "% - 40px)"
-        options[i].style.left = "calc(" + (layer.layer)*(layer.dist - layer.deg*Math.cos(-0.5 * Math.PI - 2*(1/l)*(-i+layer.adjust)*layer.fraction*Math.PI)).toFixed(4) + "% - 40px)"
-        options[i].style.top = "calc(" + (layer.layer)*(layer.dist + layer.deg*Math.sin(-0.5 * Math.PI - 2*(1/l)*(-i+layer.adjust)*layer.fraction*Math.PI)).toFixed(4) + "% - 40px)"
+        options[i].style.left = "calc(" + (layer.layer)*(layer.left - layer.deg*Math.cos(-0.5 * Math.PI - 2*(1/l)*(-i+layer.adjust)*layer.fraction*Math.PI)).toFixed(4) + "% - 40px)"
+        options[i].style.top = "calc(" + (layer.layer)*(layer.top + layer.deg*Math.sin(-0.5 * Math.PI - 2*(1/l)*(-i+layer.adjust)*layer.fraction*Math.PI)).toFixed(4) + "% - 40px)"
         options[i].style.border = layer.border
       }
     }
@@ -63,14 +59,5 @@ class CircularSelect extends Component {
         {mainButton}
       </div>
     )
-  }
-}
-CircularSelect.propTypes = {
-  layer: PropTypes.object.isRequired,
-  options: PropTypes.array.isRequired,
-  status: PropTypes.object.isRequired,
-  row: PropTypes.number.isRequired,
-  inning: PropTypes.number.isRequired,
-  disabled: PropTypes.bool
 }
 export default CircularSelect

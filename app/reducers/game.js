@@ -21,7 +21,8 @@ const INITIAL_STATE = {
   ourFieldingLineup: [],
   opposingBattingOrder: [],
   statusGrid: [], // ours batting order
-  radialActive: false,
+  baseRadialActive: [-1, -1],
+  hitRadialActive: [-1, -1],
   hitGrid: [], // ours hitting chart
   scoresheet: [], // ours vs theirs
   prompt: null,
@@ -56,11 +57,21 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'game.radial-select/toggle') {
     state = Object.assign({}, state)
-    if (!state.radialActive) state.radialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
-    else if (state.radialActive[0] === action.payload.data["data-inning"] && state.radialActive[0] === action.payload.data["data-row"]) {
-      state.radialActive = false // TODO: doesn't close
+
+    if (!state.hitRadialActive) {
+      state.hitRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+    } else if (state.hitRadialActive[0] === action.payload.data["data-inning"] && state.hitRadialActive[0] === action.payload.data["data-row"]) {
+      state.hitRadialActive = [-1, -1]
     } else {
-      state.radialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+      state.hitRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+    }
+
+    if (!state.baseRadialActive) {
+      state.baseRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+    } else if (state.baseRadialActive[0] === action.payload.data["data-inning"] && state.baseRadialActive[0] === action.payload.data["data-row"]) {
+      state.baseRadialActive = [-1, -1]
+    } else {
+      state.baseRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
     }
   }
 
@@ -72,29 +83,21 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
     state = Object.assign({}, state)
 
+    console.log(inning, row, label, layer, state)
+
     if (layer === 'status') {
       let statusIndex = STATUS_ORDERING.findIndex(status => status.name === label)
-      state.statusGrid[inning - 1][row] = Object.assign({}, STATUS_ORDERING[statusIndex])
+      state.statusGrid[inning][row] = Object.assign({}, STATUS_ORDERING[statusIndex])
 
-      state.scoresheet.ours.runs[inning - 1] = updateScoresheet('HOME', state.statusGrid[inning - 1])
-      state.scoresheet.ours.outs[inning - 1] = updateScoresheet('OUT', state.statusGrid[inning - 1])
+      state.scoresheet.ours.runs[inning] = updateScoresheet('HOME', state.statusGrid[inning])
+      state.scoresheet.ours.outs[inning] = updateScoresheet('OUT', state.statusGrid[inning])
+      state.baseRadialActive = [-1, -1]
     }
     if (layer === 'hit') {
       let hitIndex = HIT_ORDERING.findIndex(hit => hit.name === label)
-      state.hitGrid[inning - 1][row] = Object.assign({}, HIT_ORDERING[hitIndex])
+      state.hitGrid[inning][row] = Object.assign({}, HIT_ORDERING[hitIndex])
+      state.hitRadialActive = [-1, -1]
     }
-    state.radialActive = false
-  }
-
-  if (action.type === 'game.hit/change-type') {
-    state = Object.assign({}, state)
-    const { row, inning } = action.payload.target.dataset
-    let hitIndex = HIT_ORDERING.findIndex(hit => hit.name === state.hitGrid[inning - 1][row].name) + 1
-    if (hitIndex > HIT_ORDERING.length - 1) {
-      hitIndex = 0
-    }
-    state.hitGrid[inning - 1][row] = Object.assign({}, HIT_ORDERING[hitIndex])
-    state.hitGrid[inning - 1][row].disabled = false
   }
 
   if (action.type === 'game.scoresheet/update') {
@@ -103,11 +106,11 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     // TODO: Please confirm the OUTS are working reasonably properly
 
     if (action.payload.data.type === 'number') {
-      state.scoresheet.theirs.runs[parseInt(action.payload.data["data-inning"]) - 1] = parseInt(action.payload.data.value)
+      state.scoresheet.theirs.runs[parseInt(action.payload.data["data-inning"])] = parseInt(action.payload.data.value)
     } else if (action.payload.data.type === 'checkbox' && action.payload.data.checked) {
-      state.scoresheet.theirs.outs[parseInt(action.payload.data["data-inning"]) - 1]++
+      state.scoresheet.theirs.outs[parseInt(action.payload.data["data-inning"])]++
     } else if (action.payload.data.type === 'checkbox' && !action.payload.data.checked) {
-      state.scoresheet.theirs.outs[parseInt(action.payload.data["data-inning"]) - 1]--
+      state.scoresheet.theirs.outs[parseInt(action.payload.data["data-inning"])]--
     } else {
       console.error('Unhandled scoresheet input type:', action.payload.data.type)
     }

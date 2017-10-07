@@ -62,7 +62,7 @@ export const STATUS_ORDERING = [
 
 export const WALK = {
   name: 'WALK',
-  label: 'Walk',
+  label: 'W',
   _id: 'Walk',
   color: 'black',
   disabled: true
@@ -70,24 +70,24 @@ export const WALK = {
 
 export const SINGLE_HIT = {
   name: 'SINGLE',
-  label: 'Single',
-  _id: 'Single',
+  label: '1B',
+  _id: '1B',
   color: 'olive',
   disabled: true
 }
 
 export const DOUBLE_HIT = {
   name: 'DOUBLE',
-  label: 'Double',
-  _id: 'Double',
+  label: '2B',
+  _id: '2B',
   color: 'green',
   disabled: true
 }
 
 export const TRIPLE_HIT = {
   name: 'TRIPLE',
-  label: 'Triple',
-  _id: 'Triple',
+  label: '3B',
+  _id: '3B',
   color: 'teal',
   disabled: true
 }
@@ -100,35 +100,27 @@ export const HOME_RUN_HIT = {
   disabled: true
 }
 
-export const GROUND_OUT = {
-  name: 'GROUNDOUT',
-  label: 'Ground',
-  _id: 'Ground',
-  color: 'pink',
+export const SAC_FLY = {
+  name: 'SACFLY',
+  label: 'SF',
+  _id: 'Sac',
+  color: 'purple',
   disabled: true
 }
 
-export const FLY_OUT = {
-  name: 'FLYOUT',
-  label: 'Fly',
-  _id: 'Fly',
-  color: 'purple',
+export const GROUND_OUT = {
+  name: 'GROUNDOUT',
+  label: 'GO',
+  _id: 'Grd',
+  color: 'pink',
   disabled: true
 }
 
 export const POP_OUT = {
   name: 'POPOUT',
-  label: 'Pop',
+  label: 'PO',
   _id: 'Pop',
   color: 'yellow',
-  disabled: true
-}
-
-export const FOUL_OUT = {
-  name: 'FOULOUT',
-  label: 'Foul',
-  _id: 'Foul',
-  color: 'orange',
   disabled: true
 }
 
@@ -146,10 +138,9 @@ export const HIT_ORDERING = [
   DOUBLE_HIT,
   TRIPLE_HIT,
   HOME_RUN_HIT,
+  SAC_FLY,
   GROUND_OUT,
-  FLY_OUT,
   POP_OUT,
-  FOUL_OUT,
   STRIKE_OUT
 ]
 
@@ -329,23 +320,25 @@ export const DEPTH_ORDERING = [
 export const CIRCULAR_SELECT_LAYERS = [
   {
     layer: 1,
-    name: 'status',
-    dist: 80,
+    name: 'hit',
+    left: 80,
+    top: 10,
     deg: 240,
-    adjust: 2.2,
-    fraction: 11/20,
-    border: "solid #263238 3px",
-    ordering: STATUS_ORDERING
+    adjust: 2.4,
+    fraction: 1/2,
+    border: "solid #eceff1 3px",
+    ordering: HIT_ORDERING
   },
   {
     layer: 2,
-    name: 'hit',
-    dist: 60,
-    deg: 270,
-    adjust: 2.4,
-    fraction: 2/5,
-    border: "solid #eceff1 3px",
-    ordering: HIT_ORDERING
+    name: 'status',
+    left: 50,
+    top: 80,
+    deg: 200,
+    adjust: 2.075,
+    fraction: 1/3,
+    border: "solid #263238 3px",
+    ordering: STATUS_ORDERING
   }
 ]
 
