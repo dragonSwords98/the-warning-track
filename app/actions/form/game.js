@@ -110,7 +110,7 @@ export function autoFillFieldingLineup () {
     fieldingLineup = firstUniqueFindFirstApply(availableFielders, Object.assign([], fieldingLineup))
 
     dispatch({ type: 'create-game.fielder-all/fill', payload: { fieldingLineup: fieldingLineup } })
-    // dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(roster, fieldingLineup) }})
+    dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(active, fieldingLineup) }})
     dispatch(validateGameForm())
   }
 }
@@ -119,7 +119,7 @@ export function clearFielderRow (data) {
   return function (dispatch, getState) {
     const state = getState()
     dispatch({ type: 'create-game.fielder-row/clear', payload: { position: data.data } })
-    // dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(state.createGame.active, state.game.ourFieldingLineup) }})
+    dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(state.createGame.active, state.game.ourFieldingLineup) }})
     dispatch(validateGameForm())
   }
 }
@@ -128,7 +128,7 @@ export function clearFielderInning (data) {
   return function (dispatch, getState) {
     const state = getState()
     dispatch({ type: 'create-game.fielder-inning/clear', payload: { inning: data.data } })
-    // dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(state.createGame.active, state.game.ourFieldingLineup) }})
+    dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(state.createGame.active, state.game.ourFieldingLineup) }})
     dispatch(validateGameForm())
   }
 }
@@ -145,8 +145,9 @@ export function clearFieldingLineup () {
 
 export function updateLineups (event, data) {
   return function (dispatch, getState) {
+    const state = getState()
     dispatch({ type: 'create-game.fielding-lineup/change', payload: { inning: data['data-inning'], position: data['data-position'], value: data.value } })
-    
+    dispatch({ type: 'create-game.fielder-count/update', payload: { count: countFielders(state.createGame.active, state.game.ourFieldingLineup) }})
     // CR: Validating all the time?
     return dispatch(validateGameForm())
   }
