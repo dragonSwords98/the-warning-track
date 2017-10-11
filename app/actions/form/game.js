@@ -207,7 +207,7 @@ const saveNewGameObject = function (state, game) {
     ours: populateScoresheet(state.game.league.innings),
     theirs: populateScoresheet(state.game.league.innings)
   }
-  game.opposingBattingOrder = new Array(MINIMAL_BATTERS_COUNT).fill().map((o, i) => {
+  game.opposingBattingReport = new Array(MINIMAL_BATTERS_COUNT).fill().map((o, i) => {
     return {
       name: 'Anonymous Chan',
       number: i++,

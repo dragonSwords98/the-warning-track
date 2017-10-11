@@ -317,8 +317,8 @@ export const DEPTH_ORDERING = [
 ]
 
 /* Circular Select Layers for Offense Table */
-export const CIRCULAR_SELECT_LAYERS = [
-  {
+export const CIRCULAR_SELECT_LAYERS = {
+  ourTeamHitReport: {
     layer: 1,
     name: 'hit',
     left: 80,
@@ -329,7 +329,18 @@ export const CIRCULAR_SELECT_LAYERS = [
     border: "solid #eceff1 3px",
     ordering: HIT_ORDERING
   },
-  {
+  opponentHitReport: {
+    layer: 1,
+    name: 'hit',
+    left: 80,
+    top: 10,
+    deg: 240,
+    adjust: 2.4,
+    fraction: 1/2,
+    border: "solid #eceff1 3px",
+    ordering: HIT_ORDERING
+  },
+  ourTeamLocation: {
     layer: 2,
     name: 'status',
     left: 50,
@@ -339,8 +350,19 @@ export const CIRCULAR_SELECT_LAYERS = [
     fraction: 1/3,
     border: "solid #263238 3px",
     ordering: STATUS_ORDERING
+  },
+  opponentLanes: {
+    layer: 2,
+    name: 'status',
+    left: 50,
+    top: 80,
+    deg: 200,
+    adjust: 2.075,
+    fraction: 1/3,
+    border: "solid #263238 3px",
+    ordering: LANE_ORDERING
   }
-]
+}
 
 /* Form Defaults */
 export const ALL_HANDS = [

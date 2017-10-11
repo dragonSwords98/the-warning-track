@@ -62,7 +62,7 @@ class GameContainer extends Component {
       <OpponentOffenseTable
         innings={game.league.innings}
         currentInning={game.currentInning}
-        opposingBattingOrder={game.opposingBattingOrder}
+        opposingBattingReport={game.opposingBattingReport}
         onChangeOpposingBattersCount={onChangeOpposingBattersCount}
         toggleInningLock={toggleInningLock}
         hitTypeOptions={opponent.hitTypeOptions}

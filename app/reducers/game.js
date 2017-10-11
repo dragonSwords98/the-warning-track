@@ -19,7 +19,7 @@ const INITIAL_STATE = {
   currentFrame: 0, // 0 for top, 1 for bottom
   ourBattingOrder: [],
   ourFieldingLineup: [],
-  opposingBattingOrder: [],
+  opposingBattingReport: [],
   statusGrid: [], // ours batting order
   baseRadialActive: [-1, -1],
   hitRadialActive: [-1, -1],
@@ -82,8 +82,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     let layer = action.payload.data['data-layer']
 
     state = Object.assign({}, state)
-
-    console.log(inning, row, label, layer, state)
 
     if (layer === 'status') {
       let statusIndex = STATUS_ORDERING.findIndex(status => status.name === label)
@@ -178,7 +176,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'create-game.form/evaluate-active-roster') {
     state = Object.assign({}, state)
     state.ourFieldingLineup.forEach(inning => {
-      console.log(inning)
       Object.keys(inning).forEach(pos => {
         if (inning[pos] && !action.payload.selectedPlayers.includes(inning[pos])) {
           console.warn('found missing ' + inning[pos])
@@ -239,54 +236,54 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'game.opponent-name/change') {
     state = Object.assign({}, state)
-    state.opposingBattingOrder = Object.assign([], state.opposingBattingOrder)
-    state.opposingBattingOrder[action.payload.data['data-order']].name = action.payload.data.value
+    state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
+    state.opposingBattingReport[action.payload.data['data-order']].name = action.payload.data.value
   }
 
   if (action.type === 'game.opponent-number/change') {
     state = Object.assign({}, state)
-    state.opposingBattingOrder[action.payload.data['data-order']].number = parseInt(action.payload.data.value)
+    state.opposingBattingReport[action.payload.data['data-order']].number = parseInt(action.payload.data.value)
   }
 
   if (action.type === 'game.opponent-batter/change-hit-type') {
     state = Object.assign({}, state)
-    state.opposingBattingOrder = Object.assign([], state.opposingBattingOrder)
-    state.opposingBattingOrder[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].type = action.payload.data.value
+    state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
+    state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].type = action.payload.data.value
   }
 
   if (action.type === 'game.opponent-batter/change-depth') {
     state = Object.assign({}, state)
-    state.opposingBattingOrder = Object.assign([], state.opposingBattingOrder)
-    state.opposingBattingOrder[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].depth = action.payload.data.value
+    state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
+    state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].depth = action.payload.data.value
   }
 
   if (action.type === 'game.opponent-batter/change-lane') {
     state = Object.assign({}, state)
-    state.opposingBattingOrder = Object.assign([], state.opposingBattingOrder)
-    state.opposingBattingOrder[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].lane = action.payload.data.value
+    state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
+    state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].lane = action.payload.data.value
   }
 
   if (action.type === 'game.opponent/set-number-of-batters') {
     state = Object.assign({}, state)
-    let lastBatter = state.opposingBattingOrder[state.opposingBattingOrder.length - 1]
+    let lastBatter = state.opposingBattingReport[state.opposingBattingReport.length - 1]
     if (action.payload.increment) {
       let batterInfo = Object.assign({}, GENERIC_OPPOSING_BATTER)
       // CR: Assuming league.innings exists
       batterInfo.atBats = new Array(state.league.innings).fill().map(b => Object.assign({}, GENERIC_ATBAT))
-      state.opposingBattingOrder.push(batterInfo) // TODO: INCORRECT
+      state.opposingBattingReport.push(batterInfo) // TODO: INCORRECT
     } else if (!lastBatter.name && !lastBatter.number) { // CR: Delete the last empty one if u find one?
-      state.opposingBattingOrder.pop()
+      state.opposingBattingReport.pop()
     }
   }
 
   if (action.type === 'game.opponent/set-batting-order') {
     state = Object.assign({}, state)
-    state.opposingBattingOrder = action.payload.newOrder
+    state.opposingBattingReport = action.payload.newOrder
   }
 
   if (action.type === 'game.opponent/set-batter-info') {
     state = Object.assign({}, state)
-    state.opposingBattingOrder[action.payload.index] = Object.assign({}, state.opposingBattingOrder[action.payload.index], action.payload.batter)
+    state.opposingBattingReport[action.payload.index] = Object.assign({}, state.opposingBattingReport[action.payload.index], action.payload.batter)
   }
 
   if (action.type === 'game/prompt-restart') {

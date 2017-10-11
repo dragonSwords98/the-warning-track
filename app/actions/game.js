@@ -64,7 +64,7 @@ const saveGameObject = function (state, game) {
     scoresheet: game.scoresheet,
     statusGrid: game.statusGrid,
     hitGrid: game.hitGrid,
-    opposingBattingOrder: game.opposingBattingOrder,
+    opposingBattingReport: game.opposingBattingReport,
     status: game.status
   }
 }

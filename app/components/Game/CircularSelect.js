@@ -7,7 +7,7 @@ import { objectToOption } from '@track/utils'
 
 function CircularSelect ({ layer, status, row, inning, isOpen, onToggle, onSelect, disabled }) {
     let groupClass = isOpen ? 'open circle' : 'circle'
-    let options = layer.ordering // TODO: move to state
+    let options = layer.ordering
 
     if (isOpen) {
       for(var i = 0, l = options.length; i < l; i++) {

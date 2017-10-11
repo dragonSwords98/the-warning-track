@@ -3,8 +3,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Button, Input, Checkbox, Table, Header } from 'semantic-ui-react'
 
-import CircularSelect from '@track/components/Game/CircularSelect'
-import { STATUS_ORDERING, HIT_ORDERING, CIRCULAR_SELECT_LAYERS } from '@track/utils/constants'
+import BattersBox from '@track/components/Game/BattersBox'
+import { STATUS_ORDERING, HIT_ORDERING } from '@track/utils/constants'
 
 function OffenseTable ({
     innings,
@@ -38,41 +38,56 @@ function OffenseTable ({
   }
 
   // Batter Cells
-  const generateBatterCells = function (r, statusGrid, hitGrid, baseRadialActive, hitRadialActive) {
+  const generateBatterCells = function (r, currentInning, statusGrid, hitGrid, onRadialSelect, toggleRadialSelect, baseRadialActive, hitRadialActive) {
 
     let batterCells = []
     for (let i = 0; i <= innings - 1; i++) {
       let isBatOpen = baseRadialActive[0] === i && baseRadialActive[1] === r
       let isHitOpen = hitRadialActive[0] === i && hitRadialActive[1] === r
 
-      const layer = CIRCULAR_SELECT_LAYERS
+      batterCells.push(
+        <BattersBox
+          key={`batter-box-${r}-${i}`}
+          r={r}
+          i={i}
+          currentInning={currentInning}
+          locationStatus={statusGrid[i][r]}
+          hitStatus={hitGrid[i][r]}
+          onRadialSelect={onRadialSelect}
+          toggleRadialSelect={toggleRadialSelect}
+          isBatOpen={isBatOpen}
+          isHitOpen={isHitOpen} />)
+      // let isBatOpen = baseRadialActive[0] === i && baseRadialActive[1] === r
+      // let isHitOpen = hitRadialActive[0] === i && hitRadialActive[1] === r
 
-      let hitReport = <CircularSelect
-                        key={`hit-inning-cs-${r}-${i}}`}
-                        layer={layer[0]}
-                        row={r}
-                        inning={i}
-                        status={hitGrid[i][r]}
-                        isOpen={isHitOpen}
-                        onToggle={toggleRadialSelect}
-                        onSelect={onRadialSelect}
-                        disabled={currentInning !== i} />
+      // const layer = CIRCULAR_SELECT_LAYERS
 
-      let location = <CircularSelect
-                        key={`location-inning-cs-${r}-${i}}`}
-                        layer={layer[1]}
-                        row={r}
-                        inning={i}
-                        status={statusGrid[i][r]}
-                        isOpen={isBatOpen}
-                        onToggle={toggleRadialSelect}
-                        onSelect={onRadialSelect}
-                        disabled={currentInning !== i} />
+      // let hitReport = <CircularSelect
+      //                   key={`hit-inning-cs-${r}-${i}}`}
+      //                   layer={layer[0]}
+      //                   row={r}
+      //                   inning={i}
+      //                   status={hitGrid[i][r]}
+      //                   isOpen={isHitOpen}
+      //                   onToggle={toggleRadialSelect}
+      //                   onSelect={onRadialSelect}
+      //                   disabled={currentInning !== i} />
 
-      batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">
-        {location}
-        {hitReport}
-      </Table.Cell>)
+      // let location = <CircularSelect
+      //                   key={`location-inning-cs-${r}-${i}}`}
+      //                   layer={layer[1]}
+      //                   row={r}
+      //                   inning={i}
+      //                   status={statusGrid[i][r]}
+      //                   isOpen={isBatOpen}
+      //                   onToggle={toggleRadialSelect}
+      //                   onSelect={onRadialSelect}
+      //                   disabled={currentInning !== i} />
+
+      // batterCells.push(<Table.Cell key={`inning-cell-${r}-${i}}`} className="batter-cell">
+      //   {location}
+      //   {hitReport}
+      // </Table.Cell>)
     }
     return batterCells
   }
@@ -82,7 +97,7 @@ function OffenseTable ({
     batterRows.push(
       <Table.Row key={'batter-row-' + r}>
         <Table.Cell width='two'><Header as="h4">{ battingOrder[r].name }</Header></Table.Cell>
-        { generateBatterCells(r, statusGrid, hitGrid, baseRadialActive, hitRadialActive) }
+        { generateBatterCells(r, currentInning, statusGrid, hitGrid, onRadialSelect, toggleRadialSelect, baseRadialActive, hitRadialActive) }
       </Table.Row>
     )
   }

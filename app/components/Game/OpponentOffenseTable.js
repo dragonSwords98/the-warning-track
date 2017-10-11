@@ -13,13 +13,13 @@ class OpponentOffenseTable extends Component {
   render () {
     let {
       innings, currentInning,
-      opposingBattingOrder, onChangeOpposingBattersCount,
+      opposingBattingReport, onChangeOpposingBattersCount,
       hitTypeOptions, depthOptions, laneOptions, toggleInningLock,
       onChangeOpponentName, onChangeOpponentNumber,
       onChangeHitType, onChangeDepth, onChangeLane
     } = this.props
 
-    if (!opposingBattingOrder) {
+    if (!opposingBattingReport) {
       return <LoadingOverlay />
     }
 
@@ -35,7 +35,7 @@ class OpponentOffenseTable extends Component {
       </Table.Row>
     )
 
-    const BattingCells = opposingBattingOrder.map((o, i) => {
+    const BattingCells = opposingBattingReport.map((o, i) => {
       return (<Table.Cell>
           <Input key={'name' + i} data-order={i} transparent placeholder='Name' value={o.name} onChange={onChangeOpponentName.bind(this)} />
           <Input key={'number' + i} data-order={i} transparent placeholder='Jersey' type='number' value={o.number} onChange={onChangeOpponentNumber.bind(this)} />
@@ -63,8 +63,8 @@ class OpponentOffenseTable extends Component {
       </Table.Row>
     )
     
-    opposingBattingOrder
-    let BattingTable = new Array(opposingBattingOrder.length).fill().map((e,i)=>BattingRow(i++, opposingBattingOrder[i - 1]))
+    opposingBattingReport
+    let BattingTable = new Array(opposingBattingReport.length).fill().map((e,i)=>BattingRow(i++, opposingBattingReport[i - 1]))
 
     let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Completed</Header></Table.Cell>]
     for (let i = 1; i <= innings; i++) {
@@ -75,8 +75,8 @@ class OpponentOffenseTable extends Component {
     return (
       <div>
         <Button.Group>
-          <Button disabled={opposingBattingOrder.length === MINIMAL_BATTERS_COUNT} icon='minus' onClick={onChangeOpposingBattersCount} />
-          <Button disabled={opposingBattingOrder.length === REALISTIC_MAX_BATTERS_COUNT} icon='plus' onClick={onChangeOpposingBattersCount} />
+          <Button disabled={opposingBattingReport.length === MINIMAL_BATTERS_COUNT} icon='minus' onClick={onChangeOpposingBattersCount} />
+          <Button disabled={opposingBattingReport.length === REALISTIC_MAX_BATTERS_COUNT} icon='plus' onClick={onChangeOpposingBattersCount} />
         </Button.Group>
         <Table celled>
           <Table.Header>
@@ -100,7 +100,7 @@ class OpponentOffenseTable extends Component {
 OpponentOffenseTable.propTypes = {
   innings: PropTypes.number.isRequired,
   currentInning: PropTypes.number.isRequired,
-  opposingBattingOrder: PropTypes.array.isRequired,
+  opposingBattingReport: PropTypes.array.isRequired,
   onChangeOpposingBattersCount: PropTypes.func.isRequired,
   toggleInningLock: PropTypes.func.isRequired
 }
