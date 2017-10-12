@@ -206,7 +206,7 @@ populateGamesCollection = function () {
           'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
         }
       ],
-      opposingBattingOrder: [
+      opposingBattingReport: [
         {
           name: '',
           number: 0,
@@ -1431,7 +1431,7 @@ populateGamesCollection = function () {
           'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
         }
       ],
-      opposingBattingOrder: [
+      opposingBattingReport: [
         {
           name: '',
           number: 0,

@@ -14,50 +14,57 @@ class OpponentBattersBox extends Component {
     let {
       batter, row, inning, disabled,
       onRadialSelect, toggleRadialSelect,
-      opposingBattingReport
+      opposingBattingReport,
       // hitTypeOptions, depthOptions, laneOptions,
-      // onChangeHitType, onChangeDepth, onChangeLane
+      // onChangeHitType,
+      onChangeDepth
+      //, onChangeLane
     } = this.props
 
-    if (!hitTypeOptions || !depthOptions || !laneOptions) {
-      return <LoadingOverlay />
-    }
+    // if (!hitTypeOptions || !depthOptions || !laneOptions) {
+    //   return <LoadingOverlay />
+    // }
 
-    let HitReportGroup = (
-      <CircularSelect
-        key={`hit-inning-cs-${row}-${inning}}`}
-        layer={CIRCULAR_SELECT_LAYERS.opponentHitReport}
-        row={row}
-        inning={inning}
-        status={opposingBattingReport.type}
-        isOpen={}
-        onSelect={onRadialSelect}
-        onToggle={toggleRadialSelect}
-        disabled={disabled} />)
+    let HitReportGroup = ''
+    // let HitReportGroup = (
+    //   <CircularSelect
+    //     key={`hit-inning-cs-${row}-${inning}}`}
+    //     layer={CIRCULAR_SELECT_LAYERS.opponentHitReport}
+    //     row={row}
+    //     inning={inning}
+    //     status={opposingBattingReport.type}
+    //     isOpen={}
+    //     onSelect={onRadialSelect}
+    //     onToggle={toggleRadialSelect}
+    //     disabled={disabled} />)
 
-    let LanesGroup = (
-      <CircularSelect
-        key={`location-inning-cs-${row}-${inning}}`}
-        layer={CIRCULAR_SELECT_LAYERS.ourTeamLocation}
-        row={row}
-        inning={inning}
-        status={opposingBattingReport.lane}
-        isOpen={}
-        onSelect={onRadialSelect}
-        onToggle={toggleRadialSelect}
-        disabled={disabled} />)
+    let LanesGroup = ''
+    // let LanesGroup = (
+    //   <CircularSelect
+    //     key={`location-inning-cs-${row}-${inning}}`}
+    //     layer={CIRCULAR_SELECT_LAYERS.ourTeamLocation}
+    //     row={row}
+    //     inning={inning}
+    //     status={opposingBattingReport.lane}
+    //     isOpen={}
+    //     onSelect={onRadialSelect}
+    //     onToggle={toggleRadialSelect}
+    //     disabled={disabled} />)
 
     let DepthButtons = []
     DEPTH_ORDERING.forEach(d => {
-      if (d.min <= opposingBattingReport.depth && d.max >= opposingBattingReport.depth) {
-        DepthButtons.push(
-          <Button>TODO: You picked this</Button>
-        )
-      } else {
-        DepthButtons.push(
-          <Button key={`depth-order-${row}-${inning}-${d._id}`} data-row={row} data-inning={inning} data-min={d.min} data-max={d.max} onClick={onChangeDepth}>{d.name}</Button>
-        )  
-      }
+      DepthButtons.push(
+        <Button
+          basic={d.min <= opposingBattingReport.depth && d.max >= opposingBattingReport.depth}
+          color={d.color}
+          key={`depth-order-${row}-${inning}-${d._id}`}
+          data-order={row}
+          data-inning={inning}
+          data-min={d.min}
+          data-max={d.max}
+          onClick={onChangeDepth}>
+          {d.name}
+        </Button>)
     })
 
     let DepthsGroup = (
@@ -65,6 +72,7 @@ class OpponentBattersBox extends Component {
           {DepthButtons}
         </Button.Group>
     )
+
     // return (
     //   <div key={`opponent-box-${row}-${inning}`}>
     //     <Dropdown key={`hit-drop-${row}-${inning}`} placeholder='Select Hit Type' data-order={row} data-inning={inning} fluid search selection options={hitTypeOptions} disabled={disabled} onChange={onChangeHitType.bind(this)} value={batter.type} />
@@ -81,17 +89,5 @@ class OpponentBattersBox extends Component {
       </div>
     )
   }
-}
-OpponentBattersBox.propTypes = {
-  batter: PropTypes.object.isRequired,
-  row: PropTypes.number.isRequired,
-  inning: PropTypes.number.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  hitTypeOptions: PropTypes.array.isRequired,
-  depthOptions: PropTypes.array.isRequired,
-  laneOptions: PropTypes.array.isRequired,
-  onChangeHitType: PropTypes.func.isRequired,
-  onChangeDepth: PropTypes.func.isRequired,
-  onChangeLane: PropTypes.func.isRequired
 }
 export default OpponentBattersBox

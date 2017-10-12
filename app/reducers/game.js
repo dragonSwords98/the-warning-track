@@ -1,7 +1,7 @@
 'use strict'
 import moment from 'moment'
 
-import { STATUS_ORDERING, HIT_ORDERING, GENERIC_OPPOSING_BATTER, GENERIC_ATBAT } from '@track/utils/constants'
+import { STATUS_ORDERING, HIT_ORDERING, LANE_ORDERING, GENERIC_OPPOSING_BATTER, GENERIC_ATBAT } from '@track/utils/constants'
 import { populatePositions, populateScoresheet, populateGrid, updateScoresheet } from '@track/utils'
 
 // The roster and batting order is virtually immutable after set as it will mess up the stats
@@ -23,6 +23,8 @@ const INITIAL_STATE = {
   statusGrid: [], // ours batting order
   baseRadialActive: [-1, -1],
   hitRadialActive: [-1, -1],
+  opposingHitRadialActive: [-1, -1],
+  opposingLaneRadialActive: [-1, -1],
   hitGrid: [], // ours hitting chart
   scoresheet: [], // ours vs theirs
   prompt: null,
@@ -75,6 +77,26 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     }
   }
 
+  if (action.type === 'game.opposing-radial-select/toggle') {
+    state = Object.assign({}, state)
+
+    if (!state.opposingHitRadialActive) {
+      state.opposingHitRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+    } else if (state.opposingHitRadialActive[0] === action.payload.data["data-inning"] && state.opposingHitRadialActive[0] === action.payload.data["data-row"]) {
+      state.opposingHitRadialActive = [-1, -1]
+    } else {
+      state.opposingHitRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+    }
+
+    if (!state.opposingLaneRadialActive) {
+      state.opposingLaneRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+    } else if (state.opposingLaneRadialActive[0] === action.payload.data["data-inning"] && state.opposingLaneRadialActive[0] === action.payload.data["data-row"]) {
+      state.opposingLaneRadialActive = [-1, -1]
+    } else {
+      state.opposingLaneRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
+    }
+  }
+
   if (action.type === 'game.radial-select/select') {
     let inning = action.payload.data['data-inning']
     let row = action.payload.data['data-row']
@@ -95,6 +117,16 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       let hitIndex = HIT_ORDERING.findIndex(hit => hit.name === label)
       state.hitGrid[inning][row] = Object.assign({}, HIT_ORDERING[hitIndex])
       state.hitRadialActive = [-1, -1]
+    }
+
+    if (layer === 'opposingHit') {
+      let hitIndex = HIT_ORDERING.findIndex(hit => hit.name === label)
+      state.opposingBattingReport[inning][row].type = Object.assign({}, HIT_ORDERING[hitIndex])
+    }
+    
+    if (layer === 'opposingLane') {
+      let laneIndex = LANE_ORDERING.findIndex(lane => lane.name === label)
+      state.opposingBattingReport[inning][row].lane = Object.assign({}, LANE_ORDERING[hitIndex])
     }
   }
 
@@ -254,7 +286,8 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'game.opponent-batter/change-depth') {
     state = Object.assign({}, state)
     state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
-    state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].depth = action.payload.data.value
+
+    state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].depth = [action.payload.data['data-min'], action.payload.data['data-max']]
   }
 
   if (action.type === 'game.opponent-batter/change-lane') {

@@ -18,10 +18,10 @@ class GameContainer extends Component {
     this.props.destroy()
   }
   render () {
-    const { game, opponent, saveGame, restartGame, submitGame,
+    const { game, saveGame, restartGame, submitGame,
       onScoresheetChange, toggleInningLock, onChangeOpposingBattersCount,
       onRadialSelect, toggleRadialSelect, onChangeOpponentName, onChangeOpponentNumber,
-      onChangeHitType, onChangeDepth, onChangeLane, onCancelGameConfirm, onGameConfirm
+      onChangeDepth, onCancelGameConfirm, onGameConfirm
     } = this.props
 
     if (!game) {
@@ -65,14 +65,11 @@ class GameContainer extends Component {
         opposingBattingReport={game.opposingBattingReport}
         onChangeOpposingBattersCount={onChangeOpposingBattersCount}
         toggleInningLock={toggleInningLock}
-        hitTypeOptions={opponent.hitTypeOptions}
-        depthOptions={opponent.depthOptions}
-        laneOptions={opponent.laneOptions}
+        onRadialSelect={onRadialSelect}
+        toggleRadialSelect={toggleRadialSelect}
         onChangeOpponentName={onChangeOpponentName}
         onChangeOpponentNumber={onChangeOpponentNumber}
-        onChangeHitType={onChangeHitType}
-        onChangeDepth={onChangeDepth}
-        onChangeLane={onChangeLane} />)
+        onChangeDepth={onChangeDepth}/>)
 
     const panes = [
       { menuItem: game.ourTeam.name, render: () => <Tab.Pane attached={false}>{ OurTeamComponent }</Tab.Pane> },
@@ -153,15 +150,13 @@ class GameContainer extends Component {
 export default withRouter(connect(
   function mapStateToProps (state, ownProps) {
     return {
-      game: state.game,
-      opponent: state.opponent
+      game: state.game
     }
   },
   function mapDispatchToProps (dispatch, ownProps) {
     return {
       loadGame (gameId) {
         dispatch(loadGame(gameId))
-        dispatch({ type: 'game.opponent/init' })
       },
       onScoresheetChange (event, data) {
         dispatch({ type: 'game.scoresheet/update', payload: { target: event.target, data: data } })
@@ -185,14 +180,8 @@ export default withRouter(connect(
       onChangeOpposingBattersCount (event, data) {
         dispatch({ type: 'game.opponent/set-number-of-batters', payload: { increment: data.icon === 'plus' } })
       },
-      onChangeHitType (event, data) {
-        dispatch({ type: 'game.opponent-batter/change-hit-type', payload: { target: event.target, data: data } })
-      },
       onChangeDepth (event, data) {
         dispatch({ type: 'game.opponent-batter/change-depth', payload: { target: event.target, data: data } })
-      },
-      onChangeLane (event, data) {
-        dispatch({ type: 'game.opponent-batter/change-lane', payload: { target: event.target, data: data } })
       },
       saveGame () {
         dispatch(saveGame())

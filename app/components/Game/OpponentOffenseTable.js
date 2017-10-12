@@ -1,7 +1,6 @@
 'use strict'
 
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { Table, Header, Input, Button } from 'semantic-ui-react'
 
 import { MINIMAL_BATTERS_COUNT, REALISTIC_MAX_BATTERS_COUNT } from '@track/utils/constants'
@@ -14,9 +13,9 @@ class OpponentOffenseTable extends Component {
     let {
       innings, currentInning,
       opposingBattingReport, onChangeOpposingBattersCount,
-      hitTypeOptions, depthOptions, laneOptions, toggleInningLock,
-      onChangeOpponentName, onChangeOpponentNumber,
-      onChangeHitType, onChangeDepth, onChangeLane
+      onRadialSelect, toggleRadialSelect,
+      toggleInningLock, onChangeOpponentName, onChangeOpponentNumber,
+      onChangeDepth
     } = this.props
 
     if (!opposingBattingReport) {
@@ -52,18 +51,16 @@ class OpponentOffenseTable extends Component {
               row={r}
               inning={j} 
               disabled={currentInning - 1 !== j}
-              hitTypeOptions={hitTypeOptions}
-              depthOptions={depthOptions}
-              laneOptions={laneOptions}
-              onChangeHitType={onChangeHitType}
+              opposingBattingReport={opposingBattingReport}
+              onRadialSelect={onRadialSelect}
+              toggleRadialSelect={toggleRadialSelect}
               onChangeDepth={onChangeDepth}
-              onChangeLane={onChangeLane} />
+               />
           </Table.Cell>))
         }
       </Table.Row>
     )
     
-    opposingBattingReport
     let BattingTable = new Array(opposingBattingReport.length).fill().map((e,i)=>BattingRow(i++, opposingBattingReport[i - 1]))
 
     let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Completed</Header></Table.Cell>]
@@ -96,12 +93,5 @@ class OpponentOffenseTable extends Component {
       </div>
     )
   }
-}
-OpponentOffenseTable.propTypes = {
-  innings: PropTypes.number.isRequired,
-  currentInning: PropTypes.number.isRequired,
-  opposingBattingReport: PropTypes.array.isRequired,
-  onChangeOpposingBattersCount: PropTypes.func.isRequired,
-  toggleInningLock: PropTypes.func.isRequired
 }
 export default OpponentOffenseTable

@@ -213,107 +213,93 @@ export const ZERO_DEPTH = {
   name: 'Zero',
   _id: 'Zero',
   min: -1,
-  max: 0
+  max: 0,
+  color: 'orange'
 }
 
 export const DINKER_DEPTH = {
   name: 'Dinker',
   _id: 'Dinker',
   min: 1,
-  max: 15
+  max: 25,
+  color: 'orange'
 }
 
-export const PITCHERS_DEPTH = {
-  name: 'Pitcher Line',
-  _id: 'Pitcher Line',
-  min: 16,
-  max: 25
-}
-
-export const RUNNERS_DEPTH = {
-  name: 'Baserunner Line',
-  _id: 'Baserunner Line',
+export const INFIELD_DEPTH = {
+  name: 'Infield',
+  _id: 'Infield',
   min: 26,
-  max: 40
+  max: 40,
+  color: 'yellow'
 }
 
 export const CROSSFIRE_DEPTH = {
   name: 'Crossfire',
   _id: 'Crossfire',
   min: 41,
-  max: 70
+  max: 70,
+  color: 'yellow'
 }
 
 export const SHALLOW_DEPTH = {
   name: 'Shallow',
   _id: 'Shallow',
   min: 71,
-  max: 140
+  max: 140,
+  color: 'olive'
 }
 
 export const ONE_FIVE_ZERO_DEPTH = {
   name: '150',
   _id: '150',
   min: 141,
-  max: 160
+  max: 170,
+  color: 'olive'
 }
 
-export const ONE_SEVEN_ZERO_DEPTH = {
-  name: '170',
-  _id: '170',
-  min: 161,
-  max: 180
-}
-
-export const AVERAGE_DEPTH = {
-  name: 'Avg',
-  _id: 'Avg',
-  min: 181,
-  max: 200
+export const FAIR_DEPTH = {
+  name: '180',
+  _id: '180',
+  min: 171,
+  max: 200,
+  color: 'green'
 }
 
 export const DEEP_DEPTH = {
   name: 'Deep',
   _id: 'Deep',
   min: 201,
-  max: 230
+  max: 230,
+  color: 'green'
 }
 
 export const WARNING_TRACK_DEPTH = {
   name: 'Track',
   _id: 'Track',
   min: 231,
-  max: 260
+  max: 270,
+  color: 'teal'
 }
 
 export const HOMERUN_DEPTH = {
   name: 'HR',
   _id: 'HR',
-  min: 261,
-  max: 280
-}
-
-export const OVERPOWERED_DEPTH = {
-  name: 'OP',
-  _id: 'OP',
-  min: 280,
-  max: 500 // CR: Not humanly possible to go over 500 ft in a fair-game-situation
+  min: 271,
+  max: 300,
+  color: 'teal'
 }
 
 export const DEPTH_ORDERING = [
   ZERO_DEPTH,
   DINKER_DEPTH,
-  PITCHERS_DEPTH,
-  RUNNERS_DEPTH,
+  INFIELD_DEPTH,
   CROSSFIRE_DEPTH,
   SHALLOW_DEPTH,
   ONE_FIVE_ZERO_DEPTH,
-  ONE_SEVEN_ZERO_DEPTH,
-  AVERAGE_DEPTH,
+  FAIR_DEPTH,
   DEEP_DEPTH,
   WARNING_TRACK_DEPTH,
-  HOMERUN_DEPTH,
-  OVERPOWERED_DEPTH
+  HOMERUN_DEPTH
 ]
 
 /* Circular Select Layers for Offense Table */
@@ -331,7 +317,7 @@ export const CIRCULAR_SELECT_LAYERS = {
   },
   opponentHitReport: {
     layer: 1,
-    name: 'hit',
+    name: 'opposingHit',
     left: 80,
     top: 10,
     deg: 240,
@@ -353,7 +339,7 @@ export const CIRCULAR_SELECT_LAYERS = {
   },
   opponentLanes: {
     layer: 2,
-    name: 'status',
+    name: 'opposingLane',
     left: 50,
     top: 80,
     deg: 200,

@@ -23,7 +23,7 @@ const LEGAL_HITS = [
 //   ourActiveRoster: [],
 //   ourBattingOrder: [],
 //   ourFieldingLineup: [],
-//   opposingBattingOrder: [],
+//   opposingBattingReport: [],
 //   statusGrid: [], // ours batting order
 //   radialActive: false,
 //   hitGrid: [], // ours hitting chart
