@@ -215,32 +215,13 @@ populateGamesCollection = function () {
               type: null,
               depth: null,
               lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
             {
               type: null,
               depth: null,
@@ -256,32 +237,13 @@ populateGamesCollection = function () {
               type: null,
               depth: null,
               lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
             {
               type: null,
               depth: null,
@@ -297,36 +259,6 @@ populateGamesCollection = function () {
               type: null,
               depth: null,
               lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
             }
           ]
         },
@@ -338,36 +270,6 @@ populateGamesCollection = function () {
               type: null,
               depth: null,
               lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
             }
           ]
         },
@@ -375,118 +277,6 @@ populateGamesCollection = function () {
           name: '',
           number: 0,
           atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
             {
               type: null,
               depth: null,
@@ -1440,32 +1230,13 @@ populateGamesCollection = function () {
               type: null,
               depth: null,
               lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
             {
               type: null,
               depth: null,
@@ -1481,32 +1252,13 @@ populateGamesCollection = function () {
               type: null,
               depth: null,
               lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
+            }
+          ]
+        },
+        {
+          name: '',
+          number: 0,
+          atBats: [
             {
               type: null,
               depth: null,
@@ -1522,36 +1274,6 @@ populateGamesCollection = function () {
               type: null,
               depth: null,
               lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
             }
           ]
         },
@@ -1563,36 +1285,6 @@ populateGamesCollection = function () {
               type: null,
               depth: null,
               lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
             }
           ]
         },
@@ -1600,118 +1292,6 @@ populateGamesCollection = function () {
           name: '',
           number: 0,
           atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
-            {
-              type: null,
-              depth: null,
-              lane: null
-            },
             {
               type: null,
               depth: null,

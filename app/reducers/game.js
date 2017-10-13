@@ -118,16 +118,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       state.hitGrid[inning][row] = Object.assign({}, HIT_ORDERING[hitIndex])
       state.hitRadialActive = [-1, -1]
     }
-
-    if (layer === 'opposingHit') {
-      let hitIndex = HIT_ORDERING.findIndex(hit => hit.name === label)
-      state.opposingBattingReport[inning][row].type = Object.assign({}, HIT_ORDERING[hitIndex])
-    }
-    
-    if (layer === 'opposingLane') {
-      let laneIndex = LANE_ORDERING.findIndex(lane => lane.name === label)
-      state.opposingBattingReport[inning][row].lane = Object.assign({}, LANE_ORDERING[hitIndex])
-    }
   }
 
   if (action.type === 'game.scoresheet/update') {
@@ -307,16 +297,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     } else if (!lastBatter.name && !lastBatter.number) { // CR: Delete the last empty one if u find one?
       state.opposingBattingReport.pop()
     }
-  }
-
-  if (action.type === 'game.opponent/set-batting-order') {
-    state = Object.assign({}, state)
-    state.opposingBattingReport = action.payload.newOrder
-  }
-
-  if (action.type === 'game.opponent/set-batter-info') {
-    state = Object.assign({}, state)
-    state.opposingBattingReport[action.payload.index] = Object.assign({}, state.opposingBattingReport[action.payload.index], action.payload.batter)
   }
 
   if (action.type === 'game/prompt-restart') {
