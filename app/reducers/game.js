@@ -270,20 +270,26 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'game.opponent-batter/change-hit-type') {
     state = Object.assign({}, state)
     state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
-    state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].type = action.payload.data.value
+    // state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].type === action.payload.data['data-type'] ? null : [action.payload.data['data-min'], action.payload.data['data-max']]
   }
 
   if (action.type === 'game.opponent-batter/change-depth') {
     state = Object.assign({}, state)
     state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
-
-    state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].depth = [action.payload.data['data-min'], action.payload.data['data-max']]
+    // let atBats = Object.assign([], state.opposingBattingReport[action.payload.data['data-order']].atBats) 
+    // let currentAtBat = Object.assign({}, atBats[action.payload.data['data-inning']])
+    // let depth = currentAtBat.depth
+    // depth = depth === [action.payload.data['data-min'], action.payload.data['data-max']] ? null : [action.payload.data['data-min'], action.payload.data['data-max']]
+    // currentAtBat.depth = depth
+    // atBats = currentAtBat[action.payload.data['data-inning']]
+    // state.opposingBattingReport[action.payload.data['data-order']].atBats
+    // console.log(Object.assign([], state.opposingBattingReport), atBats, currentAtBat, depth)
   }
 
   if (action.type === 'game.opponent-batter/change-lane') {
     state = Object.assign({}, state)
     state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
-    state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].lane = action.payload.data.value
+    // state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].lane === [action.payload.data['data-min'], action.payload.data['data-max']] ? null : [action.payload.data['data-min'], action.payload.data['data-max']]
   }
 
   if (action.type === 'game.opponent/set-number-of-batters') {

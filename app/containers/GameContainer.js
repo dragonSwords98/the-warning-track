@@ -21,7 +21,7 @@ class GameContainer extends Component {
     const { game, saveGame, restartGame, submitGame,
       onScoresheetChange, toggleInningLock, onChangeOpposingBattersCount,
       onRadialSelect, toggleRadialSelect, onChangeOpponentName, onChangeOpponentNumber,
-      onChangeDepth, onCancelGameConfirm, onGameConfirm
+      onChangeHitType, onChangeDepth, onChangeLane, onCancelGameConfirm, onGameConfirm
     } = this.props
 
     if (!game) {
@@ -69,7 +69,9 @@ class GameContainer extends Component {
         toggleRadialSelect={toggleRadialSelect}
         onChangeOpponentName={onChangeOpponentName}
         onChangeOpponentNumber={onChangeOpponentNumber}
-        onChangeDepth={onChangeDepth}/>)
+        onChangeHitType={onChangeHitType}
+        onChangeDepth={onChangeDepth}
+        onChangeLane={onChangeLane}/>)
 
     const panes = [
       { menuItem: game.ourTeam.name, render: () => <Tab.Pane attached={false}>{ OurTeamComponent }</Tab.Pane> },
@@ -179,6 +181,12 @@ export default withRouter(connect(
       },
       onChangeOpposingBattersCount (event, data) {
         dispatch({ type: 'game.opponent/set-number-of-batters', payload: { increment: data.icon === 'plus' } })
+      },
+      onChangeHitType (event, data) {
+        dispatch({ type: 'game.opponent-batter/change-hit-type', payload: { target: event.target, data: data } })
+      },
+      onChangeLane (event, data) {
+        dispatch({ type: 'game.opponent-batter/change-lane', payload: { target: event.target, data: data } })
       },
       onChangeDepth (event, data) {
         dispatch({ type: 'game.opponent-batter/change-depth', payload: { target: event.target, data: data } })

@@ -11,11 +11,13 @@ class OpponentOffenseTable extends Component {
 
   render () {
     let {
-      innings, currentInning,
+      innings,
+       // currentInning,
       opposingBattingReport, onChangeOpposingBattersCount,
       onRadialSelect, toggleRadialSelect,
-      toggleInningLock, onChangeOpponentName, onChangeOpponentNumber,
-      onChangeDepth
+      // toggleInningLock,
+      onChangeOpponentName, onChangeOpponentNumber,
+      onChangeDepth, onChangeLane, onChangeHitType
     } = this.props
 
     if (!opposingBattingReport) {
@@ -29,7 +31,7 @@ class OpponentOffenseTable extends Component {
       <Table.Row key={'batter-head'} >
         <Table.HeaderCell>{'Batting Report'}</Table.HeaderCell>
         {
-          new Array(innings).fill().map((e,j)=>(<Table.HeaderCell key={r + 'inning-' + j}>{++j}</Table.HeaderCell>))
+          new Array(opposingBattingReport[0].atBats.length).fill().map((e,j)=>(<Table.HeaderCell key={r + 'inning-' + j}>{++j}</Table.HeaderCell>))
         }
       </Table.Row>
     )
@@ -41,19 +43,22 @@ class OpponentOffenseTable extends Component {
         </Table.Cell>)
     })
 
+    // TODO: only the batter's next or current hit cell should be enabled
     const BattingRow = (r, batter) => (
       <Table.Row key={'batter-' + r} >
         { BattingCells[r] }
         {
-          new Array(innings).fill().map((e,j)=>(<Table.Cell key={r + 'inning-' + j}>
+          new Array(opposingBattingReport[r].atBats.length).fill().map((e,j)=>(<Table.Cell key={r + 'inning-' + j}>
             <OpponentBattersBox
               batter={batter.atBats[j]}
               row={r}
               inning={j} 
-              disabled={currentInning - 1 !== j}
-              opposingBattingReport={opposingBattingReport}
+              disabled={false}
+              opposingBatterReport={opposingBattingReport[r].atBats[j]}
               onRadialSelect={onRadialSelect}
               toggleRadialSelect={toggleRadialSelect}
+              onChangeHitType={onChangeHitType}
+              onChangeLane={onChangeLane}
               onChangeDepth={onChangeDepth}
                />
           </Table.Cell>))
@@ -63,11 +68,12 @@ class OpponentOffenseTable extends Component {
     
     let BattingTable = new Array(opposingBattingReport.length).fill().map((e,i)=>BattingRow(i++, opposingBattingReport[i - 1]))
 
-    let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Completed</Header></Table.Cell>]
-    for (let i = 1; i <= innings; i++) {
-      let icon = currentInning === i ? 'checkmark' : 'lock'
-      lockInnings.push(<Table.Cell key={'footer-lock-' + i}><Button data={i} circular icon={icon} onClick={toggleInningLock} /></Table.Cell>)
-    }
+    // let lockInnings = [<Table.Cell key={'footer-lock-0'}><Header as="h4">Completed</Header></Table.Cell>]
+    // for (let i = 1; i <= innings; i++) {
+    //   let icon = currentInning === i ? 'checkmark' : 'lock'
+    //   lockInnings.push(<Table.Cell key={'footer-lock-' + i}><Button data={i} circular icon={icon} onClick={toggleInningLock} /></Table.Cell>)
+    // }
+    let BattingFooter = ''
 
     return (
       <div>
@@ -75,7 +81,7 @@ class OpponentOffenseTable extends Component {
           <Button disabled={opposingBattingReport.length === MINIMAL_BATTERS_COUNT} icon='minus' onClick={onChangeOpposingBattersCount} />
           <Button disabled={opposingBattingReport.length === REALISTIC_MAX_BATTERS_COUNT} icon='plus' onClick={onChangeOpposingBattersCount} />
         </Button.Group>
-        <Table celled>
+        <Table collapsing basic='very'>
           <Table.Header>
             { BattingTableHeaderCells }
           </Table.Header>
@@ -86,7 +92,7 @@ class OpponentOffenseTable extends Component {
 
           <Table.Footer>
             <Table.Row>
-              { lockInnings }
+              { BattingFooter }
             </Table.Row>
           </Table.Footer>
         </Table>
