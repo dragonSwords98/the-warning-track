@@ -370,13 +370,11 @@ export const ALL_POSITIONS = [
   { key: 'RF', value: 'RF', text: 'RF' }
 ]
 
-
 /* MISC. */
 
 export const GENERIC_OPPOSING_BATTER = {
   name: '',
-  number: 0,
-  atBats: []
+  number: 0
 }
 
 export const GENERIC_ATBAT = {
@@ -385,6 +383,7 @@ export const GENERIC_ATBAT = {
   lane: null
 }
 
-export const MINIMAL_BATTERS_COUNT = 7 // CR: should be a league rule, no?
+export const MINIMAL_BATTERS_COUNT = 7 // Always use league rules whenever applicable
 export const REALISTIC_MAX_BATTERS_COUNT = 30
+export const REALISTIC_MAX_AT_BATS_PER_GAME = 10
 // export const STANDARD_COED_RULE = 'MMF' // CR: By default, we ignore coed, because what if the league is mens or womens?

@@ -62,16 +62,17 @@ class GameContainer extends Component {
       <OpponentOffenseTable
         innings={game.league.innings}
         currentInning={game.currentInning}
-        opposingBattingReport={game.opposingBattingReport}
+        minimalBatters={game.league.minimalRoster}
+        opponentBattingReport={game.opponentBattingReport}
+        opponentBattingOrder={game.opponentBattingOrder}
+        opponentOrderTurned={game.opponentOrderTurned}
         onChangeOpposingBattersCount={onChangeOpposingBattersCount}
         toggleInningLock={toggleInningLock}
-        onRadialSelect={onRadialSelect}
-        toggleRadialSelect={toggleRadialSelect}
         onChangeOpponentName={onChangeOpponentName}
         onChangeOpponentNumber={onChangeOpponentNumber}
         onChangeHitType={onChangeHitType}
         onChangeDepth={onChangeDepth}
-        onChangeLane={onChangeLane}/>)
+        onChangeLane={onChangeLane} />)
 
     const panes = [
       { menuItem: game.ourTeam.name, render: () => <Tab.Pane attached={false}>{ OurTeamComponent }</Tab.Pane> },

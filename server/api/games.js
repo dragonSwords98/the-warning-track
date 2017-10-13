@@ -206,85 +206,14 @@ populateGamesCollection = function () {
           'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
         }
       ],
-      opposingBattingReport: [
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        }
+      opponentBattingOrder: [
+        { name: '', number: 0 }
       ],
+      opponentBattingReport: [[{
+        type: null,
+        depth: null,
+        lane: null
+      }]],
       statusGrid: // our offense status
       [ 
         [ 
@@ -1221,85 +1150,14 @@ populateGamesCollection = function () {
           'RF': ObjectId("3f6ac632984319e3f2ac9cb1")
         }
       ],
-      opposingBattingReport: [
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        },
-        {
-          name: '',
-          number: 0,
-          atBats: [
-            {
-              type: null,
-              depth: null,
-              lane: null
-            }
-          ]
-        }
+      opponentBattingOrder: [
+        { name: '', number: 0 }
       ],
+      opponentBattingReport: [[{
+        type: null,
+        depth: null,
+        lane: null
+      }]],
       statusGrid: // our offense status
       [ 
         [ 

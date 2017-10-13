@@ -19,7 +19,9 @@ const INITIAL_STATE = {
   currentFrame: 0, // 0 for top, 1 for bottom
   ourBattingOrder: [],
   ourFieldingLineup: [],
-  opposingBattingReport: [],
+  opponentBattingOrder: [],
+  opponentBattingReport: [],
+  opponentOrderTurned: 1,
   statusGrid: [], // ours batting order
   baseRadialActive: [-1, -1],
   hitRadialActive: [-1, -1],
@@ -49,6 +51,17 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'route.game-container/load-league.success') {
     state = Object.assign({}, state)
     state.league = action.payload.league
+    let minimalRoster = state.league.minimalRoster
+    while (state.opponentBattingOrder.length < minimalRoster) {
+      state.opponentBattingOrder.push(Object.assign({}, GENERIC_OPPOSING_BATTER))
+    }
+    state.opponentBattingReport.forEach(batter => {
+      if (batter.length > state.opponentOrderTurned) state.opponentOrderTurned = batter.length
+    })
+    while (state.opponentBattingReport.length < minimalRoster) {
+      state.opponentBattingReport.push(new Array(state.opponentOrderTurned).fill().map(b => Object.assign({}, GENERIC_ATBAT)))
+    }
+    console.log('league-success', state.opponentBattingReport, state.opponentBattingOrder)
   }
 
   if (action.type === 'route.game-container/load-game.rejected') {
@@ -258,50 +271,59 @@ export default function gameReducers (state = INITIAL_STATE, action) {
 
   if (action.type === 'game.opponent-name/change') {
     state = Object.assign({}, state)
-    state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
-    state.opposingBattingReport[action.payload.data['data-order']].name = action.payload.data.value
+    state.opponentBattingOrder = Object.assign([], state.opponentBattingOrder)
+    state.opponentBattingOrder[action.payload.data['data-order']].name = action.payload.data.value
   }
 
   if (action.type === 'game.opponent-number/change') {
     state = Object.assign({}, state)
-    state.opposingBattingReport[action.payload.data['data-order']].number = parseInt(action.payload.data.value)
+    state.opponentBattingOrder[action.payload.data['data-order']].number = parseInt(action.payload.data.value)
   }
 
   if (action.type === 'game.opponent-batter/change-hit-type') {
     state = Object.assign({}, state)
-    state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
-    // state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].type === action.payload.data['data-type'] ? null : [action.payload.data['data-min'], action.payload.data['data-max']]
+    state.opponentBattingReport = Object.assign([], state.opponentBattingReport)
+    // state.opponentBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].type === action.payload.data['data-type'] ? null : [action.payload.data['data-min'], action.payload.data['data-max']]
   }
 
   if (action.type === 'game.opponent-batter/change-depth') {
     state = Object.assign({}, state)
-    state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
-    // let atBats = Object.assign([], state.opposingBattingReport[action.payload.data['data-order']].atBats) 
-    // let currentAtBat = Object.assign({}, atBats[action.payload.data['data-inning']])
-    // let depth = currentAtBat.depth
-    // depth = depth === [action.payload.data['data-min'], action.payload.data['data-max']] ? null : [action.payload.data['data-min'], action.payload.data['data-max']]
-    // currentAtBat.depth = depth
-    // atBats = currentAtBat[action.payload.data['data-inning']]
-    // state.opposingBattingReport[action.payload.data['data-order']].atBats
-    // console.log(Object.assign([], state.opposingBattingReport), atBats, currentAtBat, depth)
+    state.opponentBattingReport = Object.assign([], state.opponentBattingReport)
+    let depth = state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']].depth
+    console.log('depth', state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']].depth)
+
+    if (depth === null) { // nothing selected
+      console.log('null')
+      state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { depth: [action.payload.data['data-min'], action.payload.data['data-max']] })
+    } else if (depth[0] === action.payload.data['data-min'] && depth[1] === action.payload.data['data-max']) { // same thing was clicked
+      console.log('clicked same thing')
+      state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { depth: null })
+    } else {
+      console.log('clicked something diff')
+      state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { depth: [action.payload.data['data-min'], action.payload.data['data-max']] })
+    }
   }
 
   if (action.type === 'game.opponent-batter/change-lane') {
     state = Object.assign({}, state)
-    state.opposingBattingReport = Object.assign([], state.opposingBattingReport)
-    // state.opposingBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].lane === [action.payload.data['data-min'], action.payload.data['data-max']] ? null : [action.payload.data['data-min'], action.payload.data['data-max']]
+    state.opponentBattingReport = Object.assign([], state.opponentBattingReport)
+    // state.opponentBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].lane === [action.payload.data['data-min'], action.payload.data['data-max']] ? null : [action.payload.data['data-min'], action.payload.data['data-max']]
   }
 
   if (action.type === 'game.opponent/set-number-of-batters') {
     state = Object.assign({}, state)
-    let lastBatter = state.opposingBattingReport[state.opposingBattingReport.length - 1]
+    let lastBatter = state.opponentBattingOrder[state.opponentBattingOrder.length - 1]
+    state.opponentBattingReport.forEach(batter => {
+      if (batter.length > state.opponentOrderTurned) state.opponentOrderTurned = batter.length
+    })
     if (action.payload.increment) {
-      let batterInfo = Object.assign({}, GENERIC_OPPOSING_BATTER)
-      // CR: Assuming league.innings exists
-      batterInfo.atBats = new Array(state.league.innings).fill().map(b => Object.assign({}, GENERIC_ATBAT))
-      state.opposingBattingReport.push(batterInfo) // TODO: INCORRECT
-    } else if (!lastBatter.name && !lastBatter.number) { // CR: Delete the last empty one if u find one?
-      state.opposingBattingReport.pop()
+      let newBatter = Object.assign({}, GENERIC_OPPOSING_BATTER)
+      let newReport = new Array(state.opponentOrderTurned).fill().map(b => Object.assign({}, GENERIC_ATBAT))
+      state.opponentBattingOrder.push(newBatter)
+      state.opponentBattingReport.push(newReport)
+    } else if (!lastBatter.name && !lastBatter.number && state.opponentBattingOrder.length > state.league.minimalRoster) { // CR: Delete the last empty one if u find one?
+      state.opponentBattingOrder.pop()
+      state.opponentBattingReport.pop()
     }
   }
 

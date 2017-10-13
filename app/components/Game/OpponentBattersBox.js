@@ -13,10 +13,11 @@ class OpponentBattersBox extends Component {
     // currentInning needed
     let {
       batter, row, inning, disabled,
-      onRadialSelect, toggleRadialSelect,
-      opposingBatterReport,
+      batterReport,
       onChangeDepth, onChangeLane, onChangeHitType
     } = this.props
+
+    console.log('obb', batter, batterReport, batterReport.depth)
 
     // if (!hitTypeOptions || !depthOptions || !laneOptions) {
     //   return <LoadingOverlay />
@@ -70,18 +71,24 @@ class OpponentBattersBox extends Component {
       </Button.Group>
     )
 
+
     let DepthButtons = []
     DEPTH_ORDERING.forEach(d => {
+      let active = false
+      if (batterReport.depth !== null) {
+        active = batterReport.depth[0] === d.min && batterReport.depth[1] === d.max
+      }
       DepthButtons.push(
         <Button
           size='mini'
+          basic={!active}
           color={d.color}
           key={`depth-order-${row}-${inning}-${d._id}`}
           data-order={row}
           data-inning={inning}
           data-min={d.min}
           data-max={d.max}
-          active={opposingBatterReport.depth !== null}
+          active={active}
           onClick={onChangeDepth}>
           {d.name}
         </Button>)
