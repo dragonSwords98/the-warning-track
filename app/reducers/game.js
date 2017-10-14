@@ -1,7 +1,7 @@
 'use strict'
 import moment from 'moment'
 
-import { STATUS_ORDERING, HIT_ORDERING, LANE_ORDERING, GENERIC_OPPOSING_BATTER, GENERIC_ATBAT } from '@track/utils/constants'
+import { STATUS_ORDERING, HIT_ORDERING, LANE_ORDERING, GENERIC_OPPOSING_BATTER, GENERIC_ATBAT, REALISTIC_MAX_BATTERS_COUNT, REALISTIC_MAX_AT_BATS_PER_GAME } from '@track/utils/constants'
 import { populatePositions, populateScoresheet, populateGrid, updateScoresheet } from '@track/utils'
 
 // The roster and batting order is virtually immutable after set as it will mess up the stats
@@ -25,8 +25,6 @@ const INITIAL_STATE = {
   statusGrid: [], // ours batting order
   baseRadialActive: [-1, -1],
   hitRadialActive: [-1, -1],
-  opposingHitRadialActive: [-1, -1],
-  opposingLaneRadialActive: [-1, -1],
   hitGrid: [], // ours hitting chart
   scoresheet: [], // ours vs theirs
   prompt: null,
@@ -61,7 +59,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     while (state.opponentBattingReport.length < minimalRoster) {
       state.opponentBattingReport.push(new Array(state.opponentOrderTurned).fill().map(b => Object.assign({}, GENERIC_ATBAT)))
     }
-    console.log('league-success', state.opponentBattingReport, state.opponentBattingOrder)
   }
 
   if (action.type === 'route.game-container/load-game.rejected') {
@@ -87,26 +84,6 @@ export default function gameReducers (state = INITIAL_STATE, action) {
       state.baseRadialActive = [-1, -1]
     } else {
       state.baseRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
-    }
-  }
-
-  if (action.type === 'game.opposing-radial-select/toggle') {
-    state = Object.assign({}, state)
-
-    if (!state.opposingHitRadialActive) {
-      state.opposingHitRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
-    } else if (state.opposingHitRadialActive[0] === action.payload.data["data-inning"] && state.opposingHitRadialActive[0] === action.payload.data["data-row"]) {
-      state.opposingHitRadialActive = [-1, -1]
-    } else {
-      state.opposingHitRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
-    }
-
-    if (!state.opposingLaneRadialActive) {
-      state.opposingLaneRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
-    } else if (state.opposingLaneRadialActive[0] === action.payload.data["data-inning"] && state.opposingLaneRadialActive[0] === action.payload.data["data-row"]) {
-      state.opposingLaneRadialActive = [-1, -1]
-    } else {
-      state.opposingLaneRadialActive = [action.payload.data["data-inning"], action.payload.data["data-row"]]
     }
   }
 
@@ -325,7 +302,7 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     state.opponentBattingReport.forEach(batter => {
       if (batter.length > state.opponentOrderTurned) state.opponentOrderTurned = batter.length
     })
-    if (action.payload.increment) {
+    if (action.payload.increment && state.opponentBattingOrder.length < REALISTIC_MAX_BATTERS_COUNT) {
       let newBatter = Object.assign({}, GENERIC_OPPOSING_BATTER)
       let newReport = new Array(state.opponentOrderTurned).fill().map(b => Object.assign({}, GENERIC_ATBAT))
       state.opponentBattingOrder.push(newBatter)
@@ -333,6 +310,36 @@ export default function gameReducers (state = INITIAL_STATE, action) {
     } else if (!lastBatter.name && !lastBatter.number && state.opponentBattingOrder.length > state.league.minimalRoster) { // CR: Delete the last empty one if u find one?
       state.opponentBattingOrder.pop()
       state.opponentBattingReport.pop()
+    }
+  }
+
+  if (action.type === 'game.opponent/set-number-of-at-bats') {
+    state = Object.assign({}, state)
+    state.opponentBattingReport = Object.assign([], state.opponentBattingReport)
+
+
+    if (action.payload.increment && state.opponentOrderTurned < REALISTIC_MAX_AT_BATS_PER_GAME - 1) {
+      // increase batting report by one if not exceed max at-bats, opponentOrderTurned
+      state.opponentBattingReport.map(o => {
+        o.push(Object.assign({}, GENERIC_ATBAT))
+      })
+      state.opponentOrderTurned++
+      console.log('added one', state.opponentBattingReport)
+
+    } else if (!action.payload.increment && state.opponentOrderTurned > 1) {
+      // validate this subtraction will not lose information or prevent it
+      let flag = state.opponentBattingReport.some(o => {
+        let lastAtBat = o[o.length - 1]
+        return lastAtBat.type !== null || lastAtBat.lane !== null || lastAtBat.depth !== null
+      })
+      if (!flag) {
+        state.opponentBattingReport = state.opponentBattingReport.map(o => {
+          o.pop()
+          return o
+        })
+        state.opponentOrderTurned--
+      }
+      console.log('deleted one', state.opponentBattingReport)
     }
   }
 

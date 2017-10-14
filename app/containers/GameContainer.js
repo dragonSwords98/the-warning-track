@@ -19,7 +19,7 @@ class GameContainer extends Component {
   }
   render () {
     const { game, saveGame, restartGame, submitGame,
-      onScoresheetChange, toggleInningLock, onChangeOpposingBattersCount,
+      onScoresheetChange, toggleInningLock, onChangeOpposingBattersCount, onChangeOrderTurned,
       onRadialSelect, toggleRadialSelect, onChangeOpponentName, onChangeOpponentNumber,
       onChangeHitType, onChangeDepth, onChangeLane, onCancelGameConfirm, onGameConfirm
     } = this.props
@@ -66,13 +66,14 @@ class GameContainer extends Component {
         opponentBattingReport={game.opponentBattingReport}
         opponentBattingOrder={game.opponentBattingOrder}
         opponentOrderTurned={game.opponentOrderTurned}
+        onChangeOrderTurned={onChangeOrderTurned}
         onChangeOpposingBattersCount={onChangeOpposingBattersCount}
-        toggleInningLock={toggleInningLock}
         onChangeOpponentName={onChangeOpponentName}
         onChangeOpponentNumber={onChangeOpponentNumber}
         onChangeHitType={onChangeHitType}
         onChangeDepth={onChangeDepth}
-        onChangeLane={onChangeLane} />)
+        onChangeLane={onChangeLane}
+        saveGame={saveGame} />)
 
     const panes = [
       { menuItem: game.ourTeam.name, render: () => <Tab.Pane attached={false}>{ OurTeamComponent }</Tab.Pane> },
@@ -182,6 +183,9 @@ export default withRouter(connect(
       },
       onChangeOpposingBattersCount (event, data) {
         dispatch({ type: 'game.opponent/set-number-of-batters', payload: { increment: data.icon === 'plus' } })
+      },
+      onChangeOrderTurned (event, data) {
+        dispatch({ type: 'game.opponent/set-number-of-at-bats', payload: { increment: data.icon === 'plus' } })
       },
       onChangeHitType (event, data) {
         dispatch({ type: 'game.opponent-batter/change-hit-type', payload: { target: event.target, data: data } })

@@ -33,7 +33,7 @@ class OpponentBattersBox extends Component {
           data-inning={inning}
           data-hit-type={h._id}
           onClick={onChangeHitType}>
-          {h.name}
+          {h.label}
         </Button>)
     })
 
@@ -59,7 +59,7 @@ class OpponentBattersBox extends Component {
           data-inning={inning}
           data-lane={l._id}
           onClick={onChangeLane}>
-          {l.name}
+          {l.label}
         </Button>)
     })
 

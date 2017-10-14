@@ -147,60 +147,70 @@ export const HIT_ORDERING = [
 /* LANES */
 export const FOUL_BACK_LANE = {
   name: 'Foul Back',
+  label: 'FB',
   _id: 'FB',
   color: 'red'
 }
 
 export const FOUL_LEFT_LANE = {
   name: 'Foul Left',
+  label: 'FL',
   _id: 'FL',
   color: 'orange'
 }
 
 export const LEFT_LEFT_FIELD_LANE = {
   name: 'Left Left Field',
+  label: 'LLF',
   _id: 'LLF',
   color: 'yellow'
 }
 
 export const LEFT_FIELD_LANE = {
   name: 'Left Field',
+  label: 'LF',
   _id: 'LF',
   color: 'olive'
 }
 
 export const CENTER_LEFT_FIELD_LANE = {
   name: 'Center Left Field',
+  label: 'CLF',
   _id: 'CLF',
   color: 'green'
 }
 
 export const CENTER_FIELD_LANE = {
   name: 'Center Field',
+  label: 'CF',
   _id: 'CF',
   color: 'teal'
 }
 
 export const CENTER_RIGHT_FIELD_LANE = {
   name: 'Center Right Field',
+  label: 'CRF',
   _id: 'CRF',
   color: 'blue'
 }
 
 export const RIGHT_FIELD_LANE = {
   name: 'Right Field',
+  label: 'RF',
   _id: 'RF',
   color: 'violet'
 }
 
 export const RIGHT_RIGHT_FIELD_LANE = {
   name: 'Right Right Field',
+  label: 'RRF',
   _id: 'RRF',
   color: 'purple'
 }
 
 export const FOUL_RIGHT_LANE = {
   name: 'Foul Right',
+  label: 'FR',
   _id: 'FR',
   color: 'pink'
 }
