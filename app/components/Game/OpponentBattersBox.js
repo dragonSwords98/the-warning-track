@@ -17,52 +17,50 @@ class OpponentBattersBox extends Component {
       onChangeDepth, onChangeLane, onChangeHitType
     } = this.props
 
-    console.log('obb', batter, batterReport, batterReport.depth)
+    let HitButtons = []
+    HIT_ORDERING.forEach(h => {
+      let active = false
+      if (batterReport.type !== null) {
+        active = batterReport.type === h._id
+      }
+      HitButtons.push(
+        <Button
+          size='mini'
+          basic={!active}
+          color={h.color}
+          key={`depth-order-${row}-${inning}-${h._id}`}
+          data-order={row}
+          data-inning={inning}
+          data-hit-type={h._id}
+          onClick={onChangeHitType}>
+          {h.name}
+        </Button>)
+    })
 
-    // if (!hitTypeOptions || !depthOptions || !laneOptions) {
-    //   return <LoadingOverlay />
-    // }
-
-    let HitReportGroup = ''
-    // let HitReportGroup = (
-    //   <CircularSelect
-    //     key={`hit-inning-cs-${row}-${inning}}`}
-    //     layer={CIRCULAR_SELECT_LAYERS.opponentHitReport}
-    //     row={row}
-    //     inning={inning}
-    //     status={opposingBatterReport.type}
-    //     isOpen={}
-    //     onSelect={onRadialSelect}
-    //     onToggle={toggleRadialSelect}
-    //     disabled={disabled} />)
-
-    // let LanesGroup = (
-    //   <CircularSelect
-    //     key={`location-inning-cs-${row}-${inning}}`}
-    //     layer={CIRCULAR_SELECT_LAYERS.ourTeamLocation}
-    //     row={row}
-    //     inning={inning}
-    //     status={opposingBatterReport.lane}
-    //     isOpen={}
-    //     onSelect={onRadialSelect}
-    //     onToggle={toggleRadialSelect}
-    //     disabled={disabled} />)
+    let HitReportGroup = (
+      <Button.Group vertical>
+        {HitButtons}
+      </Button.Group>
+    )
 
     let LaneButtons = []
     LANE_ORDERING.forEach(l => {
-      // DepthButtons.push(
-      //   <Button
-            // size='mini'
-      //     basic={d.min <= opposingBatterReport.depth && d.max >= opposingBatterReport.depth}
-      //     color={d.color}
-      //     key={`depth-order-${row}-${inning}-${d._id}`}
-      //     data-order={row}
-      //     data-inning={inning}
-      //     data-min={d.min}
-      //     data-max={d.max}
-      //     onClick={onChangeDepth}>
-      //     {d.name}
-      //   </Button>)
+      let active = false
+      if (batterReport.lane !== null) {
+        active = batterReport.lane === l._id
+      }
+      LaneButtons.push(
+        <Button
+          size='mini'
+          basic={!active}
+          color={l.color}
+          key={`depth-order-${row}-${inning}-${l._id}`}
+          data-order={row}
+          data-inning={inning}
+          data-lane={l._id}
+          onClick={onChangeLane}>
+          {l.name}
+        </Button>)
     })
 
     let LanesGroup = (
@@ -70,7 +68,6 @@ class OpponentBattersBox extends Component {
         {LaneButtons}
       </Button.Group>
     )
-
 
     let DepthButtons = []
     DEPTH_ORDERING.forEach(d => {

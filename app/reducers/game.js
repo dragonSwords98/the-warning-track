@@ -283,23 +283,25 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'game.opponent-batter/change-hit-type') {
     state = Object.assign({}, state)
     state.opponentBattingReport = Object.assign([], state.opponentBattingReport)
-    // state.opponentBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].type === action.payload.data['data-type'] ? null : [action.payload.data['data-min'], action.payload.data['data-max']]
+    let hitType = state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']].type
+    if (hitType === null) { // nothing selected
+      state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { type: action.payload.data['data-hit-type'] })
+    } else if (hitType === action.payload.data['data-hit-type']) { // same thing was clicked
+      state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { type: null })
+    } else {
+      state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { type: action.payload.data['data-hit-type'] })
+    }
   }
 
   if (action.type === 'game.opponent-batter/change-depth') {
     state = Object.assign({}, state)
     state.opponentBattingReport = Object.assign([], state.opponentBattingReport)
     let depth = state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']].depth
-    console.log('depth', state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']].depth)
-
     if (depth === null) { // nothing selected
-      console.log('null')
       state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { depth: [action.payload.data['data-min'], action.payload.data['data-max']] })
     } else if (depth[0] === action.payload.data['data-min'] && depth[1] === action.payload.data['data-max']) { // same thing was clicked
-      console.log('clicked same thing')
       state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { depth: null })
     } else {
-      console.log('clicked something diff')
       state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { depth: [action.payload.data['data-min'], action.payload.data['data-max']] })
     }
   }
@@ -307,7 +309,14 @@ export default function gameReducers (state = INITIAL_STATE, action) {
   if (action.type === 'game.opponent-batter/change-lane') {
     state = Object.assign({}, state)
     state.opponentBattingReport = Object.assign([], state.opponentBattingReport)
-    // state.opponentBattingReport[action.payload.data['data-order']].atBats[action.payload.data['data-inning']].lane === [action.payload.data['data-min'], action.payload.data['data-max']] ? null : [action.payload.data['data-min'], action.payload.data['data-max']]
+    let lane = state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']].lane
+    if (lane === null) { // nothing selected
+      state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { lane: action.payload.data['data-lane'] })
+    } else if (lane === action.payload.data['data-lane']) { // same thing was clicked
+      state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { lane: null })
+    } else {
+      state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']] = Object.assign({}, state.opponentBattingReport[action.payload.data['data-order']][action.payload.data['data-inning']], { lane: action.payload.data['data-lane'] })
+    }
   }
 
   if (action.type === 'game.opponent/set-number-of-batters') {
