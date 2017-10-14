@@ -7,7 +7,9 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CaseSensitivePathsWebpackPlugin = require('case-sensitive-paths-webpack-plugin')
-const BabiliPlugin = require('babili-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+// const BabiliPlugin = require('babili-webpack-plugin')
 
 const relativeBuildPath = (process.env.BUILD_PATH || 'dist')
 const buildPath = path.resolve(__dirname, relativeBuildPath)
@@ -28,37 +30,42 @@ module.exports = {
   tls: 'empty'
  },
  context: path.resolve(__dirname, 'app'),
- // context: __dirname,
  entry: {
   track: "./",
-  // track: "./app",
-  vendor: [
-    // 'd3',
-    // 'font-awesome',
-    'history',
-    // 'numeral',
-    // 'prop-types',
-    // 'rc-slider',
-    // 'rc-tooltip',
+  client: [
+    'axios',
+    'bluebird'
+  ],
+  platform: [
+    'moment',
+    // 'i18next',
+    'numeral'
+  ],
+  core: [
+    'prop-types',
     'react',
     'react-dom',
     'react-redux',
     'react-router-dom',
     'react-router-redux',
+    'redux'
+  ],
+  data: [
+    'redux-thunk'
+  ],
+  ui: [
+    'rc-slider',
+    'rc-tooltip',
     'react-sortable-hoc',
-    'redux',
-    'redux-logger',
-    'redux-thunk',
-    // 'semantic-ui-css',
-    // 'semantic-ui-react',
-    // 'sortablejs'
+    'sortablejs'
   ]
  },
  output: {
   path: buildPath,
-  pathinfo: true,
-  chunkFilename: '[name].js',
-  filename: '[name].js'
+  publicPath: '/',
+  pathinfo: (process.env.NODE_ENV !== 'production'),
+  chunkFilename: '[name].[chunkhash:8].js',
+  filename: '[name].[chunkhash:8].js'
  },
  resolve: {
    alias: {
@@ -106,6 +113,12 @@ module.exports = {
  },
  plugins: [
     // new BabiliPlugin(),
+    // new LodashModuleReplacementPlugin,
+    // new webpack.DefinePlugin({
+    //   'process.env': {
+    //     'NODE_ENV': JSON.stringify('production')
+    //   }
+    // }),
     new webpack.ProvidePlugin({
         $: "jquery",
         jQuery: "jquery"
@@ -118,23 +131,27 @@ module.exports = {
     }),
     // new webpack.optimize.CommonsChunkPlugin({
     //   name: 'vendor',
-    //   chunks: ['vendor'],
-    //   minChunks: 2
+    //   minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
     // }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'common',
-    //   chunks: [
-    //     // 'track',
-    //     // 'track-app',
-    //     // 'track-store'
-    //     'vendor'
-    //   ],
-    //   minChunks: 2,
-    // }),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: [
+        'client',
+        'ui',
+        'core',
+        'platform',
+        'data'
+      ]
+    }),
     new webpack.ContextReplacementPlugin(
       /moment[\/\\]locale/,
       /(en-gb|en-us)\.js/
     ),
     new ExtractTextPlugin('styles.css')
  ]
+}
+
+if (process.env.NODE_ENV !== 'production') {
+  module.exports.plugins.push(new BundleAnalyzerPlugin({
+    analyzerMode: 'static'
+  }))
 }
