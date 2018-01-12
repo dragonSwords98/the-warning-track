@@ -14,14 +14,6 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const relativeBuildPath = (process.env.BUILD_PATH || 'dist')
 const buildPath = path.resolve(__dirname, relativeBuildPath)
 
-const BABEL_CONFIG = {
-  presets: [
-    require.resolve('babel-preset-es2015'),
-    require.resolve('babel-preset-es2016'),
-    require.resolve('babel-preset-es2017')
-  ]
-}
-
 module.exports = {
  node: {
   console: true,
