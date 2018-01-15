@@ -42,4 +42,4 @@ let rootReducer = combineReducers({
   create: createReducers
 })
 
-export const store = createStore(rootReducer, undefined, enhancers)
+export const store = createStore(rootReducer, INITIAL_STATE={}, enhancers)
