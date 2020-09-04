@@ -28,7 +28,7 @@
     "font-awesome": "^4.7.0",
     "history": "^4.6.1",
     "moment": "^2.18.1",
-    "mongodb": "^2.2.27",
+    "mongodb": "^3.6.1",
     "numeral": "^2.0.6",
     "prop-types": "^15.5.10",
     "rc-slider": "^8.0.2",
